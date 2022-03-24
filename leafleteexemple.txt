@@ -1,0 +1,42 @@
+https://esri.github.io/esri-leaflet/examples/
+
+https://github.com/alyssaxuu/mapus/tree/master/src
+
+https://github.com/gis-ops/tutorials
+
+https://github.com/Raruto/leaflet-elevation/blob/master/README.md
+
+https://github.com/stefanocudini/leaflet-geojson-selector
+
+https://github.com/bmcbride/bootleaf/tree/master/assets
+
+https://github.com/adeweb-be/volto-leaflet-block
+https://github.com/harryprince/awesome-leaflet
+https://github.com/sitrucp/canada_covid_health_regions
+
+https://github.com/TerriaJS/terriajs
+
+https://www.tp-link.com/fr/support/faq/714/#:~:text=Allumez%20le%20modem%20c%C3%A2ble.&text=Apr%C3%A8s%20vous%20%C3%AAtre%20connect%C3%A9%20au,le%20fuseau%20horaire%20%E2%86%92%20Suivant.&text=Wan%20Type%20de%20connexion%20choisir%20%22%20IP%20dynamique%20%22%20%E2%86%92%20Suivant.
+
+https://github.com/gis-ops/tutorials
+
+https://github.com/stefanocudini/leaflet-list-markers
+
+https://muse.union.edu/dvorakt/building-an-interactive-web-mapp-with-shiny/
+
+https://mageodata.herokuapp.com/#
+
+https://github.com/Yarroudh/mageodata/tree/main/node_modules
+
+INSERT INTO prj_inv.projets_investissement (gid, numero_dossier, date_arrivee_bet, geom) VALUES (
+ 901,
+ 'DA2315',
+ '05-03-2022',
+  ST_GeomFromText('MULTIPOLYGON(((-8.072548 31.512996,-8.060188 31.505678,-8.069458 31.502751,-8.083878 31.503337,-8.072548 31.512996)))',4326)
+);
+
+map.on('draw:edited', function (e) {
+    var layers = e.layers;
+    layers.eachLayer( function (layer) {
+        points.editLayer(layer); lines.editLayer(layer); polygons.editLayer(layer); });
+    });
