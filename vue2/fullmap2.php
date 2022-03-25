@@ -46,7 +46,7 @@ $r=substr($str2,39) ;
 $r2=substr($r,18);
 $r3=substr($r2,6);
 $r4=substr($r3,8);
-echo $r3;
+// echo $r3;
 $str3=str_replace('],[', 'oum', $r4);
 // // echo $str2;
 
@@ -59,7 +59,7 @@ $str6=str_replace(']]]}}','', $str5);
 $str7=str_replace('[','', $str6);
 // echo $str7;
 $geom1="MULTIPOLYGON(((".$str7.")))";
-echo $geom1;
+// echo $geom1;
 
 
 $projet = new ProjetInv($id,$numdoss,$datebet,$dateabht,$province,$commune,$intprojet,$maitreouvrage,$architecte,$tittrefoncier,$superficie,$type_projet,$etat_projet,$geom1);
@@ -78,6 +78,8 @@ $s=$ss->add($projet);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>sidebar</title>
+    <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="assets/js/plugins/datatables/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
     <link
       rel="stylesheet"
@@ -177,9 +179,9 @@ $s=$ss->add($projet);
 
       <div class="sidebar-content">
         <div class="item-content" id="menu">
-        <h2>Person</h2>
-          <div class="content">
-            <div class="row gutters-tiny">
+            <h2>Person</h2>
+            <div class="content">
+                <div class="row gutters-tiny">
                           
                               <a class="block block-link-shadow text-center" href="javascript:void(0)">
                                   <div class="block-content bg-black-op-75">
@@ -224,7 +226,8 @@ $s=$ss->add($projet);
                               </a>
                               
                         
-                      </div>
+                </div>
+                
             </div>
         </div>
         <div class="item-content" id="person">
@@ -264,18 +267,18 @@ $s=$ss->add($projet);
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <div class="form-material">
-                                    <select class="form-control" id="material-select" name="province">
+                                    <select class="form-control" id="material-select" name="commune">
                                         <option>...</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                     </select>
-                                    <label for="material-select">Province</label>
+                                    <label for="material-select">Commune</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-material">
                                 
-                                    <select class="form-control" id="material-select" name="commune">
+                                    <select class="form-control" id="material-select" name="province">
                                         <option>...</option>
                                         <?php
                                             $ss = new Province_Service();
@@ -284,7 +287,7 @@ $s=$ss->add($projet);
                                                 echo '<option value="'.$row[0].'">'.$row[2].'</option>';}
                                         ?>
                                     </select>
-                                    <label for="material-select">Commune</label>
+                                    <label for="material-select">Province</label>
                                 </div>
                             </div>
                             
@@ -350,10 +353,12 @@ $s=$ss->add($projet);
                                     <label for="material-select">Etat du projet</label>
                                 </div>
                             </div> -->
-                            <label for="geom" id='label'>Veuillez ajouter un polygone sur la Carte!</label>
-                            <input   type="text" class="form-control" id="geom" name="geom" placeholder="">
-                            
                         </div>
+                        <div class="form-group row">
+                            <label for="geom" id='label'>Veuillez ajouter un polygone sur la Carte!</label>
+                            <input type="text" class="form-control" id="geom" name="geom" placeholder="">
+                        </div>   
+                        
                         <div class="form-group row">
                             <div class="col-md-9">
                                 <button type="submit" class="btn btn-alt-primary" name="ajouter" >Submit</button>

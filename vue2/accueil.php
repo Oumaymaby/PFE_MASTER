@@ -5,6 +5,7 @@
 */
 require_once '../Couche_Service/Service_etat.php';
 require_once '../Couche_Service/Service_Projet.php';
+
 ?>
 <!doctype html>
 <!--[if lte IE 9]>     <html lang="en" class="no-focus lt-ie10 lt-ie10-msg"> <![endif]-->
@@ -50,6 +51,7 @@ require_once '../Couche_Service/Service_Projet.php';
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css'>
         <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
         <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
+        
 
         <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
         <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/flat.min.css"> -->
@@ -832,8 +834,7 @@ require_once '../Couche_Service/Service_Projet.php';
                         </div>
                         
                     </div>
-                    <div class="row invisible" data-toggle="appear">
-                        <!-- Row #3 -->
+                    <!-- <div class="row invisible" data-toggle="appear">
                         <div class="col-md-12">
                             <div class="block block-rounded block-bordered">
                                 <div class="block-header block-header-default border-b">
@@ -849,20 +850,16 @@ require_once '../Couche_Service/Service_Projet.php';
                                         </div>
                                     </div>
                                 <div class="block-content block-content-full">
-                                <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/be_tables_datatables.js -->
+                                
                                 <table class="table table-bordered table-striped table-vcenter" id="example2">
                                     <thead style="font-size: 10px; color:black">
                                         <tr>
                                             <th>Action</th>
                                             <th>id_projet</th>
                                             <th>numéro de dossier</th>
-                                            <!-- <th>commune</th>
-                                            <th>province</th>
-                                            <th>maitre_ouvrage</th> -->
                                             <th>intitule_projet</th>
                                             <th>la durée en jour</th>
                                             <th>Etat du dossier </th>
-                                            <!-- <th class="text-center" style="width: 15%;">Profile</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -871,7 +868,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                 </table>
                             </div>
                         </div>
-                        </div>
+                        </div> -->
                         <!-- <div class="col-md-12">
                             <div class="block block-rounded block-bordered">
                                 <div class="block-header block-header-default border-b">
@@ -929,7 +926,7 @@ require_once '../Couche_Service/Service_Projet.php';
                         </div> --> 
                         <!-- END Row #3 -->
                         
-                    </div>
+                    <!-- </div> -->
 
                     <div class="row invisible" data-toggle="appear">
                         <!-- Row #3 -->
@@ -960,6 +957,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                             <th>intitule_projet</th>
                                             <th>la durée en jour</th>
                                             <th>Etat du dossier </th>
+                                            <th width="15%">Action</th>
                                             <!-- <th class="text-center" style="width: 15%;">Profile</th> -->
                                         </tr>
                                     </thead>
@@ -970,62 +968,7 @@ require_once '../Couche_Service/Service_Projet.php';
                             </div>
                         </div>
                         </div>
-                        <!-- <div class="col-md-12">
-                            <div class="block block-rounded block-bordered">
-                                <div class="block-header block-header-default border-b">
-                                        <h3 class="block-title">Projet delon leur état</h3>
-                                        <div class="block-options">
-                                        <div class="btn-group dropup" role="group">
-                                                    <button type="button" class="btn btn-primary dropdown-toggle" id="btnGroupDrop2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Etat</button>
-                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                                                        <a class="dropdown-item" href="javascript:void(0)">
-                                                            <span class="badge badge-success" id="bon" onclick="showDataSet1()">Bon Etat</span>
-                                                        </a>
-                                                        <a class="dropdown-item" href="javascript:void(0)" id="retard" onclick="showDataSet2()">
-                                                           <span class="badge badge-warning">en retard</span>
-                                                        </a>
-                                                        <a class="dropdown-item" href="javascript:void(0)" id="critique" onclick="showDataSet3()">
-                                                            <span class="badge badge-danger">Critique </span>
-                                                        </a>
-
-                                                        <div class="dropdown-divider"></div> -->
-                                                        <!-- <a class="dropdown-item" href="javascript:void(0)">
-                                                            <i class="fa fa-fw fa-pencil mr-5"></i>Edit Profile
-                                                        </a> -->
-                                                    <!-- </div>
-                                            </div>
-                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                                <i class="si si-refresh"></i>
-                                            </button>
-                                            <button type="button" class="btn-block-option">
-                                                <i class="si si-wrench"></i>
-                                            </button>
-                                        </div>
-                                    </div> -->
-                                <!-- <div class="block-content block-content-full"> -->
-                                <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/be_tables_datatables.js -->
-                                <!-- <table class="table table-bordered table-striped table-vcenter" id="example1">
-                                    <thead>
-                                        <tr>
-                                            <th>action</th>
-                                            <th>id_projet</th>
-                                            <th>numéro de dossier</th>
-                                           <th>commune</th>
-                                            <th>province</th>
-                                            <th>maitre_ouvrage</th> -->
-                                            <!-- <th>intitule_projet</th>
-                                            <th>la durée en jour</th>
-                                            <th>Etat du dossier </th> -->
-                                            <!-- <th class="text-center" style="width: 15%;">Profile</th> 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> --> 
-                        <!-- END Row #3 -->
+       
                         
                     </div>
                 </div>
@@ -1058,6 +1001,8 @@ require_once '../Couche_Service/Service_Projet.php';
         <script src="assets/js/core/jquery.countTo.min.js"></script>
         <script src="assets/js/core/js.cookie.min.js"></script>
         <script src="assets/js/codebase.js"></script>
+        
+        
 
         <!-- Page JS Plugins -->
         <script src="assets/js/plugins/chartjs/Chart.bundle.min.js"></script>
@@ -1084,107 +1029,16 @@ require_once '../Couche_Service/Service_Projet.php';
         <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js'></script>
         <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
         <script type="text/javascript" src="assets/js/map/leaflet.browser.print.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
         <script>
             $(document).ready( function() {
+                
                 $.ajax({
-                url:"http://localhost/projectpfe/data/data_chart_etat.php",
-                type:"GET",
-                data:'data',
-                // dataType:"json",
-                // dataSrc: 'data',
-                success:function(data){
-                    console.log(data);
-                    var d =JSON.parse(data);
-                    var d1= Object.keys(d.data).length;
-                    // console.log(d1);
-                    var nb= Object.keys(d.data[0])[0]; // return name of index1
-                    // console.log(d.data[2].nombre);
-
-                    var n = [];
-                            var e = [];
-                    var c=[];
-                    for(var count = 0; count <d1; count++)
-                            {
-                                console.log(n.push(d.data[count].nombre));
-                                e.push(d.data[count].etat);
-                    c.push(d.data[count].color);
-                            }
-                    // console.log(n);
-                    
-                    var ctxt=$("#pieChart").get(0).getContext('2d');
-                    var data2={
-                    labels : e,
-                    datasets : [
-                        {
-                        label : "etat",
-                        data: n,
-                        backgroundColor:c,
-                        }
-
-                    ]
-                    }
-
-                    var chart1= new Chart ( ctxt , {
-                    type:"doughnut",
-                    data: data2
-                    }
-                    );
-                },
-                });
-
-                $.ajax({
-                url:"http://localhost/projectpfe/data/data_chart_number.php",
-                type:"GET",
-                data:'data',
-                // dataType:"json",
-                // dataSrc: 'data',
-                success:function(data){
-                    console.log(data);
-                    var d =JSON.parse(data);
-                    var d1= Object.keys(d.data).length;
-                    // console.log(d1);
-                    var nb= Object.keys(d.data[0])[0]; // return name of index1
-                    // console.log(d.data[2].nombre);
-
-                    var n = [];
-                    var e = [];
-                    var c=[];
-                    for(var count = 0; count <d1; count++)
-                            {
-                                console.log(n.push(d.data[count].nombre));
-                                e.push(d.data[count].description);
-                                c.push(d.data[count].color);
-                            }
-                    // console.log(n);
-                    
-                    var ctxt=$("#piechart2").get(0).getContext('2d');
-                    var data3={
-                    labels : e,
-                    datasets : [
-                        {
-                        label : "durée",
-                        data: n,
-                        backgroundColor:c,
-                        }
-
-                    ]
-                    }
-
-                    var chart1= new Chart ( ctxt , {
-                    type:"doughnut",
-                    data: data3
-                    }
-                    );
-                },
-                });
-
-                $.ajax({
-                url:"http://localhost/projectpfe/data/data_chart_mois.php",
-                type:"GET",
+                    url:"http://localhost/projectpfe/data/data_chart_etat.php",
+                    type:"GET",
                     data:'data',
                     // dataType:"json",
                     // dataSrc: 'data',
-                        
                     success:function(data){
                         console.log(data);
                         var d =JSON.parse(data);
@@ -1194,50 +1048,143 @@ require_once '../Couche_Service/Service_Projet.php';
                         // console.log(d.data[2].nombre);
 
                         var n = [];
-                        var p = [];
+                                var e = [];
                         var c=[];
-                        var e=[];
-                        var color=[];
-                        var ma=[];
-                        for(var count = 0; count <d1; count++){
-                            n.push(d.data[count].nombre);
-                            p.push(d.data[count].mois);
-                            c.push(d.data[count].annee);
-                            e.push(d.data[count].etat_dossier);
-                            color.push(d.data[count].color);
-                            ma.push(d.data[count].mois_annee);
-                            }
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    console.log(n.push(d.data[count].nombre));
+                                    e.push(d.data[count].etat);
+                        c.push(d.data[count].color);
+                                }
                         // console.log(n);
-                    
-                        var ctxt=$("#barchart").get(0).getContext('2d');
-                        var data2={
-                            labels :ma,
-                            datasets : [
-                            {
-                                data: n,
-                                backgroundColor:color,
-                            },
-                            ]
-                        }
                         
+                        var ctxt=$("#pieChart").get(0).getContext('2d');
+                        var data2={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "etat",
+                            data: n,
+                            backgroundColor:c,
+                            }
 
-                    var chart1= new Chart ( ctxt , {
-                        type:"bar",
-                        data: data2,
-                        options: {
-                        legend: { display: false },
-                        title: {
-                            display: true,
-                            // text: 'Nombre des projets chaque année selon leur etat'
+                        ]
                         }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"doughnut",
+                        data: data2
                         }
-                    });
-                },
+                        );
+                    },
+                });
+
+                $.ajax({
+                    url:"http://localhost/projectpfe/data/data_chart_number.php",
+                    type:"GET",
+                    data:'data',
+                    // dataType:"json",
+                    // dataSrc: 'data',
+                    success:function(data){
+                        console.log(data);
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+                        // console.log(d1);
+                        var nb= Object.keys(d.data[0])[0]; // return name of index1
+                        // console.log(d.data[2].nombre);
+
+                        var n = [];
+                        var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    console.log(n.push(d.data[count].nombre));
+                                    e.push(d.data[count].description);
+                                    c.push(d.data[count].color);
+                                }
+                        // console.log(n);
+                        
+                        var ctxt=$("#piechart2").get(0).getContext('2d');
+                        var data3={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "durée",
+                            data: n,
+                            backgroundColor:c,
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"doughnut",
+                        data: data3
+                        }
+                        );
+                    },
+                });
+
+                $.ajax({
+                    url:"http://localhost/projectpfe/data/data_chart_mois.php",
+                    type:"GET",
+                        data:'data',
+                        // dataType:"json",
+                        // dataSrc: 'data',
+                            
+                        success:function(data){
+                            console.log(data);
+                            var d =JSON.parse(data);
+                            var d1= Object.keys(d.data).length;
+                            // console.log(d1);
+                            var nb= Object.keys(d.data[0])[0]; // return name of index1
+                            // console.log(d.data[2].nombre);
+
+                            var n = [];
+                            var p = [];
+                            var c=[];
+                            var e=[];
+                            var color=[];
+                            var ma=[];
+                            for(var count = 0; count <d1; count++){
+                                n.push(d.data[count].nombre);
+                                p.push(d.data[count].mois);
+                                c.push(d.data[count].annee);
+                                e.push(d.data[count].etat_dossier);
+                                color.push(d.data[count].color);
+                                ma.push(d.data[count].mois_annee);
+                                }
+                            // console.log(n);
+                        
+                            var ctxt=$("#barchart").get(0).getContext('2d');
+                            var data2={
+                                labels :ma,
+                                datasets : [
+                                {
+                                    data: n,
+                                    backgroundColor:color,
+                                },
+                                ]
+                            }
+                            
+
+                        var chart1= new Chart ( ctxt , {
+                            type:"bar",
+                            data: data2,
+                            options: {
+                            legend: { display: false },
+                            title: {
+                                display: true,
+                                // text: 'Nombre des projets chaque année selon leur etat'
+                            }
+                            }
+                        });
+                    },
                 });
 
                 
 
-            } );
+            });
             var ajax1={url: "http://localhost/projectpfe/data/data_dure_prj.php",type: 'POST',dataSrc: 'data'};
             var ajax2 ={url: "http://localhost/projectpfe/data/data_dureemoin10.php",type: 'POST',dataSrc: 'data'};
             var ajax3={url: "http://localhost/projectpfe/data/data_chartentre10et30.php",type: 'POST',dataSrc: 'data'};
@@ -1312,7 +1259,13 @@ require_once '../Couche_Service/Service_Projet.php';
                                 }
                             },
                             orderable: false },
-                            {data:'etat_dossier'},  
+                            {data:'etat_dossier'},
+                            {data:'id',
+                            render: function (data) {
+                                    return '<a  id="edit" href="supprimerprojet.php?id='+data+'" onclick = "fun()" type="button" class="btn btn-sm btn-circle btn-alt-danger mr-5 mb-5"><i class="fa fa-times"></i></a><button type="button" class="btn btn-sm btn-circle btn-alt-warning mr-5 mb-5"><i class="fa fa-pencil"></i></button><a class="btn btn-sm btn-circle btn-alt-info mr-5 mb-5" href="http://localhost/projectpfe/vue2/details.php?id='+ data+'"><i class="fa fa-info"></i></a>';
+                                
+                                },
+                            orderable: false},  
                         ];
 
             $('#example2').DataTable({
@@ -1357,50 +1310,6 @@ require_once '../Couche_Service/Service_Projet.php';
                 columns:column5, 
             });
 
-            
-
-            // $('#example3').DataTable({
-            //     "paging"   : true,
-            //     "lengthChange": true,
-            //     "searching "  : true,
-            //     "ordering"    : true,
-            //     "info  "      : true,
-            //     "autoWidth"   : true,
-            //     "scrollX": true,
-            //     "sScrollX": '100%',
-            //     "pageLength": 5,
-            //     ajax: ajax3,
-            //     columns:column3,
-            // });
-
-            // $('#example4').DataTable({
-            //     "paging"   : true,
-            //     "lengthChange": true,
-            //     "searching "  : true,
-            //     "ordering"    : true,
-            //     "info  "      : true,
-            //     "autoWidth"   : true,
-            //     "scrollX": true,
-            //     "sScrollX": '100%',
-            //     "pageLength": 5,
-            //     ajax: ajax4,
-            //     columns:column4,
-            // });
-            // var exemple = $('#example').DataTable({
-            //         "paging"   : true,
-            //         "lengthChange": true,
-            //         "searching "  : true,
-            //         "ordering"    : true,
-            //         "info  "      : true,
-            //         "autoWidth"   : true,
-            //         "scrollX": true,
-            //         "sScrollX": '100%',
-            //         "pageLength": 5,
-            //         ajax: ajax2,
-            //         columns:column2, 
-            //     });
-            // function 
-
             function showDataSet1(){
                 $('#example1').DataTable({
                     "paging"   : true,
@@ -1415,66 +1324,9 @@ require_once '../Couche_Service/Service_Projet.php';
                     ajax: ajax3,
                     columns:column3,
                 });
-
-                // $('#example1').DataTable({
-                //     "paging"   : true,
-                //     "lengthChange": true,
-                //     "searching "  : true,
-                //     "ordering"    : true,
-                //     "info  "      : true,
-                //     "autoWidth"   : true,
-                //     "scrollX": true,
-                //     "sScrollX": '100%',
-                //     "pageLength": 5,
-                //     ajax: ajax4,
-                //     columns:column4,
-                // }).dataTable().clear().destroy();
-
-                // $('#example1').DataTable({
-                //     "paging"   : true,
-                //     "lengthChange": true,
-                //     "searching "  : true,
-                //     "ordering"    : true,
-                //     "info  "      : true,
-                //     "autoWidth"   : true,
-                //     "scrollX": true,
-                //     "sScrollX": '100%',
-                //     "pageLength": 5,
-                //     ajax: ajax2,
-                //     columns:column2,
-                // })
-
-                // $('#example1').DataTable({
-                //     "paging"   : true,
-                //     "lengthChange": true,
-                //     "searching "  : true,
-                //     "ordering"    : true,
-                //     "info  "      : true,
-                //     "autoWidth"   : true,
-                //     "scrollX": true,
-                //     "sScrollX": '100%',
-                //     "pageLength": 5,
-                //     ajax: ajax4,
-                //     columns:column4,
-                // }).destroy();
-
-                //     $('#example1').DataTable({
-                //     "paging"   : true,
-                //     "lengthChange": true,
-                //     "searching "  : true,
-                //     "ordering"    : true,
-                //     "info  "      : true,
-                //     "autoWidth"   : true,
-                //     "scrollX": true,
-                //     "sScrollX": '100%',
-                //     "pageLength": 5,
-                //     ajax: ajax2,
-                //     columns:column2,
-                // });
             };
 
             function showDataSet2(){
-
                     $('#example1').DataTable({
                     "paging"   : true,
                     "lengthChange": true,
@@ -1505,145 +1357,19 @@ require_once '../Couche_Service/Service_Projet.php';
                     columns:column4,
                 });
             };
+            
+            
+            if (<?php echo $_GET['message']; ?>=='supprimer'){
+                Notiflix.Notify.init({
+                width: "280px",
+                position: "right-bottom",
+                distance: "10px",
+                });
 
-            $("table").on("click","button", function(){
-                // //alert('test');
-                // // alert($(this).closest('tr').find('td:nth-child(1)').text());
-            });
-
-                // var example = $('#example').DataTable({
-                //     data: dataSet1,
-                //     columns: columnName,
-                // } );
-
-                // function showDataSet(dataSet){
-                //     console.log("1");
-                //     if ( $.fn.dataTable.isDataTable( '#example' ) ) {
-                //         example.destroy();
-                //         $('#example').empty(); 
-                //     }
-                //     console.log("2");
-                //     example = $('#example').DataTable({
-                //         data: dataSet,
-                //         columns: columnName,
-                //     });
-                // }
-                // function showDataSet1(){
-                // showDataSet(dataSet1);
-                // }
-                // function showDataSet2(){
-                // showDataSet(dataSet2);
-                // }
-                // $("table").on("click","button", function(){
-                // //alert('test');
-                // // alert($(this).closest('tr').find('td:nth-child(1)').text());
-                // });
-
-                var map = L.map('map', {fullscreenControl: {pseudoFullscreen: true}, measureControl: true }).setView([33.5731104,-7.5898434], 11);
-
-                // Open Street Map base map
-                var osm = L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a>'
-                }).addTo(map);
-
-   
-   /*fonction de l'envenement click*/
-   function onMapClick(e) {
-         popup
-             .setLatLng(e.latlng)
-             .setContent('You clicked the map at ' + e.latlng.toString())
-             .openOn(map);
-   };
-
-   // Geosearch
-   L.Control.geocoder().addTo(map);
-
-      //drawedit
-      let editableLayers = new L.FeatureGroup();
-
-      editableLayers.on("click", function (e) {
-        console.log("editableLayers click");
-        console.log(e);
-      });
-
-      editableLayers.on("touchstart", function (e) {
-        console.log("editableLayers touchstart");
-        console.log(e);
-      });
-
-      map.addLayer(editableLayers);
-
-      let drawControl = new L.Control.Draw({
-        position: "topright",
-        draw: {
-          polyline: true,
-          polygon: {
-            allowIntersection: true,
-            drawError: {
-              color: "#e1e100",
-              message: "<strong>Oh snap!<strong> you can't draw that!"
-            },
-            shapeOptions: {
-              color: "#bada55",
-              clickable: true
-            }
-          },
-          circle: true,
-          circlemarker: true,
-          rectangle: {
-            shapeOptions: {
-              clickable: true 
-            } 
-          },
-
-          marker: true 
-        },
-
-        edit: {
-          featureGroup: editableLayers,
-          remove: true 
-        } 
-      });
-      map.addControl(drawControl);
-
-      map.on(L.Draw.Event.CREATED, function (e) {
-        let layer = e.layer;
-        editableLayers.addLayer(layer);
-        layer.on("click", function (e) {
-          console.log("layer click");
-          console.log(e);
-        });
-        layer.on("touchstart", function (e) {
-          console.log("layer touchstart");
-          console.log(e);
-        });
-        editableLayers.on("click", function (e) {
-          console.log("editableLayers2 click");
-          console.log(e);
-        });
-        editableLayers.on("touchstart", function (e) {
-          console.log("editableLayers2 touchstart");
-          console.log(e);
-        });
-      });
-    
-    L.Measure = {
-    linearMeasurement: "Distance measurement",
-    areaMeasurement: "Area measurement",
-    start: "1",
-    meter: "m",
-    kilometer: "km",
-    squareMeter: "m²",
-    squareKilometers: "km²",
-    };
-
-    var measure = L.control.measure({position: 'topleft'}).addTo(map);
-
-    //Print
-    L.control.browserPrint().addTo(map);
-
-    //Echelle
-    L.control.scale().addTo(map);
+                Notiflix.Notify.success("Ce projet est supprimer");
+                
+            };
         </script>
+       
     </body>
 </html>

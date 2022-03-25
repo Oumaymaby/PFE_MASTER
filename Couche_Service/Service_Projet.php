@@ -58,8 +58,12 @@ class Projet_Service{
 		$st =$this->db->prepare('select inv.gid,inv.numero_dossier,inv.date_arrivee_abht,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,inv.architecte,inv.titre_foncier,inv.superficie,v.type_projet,inv.payement,ST_AsGeoJSON(inv.geom) as geojson from prj_inv.projets_investissement inv , prj_inv.ls_prj_type v where v.id=inv.type_projet and inv.gid=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
-			return new ProjetInv($row->gid,$row->numero_dossier,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->payement,$row->geojson);	
-
+			if(!empty($row)){
+				return new ProjetInv($row->gid,$row->numero_dossier,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->payement,$row->geojson);	
+			}
+			elseif(empty($row)){
+				return new ProjetInv('0','0','0','0','0','0','0','0','0','0','0','0','0','0');
+			}
 			// return new ProjetInv($row->gid,$row->numero_dossier,$row->numero_archive,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->douar_localite,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->payement,$row->date_payement,$row->montant_payer,$row->remarques_generales_bet,$row->avis_abht,$row->date_avis_abht,$row->etabli_par,$row->valide_par,$row->approuve_par,$row->origine_aep,$row->origine_autre,$row->besoin_eau_domestique,$row->besoin_eau_irrigation,$row->remarque_bet_besoin_eau,$row->remarques_sup_sepre,$row->avis_sepre,$row->date_avis_sepre,$row->type_cours_eau,$row->nom_cours_eau,$row->crue_100,$row->servitude,$row->nature_cours_eau,$row->origine_aep_puits_x,$row->origine_aep_puits_y,$row->autorisation_pf_creusement,$row->autorisation_pf_prelevement,$row->autorisation_deversement,$row->autorisation_occupation_dph,$row->autre_autorisation,$row->remarque_bet_protection_inondations,$row->remarque_sup_sgdph,$row->avis_sgdph,$row->date_avis_sgdph,$row->valide_par_sgdph,$row->approuve_par_sgdph,$row->superficie_bv,$row->amenagement_propose,$row->avis_abht_amenagement,$row->remarque_sup_stah,$row->avis_stah,$row->date_avis_stah,$row->valide_par_stah,$row->approuve_par_stah,$row->volume_eau_usee,$row->mode_assainissement,$row->reutilisation_qeu,$row->reutilisation_niveau_traitement,$row->niveau_piezometrique,$row->date_niveau_piezometrique,$row->piezometre_x,$row->piezometre_y,$row->traitement_boue,$row->remarque_bet_assainissement,$row->remarque_sup_sqe,$row->avis_sqe,$row->date_avis_sqe,$row->valide_par_sqe,$row->approuve_par_sqe,$row->fond_dossier,$row->geom,$row->dates_commissions,$row->categories,$row->surface_batie,$row->autorisation_creusement_date,$row->autorisation_creusement_numero,$row->autorisation_prelevement_date,$row->autorisation_prelevement_numero,$row->autorisation_deversement_date,$row->autorisation_deversement_numero,$row->autorisation_occupation_dph_date,$row->autorisation_occupation_dph_numero,$row->type_dossier,$row->etatdossier);	
 		}
 		else{
@@ -87,7 +91,7 @@ class Projet_Service{
  	{
 
 	 	$st =	$this->db->prepare('delete from prj_inv.projets_investissement where gid=?');
-	 	if ($st->execute(array($prj->getid_aep()))) {
+	 	if ($st->execute(array($prj->getid_pr()))) {
 	 	 	return true;
 	 	}
 	 	else{
