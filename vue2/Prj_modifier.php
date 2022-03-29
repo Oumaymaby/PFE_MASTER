@@ -1,26 +1,84 @@
 <?php
 /**
 * OUMAIMA SABI
-* DATE:07/03/2022
+* DATE:28/03/2022
 */
-require_once '../Couche_Service/Service_etat.php';
+
 require_once '../Couche_Service/Service_Projet.php';
-// if(isset($_POST['Modifier'])){
-//     extract($_POST);
-//     $id= htmlspecialchars($_POST["gid"]);
-//     $numdoss = htmlspecialchars($_POST["numdoss"]);
-//     $intprojet = htmlspecialchars($_POST["int_projet"]);
+require_once '../Couche_Service/Service_type_projet.php';
+require_once '../Couche_Service/Service_Commune.php';
+require_once '../Couche_Service/Service_province.php';
+require_once '../Couche_Service/Service_etat.php';
+
+if(isset($_GET['id'])){
+    // Récupérer des informations de l'exercice en question qui seront par la suite afficher dans le formulaire en bas
+          $id = htmlspecialchars($_GET['id']);
+          $ss = new Projet_Service();
+          $tc = $ss->findById($id);
+    // Parcourir les lignes de résultat
+    if (is_null($tc)) {
+      $message="Le projet est introuvable";
+      header("Loation:GestioN Stagiaire.php?message=$message");
+    }else{
+        $id=$tc->getid_pr();
+        $numdoss=$tc->getnum_oss();
+        $date_arr_abht=$tc->getdate_arr_abht();
+        $date_arr_bet=$tc->getdate_arr_bet();
+        $commune=$tc->getcom();
+        $province=$tc->getprovince();
+        $maitre_ouv=$tc->getmaitre_ouv();
+        $intitutle_pr=$tc->getintitule_pr();
+        $architecte=$tc->getarchitecte();
+        $titre_foncier=$tc->gettitre_foncier();
+        $supf=$tc->getsupf();
+        $type_projet=$tc->gettype_projet();
+        $etat_dossier=$tc->getetat_dossier();
+        $geom=$tc->getgeom();
+    }
+    echo "dfghfgjhgjkgh".$type_projet;
+}
+
+if(isset($_POST['modifier'])){ 
+    //filtre et validation du formulaire
+    $id = htmlspecialchars($_POST["id"]);
+    $numdoss = htmlspecialchars($_POST["num_doss"]);
+    $date_arr_abht = htmlspecialchars($_POST["date_arr_abht"]);
+    $date_arr_bet = htmlspecialchars($_POST["date_arr_bet"]);
+    $commune = htmlspecialchars($_POST["commune"]);
+    $province = htmlspecialchars($_POST["province"]);
+    $maitre_ouv = htmlspecialchars($_POST["maitre_ouvrage"]);
+    $intitutle_pr = htmlspecialchars($_POST["intitule_prj"]);
+    $architecte = htmlspecialchars($_POST["architecte"]);
+    $titre_foncier = htmlspecialchars($_POST["titre_foncier"]);
+    $supf = htmlspecialchars($_POST["superficie"]);
+    $type_projet = htmlspecialchars($_POST["type_projet"]);
+    $etat_dossier = htmlspecialchars($_POST["etat_dossier"]);
+    $geom = $_POST["geometrie"];
+    // $str2=substr($geom, 41);
+    // $str3=str_replace('],[','oum', $str2);
+    // $str4=str_replace(',',' ', $str3);
+    // $str5=str_replace('oum',',', $str4);
+    // $str6=str_replace(']]]]}','', $str5);
+    // $geom1="MULTIPOLYGON(((".$str6.")))";
+    // echo $geom1;
+    $prj = new ProjetInv($id,$numdoss,$date_arr_abht,$date_arr_bet,$commune,$province,$maitre_ouv,$intitutle_pr,$architecte,$titre_foncier,$supf,$type_projet,$etat_dossier,$geom);
+    $p= new Projet_Service();
+    if($p->update($prj)){
+        header("Location: accueil.php?message=mofidier"); }
+    
+}
     
 
 ?>
+
 <!doctype html>
-<!--[if lte IE 9]>     <html lang="en" class="no-focus lt-ie10 lt-ie10-msg"> <![endif]-->
-<!--[if gt IE 9]><!--> <html lang="en" class="no-focus"> <!--<![endif]-->
+
+    <html lang="en" class="no-focus">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
-        <title>accueil</title>
+        <title>Modifier le projet</title>
 
         <meta name="description" content="Codebase - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
         <meta name="author" content="pixelcave">
@@ -41,30 +99,20 @@ require_once '../Couche_Service/Service_Projet.php';
         <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
         <!-- END Icons -->
 
-         <!-- Page JS Plugins CSS -->
-         <link rel="stylesheet" href="assets/js/plugins/datatables/dataTables.bootstrap4.min.css">
-
         <!-- Stylesheets -->
+        <!-- Page JS Plugins CSS -->
+        <link rel="stylesheet" href="assets/js/plugins/select2/select2.min.css">
+        <link rel="stylesheet" href="assets/js/plugins/select2/select2-bootstrap.min.css">
+
         <!-- Codebase framework -->
         <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
-
-        <!-- leaflet -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin=""/>
-        <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
-        <link href='assets/css/map/leaflet.fullscreen.css' rel='stylesheet' />
-        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css'>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-        <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
-        
 
         <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
         <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/flat.min.css"> -->
         <!-- END Stylesheets -->
     </head>
     <body>
-        <div id="page-container" class="sidebar-o sidebar-inverse side-scroll page-header-fixed page-header-modern main-content-boxed">
+        <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
             <!-- Side Overlay-->
             <aside id="side-overlay">
                 <!-- Side Overlay Scroll Container -->
@@ -84,7 +132,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                 <a class="img-link mr-5" href="be_pages_generic_profile.html">
                                     <img class="img-avatar img-avatar32" src="assets/img/avatars/avatar15.jpg" alt="">
                                 </a>
-                                <a class="align-middle link-effect text-primary-dark font-w600" href="be_pages_generic_profile.html">Oumaima Sabi </a>
+                                <a class="align-middle link-effect text-primary-dark font-w600" href="be_pages_generic_profile.html">John Smith</a>
                             </div>
                             <!-- END User Info -->
                         </div>
@@ -146,29 +194,29 @@ require_once '../Couche_Service/Service_Projet.php';
                                 <ul class="nav-users push">
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar1.jpg" alt="">
-                                            <i class="fa fa-circle text-success"></i> Lori Moore
+                                            <img class="img-avatar" src="assets/img/avatars/avatar5.jpg" alt="">
+                                            <i class="fa fa-circle text-success"></i> Megan Fuller
                                             <div class="font-w400 font-size-xs text-muted">Photographer</div>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar10.jpg" alt="">
-                                            <i class="fa fa-circle text-success"></i> Jack Estrada
+                                            <img class="img-avatar" src="assets/img/avatars/avatar15.jpg" alt="">
+                                            <i class="fa fa-circle text-success"></i> Brian Cruz
                                             <div class="font-w400 font-size-xs text-muted">Web Designer</div>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar3.jpg" alt="">
-                                            <i class="fa fa-circle text-warning"></i> Betty Kelley
+                                            <img class="img-avatar" src="assets/img/avatars/avatar6.jpg" alt="">
+                                            <i class="fa fa-circle text-warning"></i> Helen Jacobs
                                             <div class="font-w400 font-size-xs text-muted">UI Designer</div>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar16.jpg" alt="">
-                                            <i class="fa fa-circle text-danger"></i> Jose Mills
+                                            <img class="img-avatar" src="assets/img/avatars/avatar14.jpg" alt="">
+                                            <i class="fa fa-circle text-danger"></i> Carl Wells
                                             <div class="font-w400 font-size-xs text-muted">Copywriter</div>
                                         </a>
                                     </li>
@@ -358,7 +406,20 @@ require_once '../Couche_Service/Service_Projet.php';
                 </div>
                 <!-- END Side Overlay Scroll Container -->
             </aside>
-           
+            <!-- END Side Overlay -->
+
+            <!-- Sidebar -->
+            <!--
+                Helper classes
+
+                Adding .sidebar-mini-hide to an element will make it invisible (opacity: 0) when the sidebar is in mini mode
+                Adding .sidebar-mini-show to an element will make it visible (opacity: 1) when the sidebar is in mini mode
+                    If you would like to disable the transition, just add the .sidebar-mini-notrans along with one of the previous 2 classes
+
+                Adding .sidebar-mini-hidden to an element will hide it when the sidebar is in mini mode
+                Adding .sidebar-mini-visible to an element will show it only when the sidebar is in mini mode
+                    - use .sidebar-mini-visible-b if you would like to be a block when visible (display: block)
+            -->
             <nav id="sidebar">
                 <!-- Sidebar Scroll Container -->
                 <div id="sidebar-scroll">
@@ -563,7 +624,7 @@ require_once '../Couche_Service/Service_Projet.php';
                         <!-- User Dropdown -->
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-rounded btn-dual-secondary" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               Oumaima Sabi<i class="fa fa-angle-down ml-5"></i>
+                                J. Smith<i class="fa fa-angle-down ml-5"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right min-width-150" aria-labelledby="page-header-user-dropdown">
                                 <a class="dropdown-item" href="be_pages_generic_profile.html">
@@ -646,324 +707,191 @@ require_once '../Couche_Service/Service_Projet.php';
             <main id="main-container">
                 <!-- Page Content -->
                 <div class="content">
-                    <div class="row invisible" data-toggle="appear">
-                        <!-- Row #1 -->
-                        <div class="col-6 col-xl-3">
-                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
-                                <div class="block-content block-content-full clearfix">
-                                    <div class="float-right mt-15 d-none d-sm-block">
-                                        <i class="si si-bag fa-2x text-primary-light"></i>
-                                    </div>
-                                    <?php $b = new Projet_Service();
-                                        $bb= $b->nombre();
-                                        foreach($bb as $row){
-                                        echo '<div class="font-size-h3 font-w600 text-primary" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
-                                        }
-                                    ?>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Projet</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-6 col-xl-3">
-                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
-                                <div class="block-content block-content-full clearfix">
-                                    <div class="float-right mt-15 d-none d-sm-block">
-                                        <i class="si si-wallet fa-2x text-earth-light"></i>
-                                    </div>
-                                    <?php $b = new Etat_Service();
-                                        $bb= $b->nbnew();
-                                        foreach($bb as $row){
-                                        echo '<div class="font-size-h3 font-w600 text-earth"><span data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</span></div>';
-                                        }
-                                    ?>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Projet en cours</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-6 col-xl-3">
-                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
-                                <div class="block-content block-content-full clearfix">
-                                    <div class="float-right mt-15 d-none d-sm-block">
-                                        <i class="si si-envelope-open fa-2x text-elegance-light"></i>
-                                    </div>
-                                    <?php $b = new Etat_Service();
-                                        $bb= $b->nbclose();
-                                        foreach($bb as $row){
-                                        echo '<div class="font-size-h3 font-w600 text-elegance" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
-                                        }
-                                    ?>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Projet Cloturé</div>
-                                </div>
-                            </a>
-                        </div>
-                        <!-- <div class="col-6 col-xl-3">
-                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
-                                <div class="block-content block-content-full clearfix">
-                                    <div class="float-right mt-15 d-none d-sm-block">
-                                        <i class="si si-users fa-2x text-pulse"></i>
-                                    </div>
-                                    <div class="font-size-h3 font-w600 text-pulse" data-toggle="countTo" data-speed="1000" data-to="4252">0</div>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Online</div>
-                                </div>
-                            </a>
-                        </div> -->
-                        <!-- END Row #1 -->
-                    </div>
-                    <div class="row invisible" data-toggle="appear">
-                        <!-- Row #2 -->
-                        <div class="col-md-6">
-                            <div class="block block-rounded block-bordered">
-                                <div class="block-header block-header-default border-b">
-                                    <h3 class="block-title">
-                                    Etat du dossier <small>Charte</small>
-                                    </h3>
-                                    <div class="block-options">
-                                        <!-- <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                            <i class="si si-refresh"></i>
-                                        </button> -->
-                                        <button type="button" class="btn-block-option">
-                                            <i class="si si-wrench"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="block-content block-content-full">
-                                    <div class="pull-all pt-50">
-                                        <!-- Lines Chart Container -->
-                                        <canvas class="" id="pieChart"></canvas>
-                                    </div>
-                                </div>
-                                <div class="block-content">
-                                    <div class="row items-push text-center">
-                                    
-                                    <?php $b = new Etat_Service();
-                                        $bb= $b->chartsetat();
-                                        foreach($bb as $row){
-                                            echo'<div class="col-6 col-sm-4">
-                                                    <div class="font-w600 text-success">
-                                                            <i class="fa fa-caret-up"></i> '.$row[1].'
-                                                    </div>
-                                                    <div class="font-size-h4 font-w600">'.$row[0].'</div>
-                                                  
-                                                </div>';
-                                        }
-                                    ?>
-                                    </div>
-                                </div>
+                    <!-- Bootstrap Forms Validation -->
+                    <h2 class="content-heading">Modification du projet</h2>
+                    <div class="block">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Projet d'investissement </h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option">
+                                    <i class="si si-wrench"></i>
+                                </button>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="block block-rounded block-bordered">
-                                <div class="block-header block-header-default border-b">
-                                    <h3 class="block-title">
-                                        Nombre des projets selon leur durée <small>Charte</small>
-                                    </h3>
-                                    <div class="block-options">
-                                        <!-- <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                            <i class="si si-refresh"></i>
-                                        </button> -->
-                                        <button type="button" class="btn-block-option">
-                                            <i class="si si-wrench"></i>
-                                        </button>
-                                        
-                                    </div>
-                                </div>
-                                <div class="block-content block-content-full">
-                                    <div class="pull-all pt-50">
-                                        <!-- Lines Chart Container -->
-                                        <canvas class="" id="piechart2" ><canvas>
-                                    </div>
-                                </div>
-                                <div class="block-content bg-white">
-                                    <div class="row items-push text-center">
-                                        <?php $b = new Projet_Service();
-                                            $bb1 = $b->dureechartprj10();
-                                            $bb2=$b->dureechartprj10_30();
-                                            $bb3=$b->dureechartprj30();
-                                            
-                                            $data1 = array();
-                                            $data2 = array();
-                                            $data3 = array();
-                                            
-                                            foreach ($bb1 as $row) {
-                                                $data1[] = array(
-                                                "nombre"=>$row["number1"],
-                                                "description"=>'moins de 10 jours',
-                                                'color'=>'#'.rand(100000,999999).''
-                                                );
-                                            }
-                                            
-                                            foreach ($bb2 as $row) {
-                                                $data2[] = array(
-                                                    "nombre"=>$row["number2"],
-                                                    "description"=>'entre 10 jours et 30 jours',
-                                                    'color'=>'#'.rand(100000,999999).''
-                                            
-                                                );
-                                            }
-                                            
-                                            foreach ($bb3 as $row) {
-                                                $data3[] = array(
-                                                    "nombre"=>$row["number3"],
-                                                    "description"=>'plus de 30 jours',
-                                                    'color'=>'#'.rand(100000,999999).''
-                                            
-                                                );
-                                            }
-                                            
-                                            $response=array_merge($data1, $data2,$data3);
-                                            foreach($response as $row){
-                                                echo'<div class="col-6 col-sm-4">
-                                                        <div class="font-w600 text-success">
-                                                                <i class="fa fa-caret-up"></i> '.$row['description'].'
-                                                        </div>
-                                                        <div class="font-size-h4 font-w600">'.$row['nombre'].'</div>
-                                                    
-                                                    </div>';
-                                            }
-                                        ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <!-- <div class="row invisible" data-toggle="appear">
-                        <div class="col-md-12">
-                            <div class="block block-rounded block-bordered">
-                                <div class="block-header block-header-default border-b">
-                                        <h3 class="block-title">Projet d'investissement</h3>
-                                        <div class="block-options">
-                                            
-                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                                <i class="si si-refresh"></i>
-                                            </button>
-                                            <button type="button" class="btn-block-option">
-                                                <i class="si si-wrench"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                <div class="block-content block-content-full">
-                                
-                                <table class="table table-bordered table-striped table-vcenter" id="example2">
-                                    <thead style="font-size: 10px; color:black">
-                                        <tr>
-                                            <th>Action</th>
-                                            <th>id_projet</th>
-                                            <th>numéro de dossier</th>
-                                            <th>intitule_projet</th>
-                                            <th>la durée en jour</th>
-                                            <th>Etat du dossier </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        </div> -->
-                        <!-- <div class="col-md-12">
-                            <div class="block block-rounded block-bordered">
-                                <div class="block-header block-header-default border-b">
-                                        <h3 class="block-title">Projet delon leur état</h3>
-                                        <div class="block-options">
-                                        <div class="btn-group dropup" role="group">
-                                                    <button type="button" class="btn btn-primary dropdown-toggle" id="btnGroupDrop2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Etat</button>
-                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                                                        <a class="dropdown-item" href="javascript:void(0)">
-                                                            <span class="badge badge-success" id="bon" onclick="showDataSet1()">Bon Etat</span>
-                                                        </a>
-                                                        <a class="dropdown-item" href="javascript:void(0)" id="retard" onclick="showDataSet2()">
-                                                           <span class="badge badge-warning">en retard</span>
-                                                        </a>
-                                                        <a class="dropdown-item" href="javascript:void(0)" id="critique" onclick="showDataSet3()">
-                                                            <span class="badge badge-danger">Critique </span>
-                                                        </a>
-
-                                                        <div class="dropdown-divider"></div> -->
-                                                        <!-- <a class="dropdown-item" href="javascript:void(0)">
-                                                            <i class="fa fa-fw fa-pencil mr-5"></i>Edit Profile
-                                                        </a> -->
-                                                    <!-- </div>
+                        <div class="block-content">
+                            <div class="row justify-content-center py-20">
+                                <div class="col-xl-6">
+                                    <!-- jQuery Validation (.js-validation-bootstrap class is initialized in js/pages/be_forms_validation.js) -->
+                                    <!-- For more examples you can check out https://github.com/jzaefferer/jquery-validation -->
+                                    <form class="js-validation-bootstrap" action="Prj_modifier.php" method="post">
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-username">Identifiant du projet <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="val-username" name="id" value="<?php if(isset($id)) { echo $id; } ?>" placeholder="Enter a username..">
                                             </div>
-                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                                <i class="si si-refresh"></i>
-                                            </button>
-                                            <button type="button" class="btn-block-option">
-                                                <i class="si si-wrench"></i>
-                                            </button>
                                         </div>
-                                    </div> -->
-                                <!-- <div class="block-content block-content-full"> -->
-                                <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/be_tables_datatables.js -->
-                                <!-- <table class="table table-bordered table-striped table-vcenter" id="example1">
-                                    <thead>
-                                        <tr>
-                                            <th>action</th>
-                                            <th>id_projet</th>
-                                            <th>numéro de dossier</th>
-                                           <th>commune</th>
-                                            <th>province</th>
-                                            <th>maitre_ouvrage</th> -->
-                                            <!-- <th>intitule_projet</th>
-                                            <th>la durée en jour</th>
-                                            <th>Etat du dossier </th> -->
-                                            <!-- <th class="text-center" style="width: 15%;">Profile</th> 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-username">Numéro du dossier <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="val-username" name="num_doss" value="<?php if(isset($numdoss)) { echo $numdoss; } ?>" placeholder="Enter a username..">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-username">Date d'arrivée à l'ABHT <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="val-username" name="date_arr_abht" value="<?php if(isset($date_arr_abht)) { echo $date_arr_abht; } ?>" placeholder="Enter a username..">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-username">Date d'arrivée au BET <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="val-username" name="date_arr_bet" value="<?php if(isset($date_arr_bet)) { echo $date_arr_bet; } ?>" placeholder="Enter a username..">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-select2">Commune <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <select class="js-select2 form-control" id="val-select2" name="commune" style="width: 100%;" data-placeholder="Choose one..">
+                                                    <option value="<?php if(isset($commune)) {echo $commune; } ?>" ></option><!-- Required for data-placeholder attribute to work with Select2 plugin -->
+                                                    <?php
+                                                        $ss = new Commune_Service();
+                                                        $tc = $ss->findAll();
+                                                        // if(isset($type_projet)) { 
+                                                        //     echo "<option value='".$type_projet."'>.$type_projet.</option>"; 
+                                                        // }
+                                                        // Parcourir les lignes de résultat
+                                                        foreach($tc as $row) {
+                                                            if ($commune == $row[0]){
+                                                                echo "<option value=".$row["id"]." selected>".$row["Commune"]."</option>" ;
+                                                            }else{
+                                                                echo "<option value=".$row["id"]." >".$row["Commune"]."</option>" ;
+                                                            }
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> --> 
-                        <!-- END Row #3 -->
-                        
-                    <!-- </div> -->
 
-                    <div class="row invisible" data-toggle="appear">
-                        <!-- Row #3 -->
-                        <div class="col-md-12">
-                            <div class="block block-rounded block-bordered">
-                                <div class="block-header block-header-default border-b">
-                                        <h3 class="block-title">Projet d'investissement</h3>
-                                        <div class="block-options">
-                                            
-                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                                <i class="si si-refresh"></i>
-                                            </button>
-                                            <button type="button" class="btn-block-option">
-                                                <i class="si si-wrench"></i>
-                                            </button>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-email">Maitre d'ouvrage<span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="val-email" name="maitre_ouvrage" placeholder="Your valid email.." value="<?php if(isset($maitre_ouv)) { echo $maitre_ouv; } ?>">
+                                            </div>
                                         </div>
-                                    </div>
-                                <div class="block-content block-content-full">
-                                <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/be_tables_datatables.js -->
-                                <table class="table table-bordered table-striped table-vcenter" id="tab">
-                                    <thead style="font-size: 10px; color:black">
-                                        <tr>
-                                            <th width="15%">id_projet</th>
-                                            <th width="15%">numéro de dossier</th>
-                                            <!-- <th>commune</th>
-                                            <th>province</th>
-                                            <th>maitre_ouvrage</th> -->
-                                            <th width="15%">intitule_projet</th>
-                                            <th width="15%">la durée en jour</th>
-                                            <th width="15%">Etat du dossier </th>
-                                            <th width="15%">Action</th>
-                                            <!-- <th class="text-center" style="width: 15%;">Profile</th> -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-email">Intitulée de projet<span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="val-email" name="intitule_prj" placeholder="Your valid email.." value="<?php if(isset($intitutle_pr)) { echo $intitutle_pr; } ?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-email">Architecte<span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="val-email" name="architecte" placeholder="Your valid email.." value="<?php if(isset($architecte)) { echo $architecte; } ?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-email">Titre foncier<span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="val-email" name="titre_foncier" placeholder="Your valid email.." value="<?php if(isset($titre_foncier)) { echo $titre_foncier; } ?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-email">Superficie<span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="val-email" name="superficie" placeholder="Your valid email.." value="<?php if(isset($supf)) { echo $supf; } ?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-select2">Province <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <select class="js-select2 form-control" id="val-select2" name="province" style="width: 100%;" data-placeholder="Choose one..">
+                                                <option></option>
+                                                    <?php
+                                                        $ss = new Province_Service();
+                                                        $tc = $ss->findAll();
+                                                        foreach($tc as $row) {
+                                                            if ($province==$row[0]){
+                                                                echo "<option value=".$row[0]." selected>".$row["province"]."</option>" ;
+                                                            }else{
+                                                                echo "<option value=".$row[0].">".$row["province"]."</option>" ;
+                                                            }
+                                                            
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-select2">Type de projet <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <select class="js-select2 form-control" id="val-select2" name="type_projet" style="width: 100%;" data-placeholder="Choose one..">
+                                                    
+                                                    <?php
+                                                        $ss = new Type_projet_Service();
+                                                        $tc = $ss->findAll();
+                                                        // if(isset($type_projet)) { 
+                                                        //     echo "<option value='".$type_projet."'>.$type_projet.</option>"; 
+                                                        // }
+                                                        // Parcourir les lignes de résultat
+                                                        foreach($tc as $row) {
+                                                            if ($type_projet== $row[0]){
+                                                                echo "<option value=".$row[0]." selected>".$row["type_projet"]."</option>" ;
+                                                            }else{
+                                                                echo "<option value=".$row[0].">".$row["type_projet"]."</option>" ;
+                                                            }
+                                                            
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="val-select2">Etat du dossier <span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <select class="form-control" id="val-select2" name="etat_dossier" style="width: 100%;" data-placeholder="Choose one..">
+                                                    
+                                                    <?php
+                                                        $ss = new Etat_Service();
+                                                        $tc = $ss->findAll();
+                                                        // if(isset($type_projet)) { 
+                                                        //     echo "<option value='".$type_projet."'>.$type_projet.</option>"; 
+                                                        // }
+                                                        // Parcourir les lignes de résultat
+                                                        foreach($tc as $row) {
+                                                            if($etat_dossier== $row[0]){
+                                                                echo "<option value=".$row[0]." selected>".$row["etatdossier"]."</option>" ;
+                                                            }else{
+                                                                echo "<option value=".$row[0].">".$row["etatdossier"]."</option>" ;
+                                                            }
+                                                            
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" style="display:none">
+                                            <label class="col-lg-4 col-form-label" for="geom">Géometrie<span class="text-danger">*</span></label>
+                                            <div class="col-lg-8">
+                                                <textarea type="text"  class="form-control" id="geom" name="geometrie" rows="6" disabled><?php if(isset($geom)) { echo $geom; } ?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-8 ml-auto">
+                                                <button type="modifier" name="modifier" class="btn btn-alt-primary">Modifier</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
+
                         </div>
-                        </div>
-       
-                        
                     </div>
+                    <!-- Bootstrap Forms Validation -->
+
                 </div>
                 <!-- END Page Content -->
             </main>
@@ -972,17 +900,52 @@ require_once '../Couche_Service/Service_Projet.php';
             <!-- Footer -->
             <footer id="page-footer" class="opacity-0">
                 <div class="content py-20 font-size-xs clearfix">
-                    <!-- <div class="float-right">
+                    <div class="float-right">
                         Crafted with <i class="fa fa-heart text-pulse"></i> by <a class="font-w600" href="http://goo.gl/vNS3I" target="_blank">pixelcave</a>
-                    </div> -->
+                    </div>
                     <div class="float-left">
-                        <a class="font-w600" href="https://goo.gl/po9Usv" target="_blank">oumaima sabi</a> &copy; <span class="js-year-copy">2022</span>
+                        <a class="font-w600" href="https://goo.gl/po9Usv" target="_blank">Codebase 1.3</a> &copy; <span class="js-year-copy">2017</span>
                     </div>
                 </div>
             </footer>
             <!-- END Footer -->
         </div>
         <!-- END Page Container -->
+
+        <!-- Terms Modal -->
+        <div class="modal fade" id="modal-terms" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-popin">
+                <div class="modal-content">
+                    <div class="block block-themed block-transparent mb-0">
+                        <div class="block-header bg-primary-dark">
+                            <h3 class="block-title">Terms &amp; Conditions</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                    <i class="si si-close"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="block-content">
+                            <h4 class="mb-10">1. General</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices, justo vel imperdiet gravida, urna ligula hendrerit nibh, ac cursus nibh sapien in purus. Mauris tincidunt tincidunt turpis in porta. Integer fermentum tincidunt auctor.</p>
+                            <h4 class="mb-10">2. Account</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices, justo vel imperdiet gravida, urna ligula hendrerit nibh, ac cursus nibh sapien in purus. Mauris tincidunt tincidunt turpis in porta. Integer fermentum tincidunt auctor.</p>
+                            <h4 class="mb-10">3. Service</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices, justo vel imperdiet gravida, urna ligula hendrerit nibh, ac cursus nibh sapien in purus. Mauris tincidunt tincidunt turpis in porta. Integer fermentum tincidunt auctor.</p>
+                            <h4 class="mb-10">4. Payments</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices, justo vel imperdiet gravida, urna ligula hendrerit nibh, ac cursus nibh sapien in purus. Mauris tincidunt tincidunt turpis in porta. Integer fermentum tincidunt auctor.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-alt-primary" data-dismiss="modal">
+                            <i class="fa fa-check"></i> Ok
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Terms Modal -->
 
         <!-- Codebase Core JS -->
         <script src="assets/js/core/jquery.min.js"></script>
@@ -994,409 +957,19 @@ require_once '../Couche_Service/Service_Projet.php';
         <script src="assets/js/core/jquery.countTo.min.js"></script>
         <script src="assets/js/core/js.cookie.min.js"></script>
         <script src="assets/js/codebase.js"></script>
-        
-        
 
         <!-- Page JS Plugins -->
-        <script src="assets/js/plugins/chartjs/Chart.bundle.min.js"></script>
+        <script src="assets/js/plugins/select2/select2.full.min.js"></script>
+        <script src="assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+        <script src="assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
 
         <!-- Page JS Code -->
-        <script src="assets/js/pages/be_pages_dashboard.js"></script>
-
-         <!-- Page JS Plugins -->
-         <script src="assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
-        <script src="assets/js/plugins/datatables/dataTables.bootstrap4.min.js"></script>
-
-        <!-- Page JS Code -->
-        <script src="assets/js/pages/be_tables_datatables.js"></script>
-
-        <!-- leaflet  -->
-        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
-
-
-        <!-- leaflet parametrage -->
-        <script type="text/javascript" src="assets/js/map/measure.js"></script>
-        <script src='assets/js/map/Leaflet.fullscreen.min.js'></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js'></script>
-        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-        <script type="text/javascript" src="assets/js/map/leaflet.browser.print.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
         <script>
-            $(document).ready( function() {
-                
-                $.ajax({
-                    url:"http://localhost/projectpfe/data/data_chart_etat.php",
-                    type:"GET",
-                    data:'data',
-                    // dataType:"json",
-                    // dataSrc: 'data',
-                    success:function(data){
-                        console.log(data);
-                        var d =JSON.parse(data);
-                        var d1= Object.keys(d.data).length;
-                        // console.log(d1);
-                        var nb= Object.keys(d.data[0])[0]; // return name of index1
-                        // console.log(d.data[2].nombre);
-
-                        var n = [];
-                                var e = [];
-                        var c=[];
-                        for(var count = 0; count <d1; count++)
-                                {
-                                    console.log(n.push(d.data[count].nombre));
-                                    e.push(d.data[count].etat);
-                        c.push(d.data[count].color);
-                                }
-                        // console.log(n);
-                        
-                        var ctxt=$("#pieChart").get(0).getContext('2d');
-                        var data2={
-                        labels : e,
-                        datasets : [
-                            {
-                            label : "etat",
-                            data: n,
-                            backgroundColor:c,
-                            }
-
-                        ]
-                        }
-
-                        var chart1= new Chart ( ctxt , {
-                        type:"doughnut",
-                        data: data2
-                        }
-                        );
-                    },
-                });
-
-                $.ajax({
-                    url:"http://localhost/projectpfe/data/data_chart_number.php",
-                    type:"GET",
-                    data:'data',
-                    // dataType:"json",
-                    // dataSrc: 'data',
-                    success:function(data){
-                        console.log(data);
-                        var d =JSON.parse(data);
-                        var d1= Object.keys(d.data).length;
-                        // console.log(d1);
-                        var nb= Object.keys(d.data[0])[0]; // return name of index1
-                        // console.log(d.data[2].nombre);
-
-                        var n = [];
-                        var e = [];
-                        var c=[];
-                        for(var count = 0; count <d1; count++)
-                                {
-                                    console.log(n.push(d.data[count].nombre));
-                                    e.push(d.data[count].description);
-                                    c.push(d.data[count].color);
-                                }
-                        // console.log(n);
-                        
-                        var ctxt=$("#piechart2").get(0).getContext('2d');
-                        var data3={
-                        labels : e,
-                        datasets : [
-                            {
-                            label : "durée",
-                            data: n,
-                            backgroundColor:c,
-                            }
-
-                        ]
-                        }
-
-                        var chart1= new Chart ( ctxt , {
-                        type:"doughnut",
-                        data: data3
-                        }
-                        );
-                    },
-                });
-
-                $.ajax({
-                    url:"http://localhost/projectpfe/data/data_chart_mois.php",
-                    type:"GET",
-                        data:'data',
-                        // dataType:"json",
-                        // dataSrc: 'data',
-                            
-                        success:function(data){
-                            console.log(data);
-                            var d =JSON.parse(data);
-                            var d1= Object.keys(d.data).length;
-                            // console.log(d1);
-                            var nb= Object.keys(d.data[0])[0]; // return name of index1
-                            // console.log(d.data[2].nombre);
-
-                            var n = [];
-                            var p = [];
-                            var c=[];
-                            var e=[];
-                            var color=[];
-                            var ma=[];
-                            for(var count = 0; count <d1; count++){
-                                n.push(d.data[count].nombre);
-                                p.push(d.data[count].mois);
-                                c.push(d.data[count].annee);
-                                e.push(d.data[count].etat_dossier);
-                                color.push(d.data[count].color);
-                                ma.push(d.data[count].mois_annee);
-                                }
-                            // console.log(n);
-                        
-                            var ctxt=$("#barchart").get(0).getContext('2d');
-                            var data2={
-                                labels :ma,
-                                datasets : [
-                                {
-                                    data: n,
-                                    backgroundColor:color,
-                                },
-                                ]
-                            }
-                            
-
-                        var chart1= new Chart ( ctxt , {
-                            type:"bar",
-                            data: data2,
-                            options: {
-                            legend: { display: false },
-                            title: {
-                                display: true,
-                                // text: 'Nombre des projets chaque année selon leur etat'
-                            }
-                            }
-                        });
-                    },
-                });
-
-                
-
+            jQuery(function () {
+                // Init page helpers (Select2 plugin)
+                Codebase.helpers('select2');
             });
-            var ajax1={url: "http://localhost/projectpfe/data/data_dure_prj.php",type: 'POST',dataSrc: 'data'};
-            var ajax2 ={url: "http://localhost/projectpfe/data/data_dureemoin10.php",type: 'POST',dataSrc: 'data'};
-            var ajax3={url: "http://localhost/projectpfe/data/data_chartentre10et30.php",type: 'POST',dataSrc: 'data'};
-            var ajax4={url: "http://localhost/projectpfe/data/data_dureeplus30.php",type: 'POST',dataSrc: 'data'};
-            var column1=[{data:'id',
-                            render: function (data) {
-                                    return '<a href="http://localhost/projectpfe/vue2/details.php?id='+ data+'"><i class="si si-eye fa-2x"/></a>'
-                                },
-                            orderable: false},
-                            {data:'id'},
-                            { data: 'numero_dossier' },
-                            {data:'intitule_projet'},
-                            {data:'duree'},
-                            {data:'etat_dossier'}
-                        ];
-            var column2=[{
-                            data: 'action',
-                            className: "dt-center editor-edit",
-                            render: function (data) {
-                                    return '<span class="badge badge-success">'+ data+'</span>'},
-                            orderable: false,   
-                            },
-                            { data:'id'},
-                            { data: 'numero_dossier' },
-                            {data:'intitule_projet'},
-                            {data:'duree'},
-                            {data:'etat_dossier'},  
-                        ];
-            var column3= [{
-                            data: 'action',
-                            className: "dt-center editor-edit",
-                            render: function (data) {
-                                    return '<span class="badge badge-warning">'+ data+'</span>'},
-                            orderable: false,   
-                            },
-                            { data:'id'},
-                            { data: 'numero_dossier' },
-                            {data:'intitule_projet'},
-                            {data:'duree'},
-                            {data:'etat_dossier'},
-                            
-                        ];
-            var column4=[{
-                            data: 'action',
-                            className: "dt-center editor-edit",
-                            render: function (data) {
-                                    return '<span class="badge badge-danger">'+ data+'</span>'},
-                            orderable: false,   
-                            },
-                            { data:'id'},
-                            { data: 'numero_dossier' },
-                            {data:'intitule_projet'},
-                            {data:'duree'},
-                            {data:'etat_dossier'},
-                            
-                        ];
-                        var column5=[
-                            { data:'id',className:"data1"},
-                            { data: 'numero_dossier',className:"data2" },
-                            {data:'intitule_projet',className:"data3"},
-                            {data:'duree',
-                            render: function (data) {
-                                if ( data <= 10 ) {
-                                    return '<span class="badge badge-success">'+ data+' jours</span>';
-                                }else if(data > 10 && data <= 30 )
-                                {
-                                    return '<span class="badge badge-warning">'+ data+' jours </span>';
-                                }
-                                else{
-                                    return '<span class="badge badge-danger">'+ data+' jours </span>' 
-                                }
-                            },
-                            orderable: false },
-                            {data:'etat_dossier'},
-                            {data:'id',
-                            render: function (data) {
-                                    return '<a id="edit" href="Prj_modifier.php?id='+data+'" type="button" class="btn btn-sm btn-circle btn-alt-warning mr-5 mb-5"><i class="fa fa-pencil"></i></a><a href="supprimerprojet.php?id='+data+'" onclick = "fun()" type="button" class="btn btn-sm btn-circle btn-alt-danger mr-5 mb-5"><i class="fa fa-times"></i></a><a class="btn btn-sm btn-circle btn-alt-info mr-5 mb-5" href="http://localhost/projectpfe/vue2/details.php?id='+ data+'"><i class="fa fa-info"></i></a>';
-                                },
-                            orderable: false},  
-                        ];
-
-            $('#example2').DataTable({
-                "createdRow": function( row, data ) {
-                        if ( data['duree'] > 30 ) {        
-                            $(row).addClass('table-danger');
-                        }
-                        // else{
-                        //     if ( data['duree'] < 10 )
-                        //     {        
-                        //         $(row).addClass('table-info');
-                        //     }
-                        // }
-                        
-                    },
-                    "paging"   : true,
-                    "lengthChange": true,
-                    "searching "  : true,
-                    "ordering"    : true,
-                    "info  "      : true,
-                    "autoWidth"   : true,
-                    "scrollX": true,
-                    "sScrollX": '100%',
-                    "pageLength": 5,
-                        ajax: ajax1 ,
-                        columns:column1,
-                        select: true,
-                        retrieve: true,
-            });
-
-            $('#tab').DataTable({
-                "paging"   : true,
-                "lengthChange": true,
-                "searching "  : true,
-                "ordering"    : true,
-                "info  "      : true,
-                "autoWidth"   : true,
-                "scrollX": true,
-                "sScrollX": '100%',
-                "pageLength": 5,
-                ajax: ajax1,
-                columns:column5,
-                columnDefs: [
-               { width: 200, targets: 0 }
-               ],
-               fixedColumns: true
-            });
-
-            function showDataSet1(){
-                $('#example1').DataTable({
-                    "paging"   : true,
-                    "lengthChange": true,
-                    "searching "  : true,
-                    "ordering"    : true,
-                    "info  "      : true,
-                    "autoWidth"   : true,
-                    "scrollX": true,
-                    "sScrollX": '100%',
-                    "pageLength": 5,
-                    ajax: ajax3,
-                    columns:column3,
-                });
-            };
-
-            function showDataSet2(){
-                    $('#example1').DataTable({
-                    "paging"   : true,
-                    "lengthChange": true,
-                    "searching "  : true,
-                    "ordering"    : true,
-                    "info  "      : true,
-                    "autoWidth"   : true,
-                    "scrollX": true,
-                    "sScrollX": '100%',
-                    "pageLength": 5,
-                    ajax: ajax3,
-                    columns:column3,
-                });
-            };
-
-            function showDataSet3(){
-                $('#example1').DataTable({
-                    "paging"   : true,
-                    "lengthChange": true,
-                    "searching "  : true,
-                    "ordering"    : true,
-                    "info  "      : true,
-                    "autoWidth"   : true,
-                    "scrollX": true,
-                    "sScrollX": '100%',
-                    "pageLength": 5,
-                    ajax: ajax4,
-                    columns:column4,
-                });
-            };
-
-            // $(document).on('click', '#edit', function() {
-            
-            // $(this).parent().siblings('td.data1').each(function() {
-            //     var content = $(this).html();
-            //     $(this).html('<input  width=10 value="' + content + '" />');
-            // });
-            // $(this).parent().siblings('td.data2').each(function() {
-            //     var content = $(this).html();
-            //     $(this).html('<input  width=10 value="' + content + '" />');
-            // });
-            // $(this).parent().siblings('td.data3').each(function() {
-            //     var content = $(this).html();
-            //     $(this).html('<input  width=10 value="' + content + '" />');
-            // });
-            
-            // $(this).siblings('#save').show();
-            // $(this).siblings('#edit').hide();
-            // $(this).hide();
-            // });
-
-            // $(document).on('click', '#save', function() {
-            
-            // $('input').each(function() {
-            //     var content = $(this).val();
-            //     $(this).html(content);
-            //     $(this).contents().unwrap();
-            // });
-            // $(this).siblings('#edit').show();
-            // $(this).hide();
-            
-            // });
-            
-            
-            // if (=='supprimer'){
-            //     Notiflix.Notify.init({
-            //     width: "280px",
-            //     position: "right-bottom",
-            //     distance: "10px",
-            //     });
-
-            //     Notiflix.Notify.success("Ce projet est supprimer");
-                
-            // };
         </script>
-       
+        <script src="assets/js/pages/be_forms_validation.js"></script>
     </body>
 </html>

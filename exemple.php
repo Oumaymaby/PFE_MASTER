@@ -37,7 +37,18 @@ $str5=str_replace('oum',', ', $str4);
 $str6=str_replace(']]]}}','', $str5);
 // echo $str6;
 $str7=str_replace('[','', $str6);
-echo $str7;
+
+$pieces = explode(",", $str7);
+
+$p=array($pieces[0]);
+
+// echo $p[0];
+
+$p1=array_merge($pieces, $p);
+$p2=implode(",", $p1);
+echo $p2;
+
+
 
 
 

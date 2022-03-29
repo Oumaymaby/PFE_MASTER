@@ -55,11 +55,11 @@ class Projet_Service{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('select inv.gid,inv.numero_dossier,inv.date_arrivee_abht,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,inv.architecte,inv.titre_foncier,inv.superficie,v.type_projet,inv.payement,ST_AsGeoJSON(inv.geom) as geojson from prj_inv.projets_investissement inv , prj_inv.ls_prj_type v where v.id=inv.type_projet and inv.gid=?');
+		$st =$this->db->prepare('select inv.gid,inv.numero_dossier,inv.date_arrivee_abht,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,inv.architecte,inv.titre_foncier,inv.superficie,inv.type_projet,inv.etatdossier,inv.geom  from prj_inv.projets_investissement inv where inv.gid=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
-				return new ProjetInv($row->gid,$row->numero_dossier,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->payement,$row->geojson);	
+				return new ProjetInv($row->gid,$row->numero_dossier,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->etatdossier,$row->geom);	
 			}
 			elseif(empty($row)){
 				return new ProjetInv('0','0','0','0','0','0','0','0','0','0','0','0','0','0');
@@ -77,8 +77,9 @@ class Projet_Service{
 	
  	function update($prj)
  	{
- 	 	$st =$this->db->prepare('update prj_inv.projets_investissement gid=? , numero_dossier=? where gid=?');
-	 	if ($st->execute(array($prj->getid_pr(),$prj->getnum_oss())))
+		
+ 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set numero_dossier=?,date_arrivee_abht=?,date_arrivee_bet=?,commune=?,province=?,maitre_ouvrage=?,intitule_projet=?,architecte=?,titre_foncier=?,superficie=?,type_projet=?,etatdossier=?,geom=? where gid=?');
+	 	if ($st->execute(array($prj->getnum_oss(),$prj->getdate_arr_abht(),$prj->getdate_arr_bet(),$prj->getcom(),$prj->getprovince(),$prj->getmaitre_ouv(),$prj->getintitule_pr(),$prj->getarchitecte(),$prj->gettitre_foncier(),$prj->getsupf(),$prj->gettype_projet(),$prj->getetat_dossier(),$prj->getgeom(),$prj->getid_pr())))
 		{
 	 	 	return true;
 	 	}
