@@ -61,48 +61,7 @@ require_once '../Couche_Service/Service_stah.php';
         <!-- END Stylesheets -->
     </head>
     <body>
-        <!-- Page Container -->
-        <!--
-            Available classes for #page-container:
-
-        GENERIC
-
-            'enable-cookies'                            Remembers active color theme between pages (when set through color theme helper Codebase() -> uiHandleTheme())
-
-        SIDEBAR & SIDE OVERLAY
-
-            'sidebar-r'                                 Right Sidebar and left Side Overlay (default is left Sidebar and right Side Overlay)
-            'sidebar-mini'                              Mini hoverable Sidebar (screen width > 991px)
-            'sidebar-o'                                 Visible Sidebar by default (screen width > 991px)
-            'sidebar-o-xs'                              Visible Sidebar by default (screen width < 992px)
-            'sidebar-inverse'                           Dark themed sidebar
-
-            'side-overlay-hover'                        Hoverable Side Overlay (screen width > 991px)
-            'side-overlay-o'                            Visible Side Overlay by default
-
-            'side-scroll'                               Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (screen width > 991px)
-
-        HEADER
-
-            ''                                          Static Header if no class is added
-            'page-header-fixed'                         Fixed Header
-
-        HEADER STYLE
-
-            ''                                          Classic Header style if no class is added
-            'page-header-modern'                        Modern Header style
-            'page-header-inverse'                       Dark themed Header (works only with classic Header style)
-            'page-header-glass'                         Light themed Header with transparency by default
-                                                        (absolute position, perfect for light images underneath - solid light background on scroll if the Header is also set as fixed)
-            'page-header-glass page-header-inverse'     Dark themed Header with transparency by default
-                                                        (absolute position, perfect for dark images underneath - solid dark background on scroll if the Header is also set as fixed)
-
-        MAIN CONTENT LAYOUT
-
-            ''                                          Full width Main Content if no class is added
-            'main-content-boxed'                        Full width Main Content with a specific maximum width (screen width > 1200px)
-            'main-content-narrow'                       Full width Main Content with a percentage width (screen width > 1200px)
-        -->
+       
         <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
             <!-- Side Overlay-->
             <aside id="side-overlay">
@@ -486,25 +445,15 @@ require_once '../Couche_Service/Service_stah.php';
                         <!-- Side Navigation -->
                         <div class="content-side content-side-full">
                             <ul class="nav-main">
+                                
                                 <li>
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
-                                <li class="open">
-                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-cup"></i><span class="sidebar-mini-hide">Dashboards</span></a>
-                                    <ul>
-                                        <li>
-                                            <a href="be_pages_dashboard.html">Dashboard 1</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard2.html">Dashboard 2</a>
-                                        </li>
-                                        <li>
-                                            <a class="active" href="be_pages_dashboard3.html">Dashboard 3</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard4.html">Dashboard 4</a>
-                                        </li>
-                                    </ul>
+                                <li>
+                                    <a href="Prj_ajouter.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Nouveau Projet</span></a>
+                                </li>
+                                <li>
+                                    <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -794,7 +743,7 @@ require_once '../Couche_Service/Service_stah.php';
                             <!-- END Intro Category -->
                         </div>
                     </div>
-                    <div class="block">
+                    <!-- <div class="block">
                         <div class="block-header block-header-default">
                             <h3 class="block-title"><i class="fa fa-info "></i>Coordonnée spatiale du projet d'investissement</h3>
                             <div class="block-options">
@@ -807,7 +756,7 @@ require_once '../Couche_Service/Service_stah.php';
                         <div class="block-content">
                             <div id='map' style="height: 500px;"></div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="block">
                         <div class="block-header block-header-default" style='background-color:lightgray'>
                             <h3 class="block-title"  ><i class="si si-notebook "></i> Volet de l'ABHT</h3>

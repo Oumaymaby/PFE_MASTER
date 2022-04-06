@@ -64,7 +64,7 @@ require_once '../Couche_Service/Service_Projet.php';
         <!-- END Stylesheets -->
     </head>
     <body>
-        <div id="page-container" class="sidebar-o sidebar-inverse side-scroll page-header-fixed page-header-modern main-content-boxed">
+        <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
             <!-- Side Overlay-->
             <aside id="side-overlay">
                 <!-- Side Overlay Scroll Container -->
@@ -437,22 +437,11 @@ require_once '../Couche_Service/Service_Projet.php';
                                 <li>
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
-                                <li class="open">
-                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-cup"></i><span class="sidebar-mini-hide">Dashboards</span></a>
-                                    <ul>
-                                        <li>
-                                            <a href="be_pages_dashboard.html">Dashboard 1</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard2.html">Dashboard 2</a>
-                                        </li>
-                                        <li>
-                                            <a class="active" href="be_pages_dashboard3.html">Dashboard 3</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard4.html">Dashboard 4</a>
-                                        </li>
-                                    </ul>
+                                <li>
+                                    <a href="Prj_ajouter.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Nouveau Projet</span></a>
+                                </li>
+                                <li>
+                                    <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -768,9 +757,9 @@ require_once '../Couche_Service/Service_Projet.php';
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
-                                    <div class="pull-all pt-50">
+                                    <div class="pull-all pt-50"   >
                                         <!-- Lines Chart Container -->
-                                        <canvas class="" id="piechart2" ><canvas>
+                                        <canvas class="" id="piechart2" width="200" height="200"><canvas>
                                     </div>
                                 </div>
                                 <div class="block-content bg-white">
@@ -823,6 +812,54 @@ require_once '../Couche_Service/Service_Projet.php';
                                         ?>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="block block-rounded block-bordered">
+                                <div class="block-header block-header-default border-b">
+                                    <h3 class="block-title">
+                                        Charte<small> état d'avancement des nombres de tout les projets</small>
+                                    </h3>
+                                    <div class="block-options">
+                                        <!-- <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button> -->
+                                        <button type="button" class="btn-block-option">
+                                            <i class="si si-wrench"></i>
+                                        </button> 
+                                    </div>
+                                </div>
+                                <div class="block-content block-content-full">
+                                    <div class="pull-all pt-50">
+                                        <!-- Lines Chart Container -->
+                                        <canvas id="bar2" ></canvas>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="block block-rounded block-bordered">
+                                <div class="block-header block-header-default border-b">
+                                    <h3 class="block-title">
+                                        Charte<small> etat d'avancement des nombres de projets dans cette semaine</small>
+                                    </h3>
+                                    <div class="block-options">
+                                        <!-- <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button> -->
+                                        <button type="button" class="btn-block-option">
+                                            <i class="si si-wrench"></i>
+                                        </button> 
+                                    </div>
+                                </div>
+                                <div class="block-content block-content-full">
+                                    <div class="pull-all pt-50">
+                                        <!-- Lines Chart Container -->
+                                        <canvas id="bar1" ></canvas>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                         
@@ -998,7 +1035,7 @@ require_once '../Couche_Service/Service_Projet.php';
         
 
         <!-- Page JS Plugins -->
-        <script src="assets/js/plugins/chartjs/Chart.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <!-- Page JS Code -->
         <script src="assets/js/pages/be_pages_dashboard.js"></script>
@@ -1118,62 +1155,62 @@ require_once '../Couche_Service/Service_Projet.php';
                     },
                 });
 
-                $.ajax({
-                    url:"http://localhost/projectpfe/data/data_chart_mois.php",
-                    type:"GET",
-                        data:'data',
-                        // dataType:"json",
-                        // dataSrc: 'data',
+                // $.ajax({
+                //     url:"http://localhost/projectpfe/data/data_chart_mois.php",
+                //     type:"GET",
+                //         data:'data',
+                //         // dataType:"json",
+                //         // dataSrc: 'data',
                             
-                        success:function(data){
-                            console.log(data);
-                            var d =JSON.parse(data);
-                            var d1= Object.keys(d.data).length;
-                            // console.log(d1);
-                            var nb= Object.keys(d.data[0])[0]; // return name of index1
-                            // console.log(d.data[2].nombre);
+                //         success:function(data){
+                //             console.log(data);
+                //             var d =JSON.parse(data);
+                //             var d1= Object.keys(d.data).length;
+                //             // console.log(d1);
+                //             var nb= Object.keys(d.data[0])[0]; // return name of index1
+                //             // console.log(d.data[2].nombre);
 
-                            var n = [];
-                            var p = [];
-                            var c=[];
-                            var e=[];
-                            var color=[];
-                            var ma=[];
-                            for(var count = 0; count <d1; count++){
-                                n.push(d.data[count].nombre);
-                                p.push(d.data[count].mois);
-                                c.push(d.data[count].annee);
-                                e.push(d.data[count].etat_dossier);
-                                color.push(d.data[count].color);
-                                ma.push(d.data[count].mois_annee);
-                                }
-                            // console.log(n);
+                //             var n = [];
+                //             var p = [];
+                //             var c=[];
+                //             var e=[];
+                //             var color=[];
+                //             var ma=[];
+                //             for(var count = 0; count <d1; count++){
+                //                 n.push(d.data[count].nombre);
+                //                 p.push(d.data[count].mois);
+                //                 c.push(d.data[count].annee);
+                //                 e.push(d.data[count].etat_dossier);
+                //                 color.push(d.data[count].color);
+                //                 ma.push(d.data[count].mois_annee);
+                //                 }
+                //             // console.log(n);
                         
-                            var ctxt=$("#barchart").get(0).getContext('2d');
-                            var data2={
-                                labels :ma,
-                                datasets : [
-                                {
-                                    data: n,
-                                    backgroundColor:color,
-                                },
-                                ]
-                            }
+                //             var ctxt=$("#barchart").get(0).getContext('2d');
+                //             var data2={
+                //                 labels :ma,
+                //                 datasets : [
+                //                 {
+                //                     data: n,
+                //                     backgroundColor:color,
+                //                 },
+                //                 ]
+                //             }
                             
 
-                        var chart1= new Chart ( ctxt , {
-                            type:"bar",
-                            data: data2,
-                            options: {
-                            legend: { display: false },
-                            title: {
-                                display: true,
-                                // text: 'Nombre des projets chaque année selon leur etat'
-                            }
-                            }
-                        });
-                    },
-                });
+                //         var chart1= new Chart ( ctxt , {
+                //             type:"bar",
+                //             data: data2,
+                //             options: {
+                //             legend: { display: false },
+                //             title: {
+                //                 display: true,
+                //                 // text: 'Nombre des projets chaque année selon leur etat'
+                //             }
+                //             }
+                //         });
+                //     },
+                // });
 
                 
 
@@ -1396,7 +1433,350 @@ require_once '../Couche_Service/Service_Projet.php';
             //     Notiflix.Notify.success("Ce projet est supprimer");
                 
             // };
+
+                // $.ajax({
+                //     url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
+                //     type:"GET",
+                //         data:'data',
+                //         // dataType:"json",
+                //         // dataSrc: 'data',
+                            
+                //         success:function(data){
+                //             var d =JSON.parse(data);
+                //             // console.log(d);
+                //             var d1= Object.keys(d.data).length;
+                //             // console.log(d1);
+                //             var nb= Object.keys(d.data[0])[0]; // return name of index1
+                            
+
+                //             var n1 = [];
+                //             var p1 = [];
+                //             var c1=[];
+                //             var e1=[];
+                //             for(var i = 0; i <d1; i++){ 
+                //                 n1.push(d.data[i].nombre);
+                //                 e1.push(d.data[i].jour);
+                //                 p1.push(d.data[i].mois);
+                //                 c1.push(d.data[i].annee);
+                //                 }
+                //             // console.log(n);
+                        
+                //             var canvas = document.getElementById("#bar1");
+                //             var ctx = canvas.getContext("2d");
+                //             console.log(ctx);
+                //             var data2={
+                //                 labels :e1,
+                //                 datasets : [
+                //                 {
+                //                     label : "durée",
+                //                     data: n1,
+                //                     backgroundColor:'#fff',
+                                    
+                //                 },
+                //                 ]
+                //             }
+                            
+
+                //             var chart1= new Chart ( ctx, {
+                //                 type:"bar",
+                //                 data: data2,
+                //                 options: {
+                //                     legend: { display: true },
+                //                     title: {
+                //                         display: true,
+                //                     // text: 'Nombre des projets chaque année selon leur etat'
+                //                     }
+                //                 }
+                //             });
+                //         },
+                // });
+
+                // $.ajax({
+                //     url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
+                //     type:"GET",
+                //     data:'data',
+
+                //     success:function(data){
+
+                //         var d =JSON.parse(data);
+                //         var d1= Object.keys(d.data).length;
+                //         var nb= Object.keys(d.data[0])[0];
+
+                //         var n1 = [];
+                //         var p1 = [];
+                //         var c1=[];
+                //         var e1=[];
+                //         var colo=[];
+                //         for(var i = 0; i <d1; i++){ 
+                //             n1.push(d.data[i].nombre);
+                //             e1.push(d.data[i].jour);
+                //             p1.push(d.data[i].mois);
+                //             c1.push(d.data[i].annee);
+                //             colo.push(d.data[i].color);
+                //         }
+
+                //         var canvas = document.getElementById("bar1");
+                //         var ctx = canvas.getContext("2d");
+
+                //         // Global Options:
+                //         Chart.defaults.global.defaultFontColor = "#2097e1";
+                //         Chart.defaults.global.defaultFontSize = 11;
+
+                //         // Data with datasets options
+                //         var data = {
+                //             labels:e1,
+                //             datasets: [
+                //                 {
+                //                     label: "Worksheets done by you",
+                //                     fill: true,
+                //                     backgroundColor:colo,
+                //                     data: n1,
+                //                 }
+                //             ]
+                //         };
+
+                //         var labelWrap = [
+                //             {
+                //                 beforeInit: function (chart) {
+                //                     chart.data.labels.forEach(function (e, i, a) {
+                //                         if (/\n/.test(e)) {
+                //                             a[i] = e.split(/\n/);
+                //                         }
+                //                     });
+                //                 }
+                //             }
+                //         ];
+
+                //         var chart1= new Chart ( ctx, {
+                //             type:"bar",
+                //             data: data,
+                //             options: {
+                //                 legend: { display: true },
+                //                 title: {
+                //                 display: true,
+                //                 text: 'Nombre des projets chaque année selon leur etat'
+                //                 },
+                //                 scales: {
+                //                     y: {
+                //                         beginAtZero: true
+                //                     }
+                //                 } 
+                //             },
+                //             plugins: labelWrap
+                            
+                //         });
+
+                        
+
+
+
+
+
+                //     }
+
+                // });
+
+            // $.ajax({
+            //     url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
+            //     type:"GET",
+            //     data:'data',
+
+            //     success:function(data){
+            //         var d =JSON.parse(data);
+            //         var d1= Object.keys(d.data).length;
+            //         var nb= Object.keys(d.data[0])[0];
+            //         var canvas = document.getElementById("bar1");
+            //         var ctx = canvas.getContext("2d");
+
+            //         // Global Options:
+            //         Chart.defaults.global.defaultFontColor = "#2097e1";
+            //         Chart.defaults.global.defaultFontSize = 11;
+            //         var n1 = [];
+            //         var e1=[];
+            //         var colo=[];
+            //         for(var i = 0; i <d1; i++){ 
+            //             n1.push(d.data[i].nombre);
+            //             e1.push(d.data[i].jour);;
+            //             colo.push(d.data[i].color);
+            //         }
+
+            //         // Data with datasets options
+            //         var data = {
+            //             labels: e1,
+            //             datasets: [
+            //                 {
+            //                     label: "Worksheets done by you",
+            //                     fill: true,
+            //                     backgroundColor: colo,
+            //                     data: n1
+            //                 },
+                            
+            //             ]
+            //         };
+            //         console.log(data);
+
+            //         // Notice how nested the beginAtZero is
+            //         var options = {
+            //             title: {
+            //                 display: true,
+            //                 text: "Worksheets completed this week",
+            //                 position: "bottom"
+            //             },
+                        
+            //         };
+
+            //         // added custom plugin to wrap label to new line when \n escape sequence appear
+            //         var labelWrap = [
+            //             {
+            //                 beforeInit: function (chart) {
+            //                     chart.data.labels.forEach(function (e, i, a) {
+            //                         if (/\n/.test(e)) {
+            //                             a[i] = e.split(/\n/);
+            //                         }
+            //                     });
+            //                 }
+            //             }
+            //         ];
+
+            //         // Chart declaration:
+            //         var myBarChart = new Chart(ctx, {
+            //             type: "bar",
+            //             data: data,
+            //             options: options,
+            //             plugins: labelWrap
+            //         });
+
+            //     }
+            // });
+
+        $.ajax({
+            url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
+            type:"GET",
+             data:'data',
+                // dataType:"json",
+                // dataSrc: 'data',
+			
+            success:function(data){
+                console.log(data);
+                var d =JSON.parse(data);
+                var d1= Object.keys(d.data).length;
+                // console.log(d1);
+                var nb= Object.keys(d.data[0])[0]; // return name of index1
+                // console.log(d.data[2].nombre);
+
+                var n = [];
+                var p = [];
+                var color=[];
+                
+                for(var count = 0; count <d1; count++){
+                    n.push(d.data[count].nombre);
+                    if(d.data[count].jour==="0"){
+                        p.push('Lundi');
+                    }
+                    if(d.data[count].jour==="1"){
+                        p.push('Mardi');
+                    }
+                    if(d.data[count].jour==="2"){
+                        p.push('Mercredi');
+                    }
+                    if(d.data[count].jour==="3"){
+                        p.push('Jeudi');
+                    }
+                    if(d.data[count].jour==="4"){
+                        p.push('Vendredi');
+                    }
+                    if(d.data[count].jour==="5"){
+                        p.push('Samedi');
+                    }
+                    if(d.data[count].jour==="6"){
+                        p.push('Dimanche');
+                    }
+                    color.push(d.data[count].color);
+                }
+                // console.log(n);
+        
+                var ctxt=$("#bar1").get(0).getContext('2d');
+                var data2={
+                    labels :p,
+                    datasets : [
+                    {
+                        data: n,
+                        backgroundColor:color,
+                        tension: 0.5
+                    },
+                    ]
+                }
+            
+
+                var chart1= new Chart ( ctxt , {
+                    type:"line",
+                    data: data2,
+                    options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Nombre des projets chaque année selon leur etat'
+                    }
+                    }
+                });
+            },
+        });
+
+        $.ajax({
+            url:"http://localhost/projectpfe/data/data_line_mois_anne_new.php",
+            type:"GET",
+             data:'data',
+                // dataType:"json",
+                // dataSrc: 'data',
+			
+            success:function(data){
+                console.log(data);
+                var d =JSON.parse(data);
+                var d1= Object.keys(d.data).length;
+                // console.log(d1);
+                var nb= Object.keys(d.data[0])[0]; // return name of index1
+                // console.log(d.data[2].nombre);
+
+                var n = [];
+                var p = [];
+                var c= [];
+                var color=[];
+                var date=[];
+                
+                for(var count = 0; count <d1; count++){
+                    n.push(d.data[count].nombre);
+                    p.push(d.data[count].mois);
+                    c.push(d.data[count].annee);
+                    color.push(d.data[count].color);
+                    date.push(d.data[count].date);
+                }
+                // console.log(n);
+                var ctxt=$("#bar2").get(0).getContext('2d');
+                var data2={
+                    labels :date,
+                    datasets : [
+                    {
+                        data: n,
+                        backgroundColor:color,
+                        tension: 0.5
+                    },
+                    ]
+                }
+            
+
+                var chart1= new Chart ( ctxt , {
+                    type:"line",
+                    data: data2,
+                    options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Nombre des projets chaque année selon leur etat'
+                    }
+                    }
+                });
+            },
+        }); 
         </script>
-       
     </body>
 </html>

@@ -6,14 +6,14 @@
 class SQE
 {
 	private $id_pr,$remarque_sup_sqe,$avis_sqe,$date_avis_sqe,$valide_par_sqe,$approuve_par_sqe;
-	function __construct($a,$p,$q,$r,$s,$t)
+	function __construct($a,$q,$r,$s,$t,$p)
 	{
         $this->id_pr = $a;
-        $this->remarque_sup_sqe=$p;
         $this->avis_sqe=$q;
         $this->date_avis_sqe=$r;
         $this->valide_par_sqe=$s;
         $this->approuve_par_sqe=$t;
+		$this->remarque_sup_sqe=$p;
 	}
     function getid_pr(){
 		return $this->id_pr;

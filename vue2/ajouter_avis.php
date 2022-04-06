@@ -1,7 +1,7 @@
 <?php
 /**
 * OUMAIMA SABI
-* DATE:30/03/2022
+* DATE:31/03/2022
 */
 require_once '../Couche_Service/Service_Projet.php';
 require_once '../Couche_Service/Service_abht.php';
@@ -9,6 +9,50 @@ require_once '../Couche_Service/Service_sepre.php';
 require_once '../Couche_Service/Service_SQE.php';
 require_once '../Couche_Service/Service_SGDPH.php';
 require_once '../Couche_Service/Service_stah.php';
+require_once '../Couche_Service/Service_avis.php';
+require_once '../Couche_Service/Service_user.php';
+
+
+if(isset($_GET['id'])){
+
+    $id = htmlspecialchars($_GET['id']);
+    $ss = new Projet_Service();
+    $tc = $ss->findById($id);
+    $id1=$tc->getid_pr(); 
+    
+}
+
+if(isset($_POST['sqe'])){
+    //filtre et validation du formulaire
+    $id_sqe = htmlspecialchars($_POST["id_sqe"]);
+    $rem_sqe = htmlspecialchars($_POST["rem_sqe"]);
+    $avis_sqe = htmlspecialchars($_POST["avis_sqe"]);
+    $valide_sqe = htmlspecialchars($_POST["valide_sqe"]);
+    $approuve_sqe = htmlspecialchars($_POST["approuve_sqe"]);
+    $date_sqe=date("Y-m-d");
+    $avis_sq = new SQE($id_sqe,$avis_sqe,$date_sqe,$valide_sqe,$approuve_sqe,$rem_sqe);
+    var_dump($avis_sq);
+    $p= new SQE_Service();
+    if($p->update($avis_sq)){
+        header("Location: ajouter_avis.php?id=".$id_sqe); }
+    
+}
+
+if(isset($_POST['stah'])){
+    //filtre et validation du formulaire
+    $id_stah = htmlspecialchars($_POST["id_stah"]);
+    $rem_stah = htmlspecialchars($_POST["rema_stah"]);
+    $avis_stah = htmlspecialchars($_POST["avis_stah"]);
+    $valide_stah = htmlspecialchars($_POST["valide_stah"]);
+    $approuve_stah = htmlspecialchars($_POST["approuve_stah"]);
+    $date_stah=date("Y-m-d");
+    $avis_st = new STAH($id_stah,$avis_stah,$date_stah,$valide_stah,$approuve_stah,$rem_stah);
+    $p= new STAH_Service();
+    var_dump($avis_st);
+    if($p->update($avis_st)){
+        header("Location: ajouter_avis.php?id=".$id_stah); }
+    
+}
 
 ?>
 <!doctype html>
@@ -18,7 +62,7 @@ require_once '../Couche_Service/Service_stah.php';
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
-        <title>Timeline</title>
+        <title>Ajouter un Avis </title>
 
         <meta name="description" content="Codebase - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
         <meta name="author" content="pixelcave">
@@ -40,9 +84,6 @@ require_once '../Couche_Service/Service_stah.php';
         <!-- END Icons -->
 
         <!-- Stylesheets -->
-        <!-- Page JS Plugins CSS -->
-        <link rel="stylesheet" href="assets/js/plugins/magnific-popup/magnific-popup.min.css">
-
         <!-- Codebase framework -->
         <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
 
@@ -52,6 +93,7 @@ require_once '../Couche_Service/Service_stah.php';
     </head>
     <body>
         <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
+            <!-- Side Overlay-->
             <aside id="side-overlay">
                 <!-- Side Overlay Scroll Container -->
                 <div id="side-overlay-scroll">
@@ -70,7 +112,7 @@ require_once '../Couche_Service/Service_stah.php';
                                 <a class="img-link mr-5" href="be_pages_generic_profile.html">
                                     <img class="img-avatar img-avatar32" src="assets/img/avatars/avatar15.jpg" alt="">
                                 </a>
-                                <a class="align-middle link-effect text-primary-dark font-w600" href="be_pages_generic_profile.html">Oumaima Sabi </a>
+                                <a class="align-middle link-effect text-primary-dark font-w600" href="be_pages_generic_profile.html">John Smith</a>
                             </div>
                             <!-- END User Info -->
                         </div>
@@ -132,29 +174,29 @@ require_once '../Couche_Service/Service_stah.php';
                                 <ul class="nav-users push">
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar1.jpg" alt="">
-                                            <i class="fa fa-circle text-success"></i> Lori Moore
+                                            <img class="img-avatar" src="assets/img/avatars/avatar4.jpg" alt="">
+                                            <i class="fa fa-circle text-success"></i> Carol Ray
                                             <div class="font-w400 font-size-xs text-muted">Photographer</div>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar10.jpg" alt="">
-                                            <i class="fa fa-circle text-success"></i> Jack Estrada
+                                            <img class="img-avatar" src="assets/img/avatars/avatar14.jpg" alt="">
+                                            <i class="fa fa-circle text-success"></i> Ralph Murray
                                             <div class="font-w400 font-size-xs text-muted">Web Designer</div>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="be_pages_generic_profile.html">
                                             <img class="img-avatar" src="assets/img/avatars/avatar3.jpg" alt="">
-                                            <i class="fa fa-circle text-warning"></i> Betty Kelley
+                                            <i class="fa fa-circle text-warning"></i> Carol White
                                             <div class="font-w400 font-size-xs text-muted">UI Designer</div>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar16.jpg" alt="">
-                                            <i class="fa fa-circle text-danger"></i> Jose Mills
+                                            <img class="img-avatar" src="assets/img/avatars/avatar10.jpg" alt="">
+                                            <i class="fa fa-circle text-danger"></i> Scott Young
                                             <div class="font-w400 font-size-xs text-muted">Copywriter</div>
                                         </a>
                                     </li>
@@ -344,7 +386,6 @@ require_once '../Couche_Service/Service_stah.php';
                 </div>
                 <!-- END Side Overlay Scroll Container -->
             </aside>
-           
             <nav id="sidebar">
                 <!-- Sidebar Scroll Container -->
                 <div id="sidebar-scroll">
@@ -423,22 +464,11 @@ require_once '../Couche_Service/Service_stah.php';
                                 <li>
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
-                                <li class="open">
-                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-cup"></i><span class="sidebar-mini-hide">Dashboards</span></a>
-                                    <ul>
-                                        <li>
-                                            <a href="be_pages_dashboard.html">Dashboard 1</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard2.html">Dashboard 2</a>
-                                        </li>
-                                        <li>
-                                            <a class="active" href="be_pages_dashboard3.html">Dashboard 3</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard4.html">Dashboard 4</a>
-                                        </li>
-                                    </ul>
+                                <li>
+                                    <a href="Prj_ajouter.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Nouveau Projet</span></a>
+                                </li>
+                                <li>
+                                    <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -448,7 +478,6 @@ require_once '../Couche_Service/Service_stah.php';
                 </div>
                 <!-- END Sidebar Scroll Container -->
             </nav>
-            <!-- END Sidebar -->
 
             <!-- Header -->
             <header id="page-header">
@@ -549,7 +578,7 @@ require_once '../Couche_Service/Service_stah.php';
                         <!-- User Dropdown -->
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-rounded btn-dual-secondary" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               Oumaima Sabi<i class="fa fa-angle-down ml-5"></i>
+                                J. Smith<i class="fa fa-angle-down ml-5"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right min-width-150" aria-labelledby="page-header-user-dropdown">
                                 <a class="dropdown-item" href="be_pages_generic_profile.html">
@@ -626,259 +655,435 @@ require_once '../Couche_Service/Service_stah.php';
                 </div>
                 <!-- END Header Loader -->
             </header>
+            <!-- END Header -->
 
             <!-- Main Container -->
             <main id="main-container">
                 <!-- Page Content -->
                 <div class="content">
-                    <!-- Timeline Modern Style -->
-                    <h2 class="content-heading">Details Projet investissement</small></h2>
-                    <div class="block">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Projet Investissement</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                    <i class="si si-refresh"></i>
-                                </button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
-                            </div>
-                        </div>
-                        <div class="block-content block-content-full">
-                            <ul class="list list-timeline list-timeline-modern pull-t">
-                                <!-- Twitter Notification -->
-                                <li>
-                                        <?php $b = new Projet_Service();
-                                                $id=$_GET['id'];
-                                                $bb = $b->findById($id);
-                                                $bb1=$b->dureeprj($id);
-                                                echo '<div class="list-timeline-time">'.$bb1->getdate_arr_bet().' Jours </div>';
-                                                echo '<i class="list-timeline-icon fa fa-user-plus bg-success"></i>';
-                                                echo '<div class="list-timeline-content">';
-                                                echo '<p class="font-w600">L\'Identifiant du Projet: '.$id.'</p>';
-                                                echo '<p>L\'intitulé du projet: '.$bb->getintitule_pr().' </p>';
-                                        ?>
-                                        <div class="row">
-                                            <div class="col-sm-6 col-xl-4">
-                                                <ul class="nav-users push">
-                                                    <li> Maitre d'ouvrage :
-                                                            <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getmaitre_ouv().'</div>';
-                                                            ?>
-                                                    </li>
-                                                    <li>Province :
-                                                        <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getprovince().'</div>';
-                                                            ?>
-                                                        
-                                                    </li>
-                                                    <li>Superficie :
-                                                        <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getsupf().'</div>';
-                                                        ?>
-                                                            
-                                                    </li>
-                                                    <li>Commune :
-                                                        <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getcom().'</div>';
-                                                        ?>
-                                                    </li>
-                                                </ul>
+                    <!-- Register Forms -->
+                    <h2 class="content-heading">Veuillez rajouter des remarques pour les projets d'investissement</h2>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- Material Register -->
+                            <div class="block block-themed">
+                                <div class="block-header bg-gd-emerald">
+                                    <h3 class="block-title">Volet SQE</h3>
+                                    <div class="block-options">
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                    </div>
+                                </div>
+                                <div class="block-content">
+                                    <form action="ajouter_avis.php" method="post" >
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="id_sqe" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
+                                                    <label for="register2-username">Identifiant du projet</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <?php $b = new ABHT_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_abht().'</div>';
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-twitter bg-info"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis ABHT</p>
-                                        <?php $b = new ABHT_Service();
-                                                    $id=$_GET['id'];
-                                                    $avis = $b->findById($id);
-                                                    echo '<p>L\'avis : '.$avis->getavis_abht().'</p>';
-                                                    echo '<p>Remarque: '.$avis->getrem_bet_bes_eau().'</p>';
-                                        ?>  
-                                    </div>
-                                </li>
-                                <!-- END Twitter Notification -->
-
-
-                                <!-- Facebook Notification -->
-                                <li>
-                                    <?php $b = new SEPRE_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);
-                                        if(is_null($avis)){
-                                            echo'';
-                                        }else{
-                                            echo '<div class="list-timeline-time">'.$avis->getdate_avis_sepre().'</div>';
-                                        }         
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-facebook bg-default"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis SEPRE</p>
-                                        <?php $b = new SEPRE_Service();
-                                            $id=$_GET['id'];
-                                            $avis = $b->findById($id);
-                                            echo '<p> L\'avis :'.$avis->getavis_sepre().'</p>';
-                                            echo '<p> Remarque : '.$avis->getremarques_sup_sepre().'</p>';
-                                        ?>
-                                    </div>
-                                </li>
-                                <!-- END Facebook Notification -->
-
-                                <!-- System Notification -->
-                                <li>
-                                    <?php $b = new SQE_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);   
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_sqe().'</div>';
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-database bg-pulse"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis SQE</p>
-                                        <?php $b = new SQE_Service();
-                                            $id=$_GET['id'];
-                                            $avis = $b->findById($id);   
-                                            echo '<p>l\'avis :'.$avis->getavis_sqe().'</p>';
-                                            echo '<p>La remarque :'.$avis->getremarque_sup_sqe().'</p>';
-                                        ?>
-                                        
-                                    </div>
-                                </li>
-                                <!-- END System Notification -->
-
-
-                                <!-- System Notification -->
-                                <li>
-                                    <?php $b = new SGDPH_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);   
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_sgdph().'</div>';
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-cog bg-gray-darker"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis SGDPH</p>
-                                        <?php $b = new SGDPH_Service();
-                                            $id=$_GET['id'];
-                                            $avis = $b->findById($id);   
-                                            echo '<p>L\'avis:'.$avis->getavis_sgdph().'</p>';
-                                            echo '<p>La remarque:'.$avis->getremarque_sup_sgdph().'</p>';
-                                        ?>
-                                        
-                                    </div>
-                                </li>
-                                <!-- END System Notification -->
-                                <!-- System Notification -->
-                                <li>
-                                    <?php $b = new STAH_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);   
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_stah().'</div>';
-                                    ?>
-                                    <i class="list-timeline-icon fa fa-cog bg-gray-darker"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis STAH</p>
-                                        <?php $b = new STAH_Service();
-                                            $id=$_GET['id'];
-                                            $avis = $b->findById($id);   
-                                            echo '<p>l\'avis'.$avis->getavis_stah().'</p>';
-                                            echo '<p>La Remarque :'.$avis->getremarque_sup_stah().'</p>';
-                                        ?>
-                                    </div>
-                                </li>
-                                <!-- END System Notification -->
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- END Timeline Modern Style -->
-
-                    <!-- Timeline Activity -->
-                    <h2 class="content-heading">Timeline <small>Activity</small></h2>
-                    <div class="block">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Simple Events</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                    <i class="si si-refresh"></i>
-                                </button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="rem_sqe" rows="4" placeholder="Enter une remarque"></textarea>
+                                                    <label for="contact2-msg">Remarque</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="avis_sqe" size="1">
+                                                    <option value=''></option>
+                                                    <?php
+                                                        $ss = new Avis_Service();
+                                                        $tc = $ss->findAll();
+                                                        foreach($tc as $row) {
+                                                            echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                        }
+                                                    ?>
+                                                    </select>
+                                                    <label for="contact2-subject">Avis SQE</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="valide_sqe" size="1">
+                                                    <option value=''></option>
+                                                        <?php
+                                                            $ss = new User_Service();
+                                                            $tc = $ss->findAll();
+                                                            foreach($tc as $row) {
+                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    <label for="contact2-subject">Validé par</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="approuve_sqe" size="1">
+                                                    <option value=''></option>
+                                                        <?php
+                                                            $ss = new User_Service();
+                                                            $tc = $ss->findAll();
+                                                            foreach($tc as $row) {
+                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    <label for="contact2-subject">Approuvé par</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-alt-success" name="sqe">
+                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
+                            <!-- END Material Register -->
                         </div>
-                        <div class="block-content">
-                            <ul class="list list-activity">
-                                <li>
-                                    <i class="si si-wallet text-success"></i>
-                                    <div class="font-w600">+$29 New sale</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Admin Template</a>
+                        <div class="col-md-4">
+                            <!-- Material Register -->
+                            <div class="block block-themed">
+                                <div class="block-header bg-gd-emerald">
+                                    <h3 class="block-title">Volet STAH</h3>
+                                    <div class="block-options">
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
                                     </div>
-                                    <div class="font-size-xs text-muted">5 min ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-close text-danger"></i>
-                                    <div class="font-w600">Project removed</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Best Icon Set</a>
+                                </div>
+                                <div class="block-content">
+                                    <form action="ajouter_avis.php" method="post" >
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="id_stah" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
+                                                    <label for="register2-username">Identifiant du projet</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="rema_stah" rows="4" placeholder="Enter your message.."></textarea>
+                                                    <label for="contact2-msg">Remarque</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="avis_stah" size="1">
+                                                    <option value=''></option>
+                                                        <?php
+                                                            $ss = new Avis_Service();
+                                                            $tc = $ss->findAll();
+                                                            foreach($tc as $row) {
+                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    <label for="contact2-subject">Avis STAH</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="valide_stah" size="1">
+                                                        <option value=''></option>
+                                                        <?php
+                                                            $ss = new User_Service();
+                                                            $tc = $ss->findAll();
+                                                            foreach($tc as $row) {
+                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    <label for="contact2-subject">Validé par</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="approuve_stah" size="1">
+                                                        <option value=''></option>
+                                                        <?php
+                                                            $ss = new User_Service();
+                                                            $tc = $ss->findAll();
+                                                            foreach($tc as $row) {
+                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    <label for="contact2-subject">Approuvée par</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-alt-success" name="stah">
+                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- END Material Register -->
+                        </div>
+                        <div class="col-md-4">
+                            <!-- Material Register -->
+                            <div class="block block-themed">
+                                <div class="block-header bg-gd-emerald">
+                                    <h3 class="block-title">Volet SGDPH</h3>
+                                    <div class="block-options">
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
                                     </div>
-                                    <div class="font-size-xs text-muted">26 min ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-pencil text-info"></i>
-                                    <div class="font-w600">You edited the file</div>
-                                    <div>
-                                        <a href="javascript:void(0)">
-                                            <i class="fa fa-file-text-o"></i> Docs.doc
-                                        </a>
+                                </div>
+                                <div class="block-content">
+                                    <form action="be_forms_premade.html" method="post" onsubmit="return false;">
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="register2-username" placeholder="Enter your username..">
+                                                    <label for="register2-username">Identifiant du projet</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="contact2-msg" rows="4" placeholder="Enter your message.."></textarea>
+                                                    <label for="contact2-msg">Remarque</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
+                                                        <option value="1">Support</option>
+                                                        <option value="2">Billing</option>
+                                                        <option value="3">Management</option>
+                                                        <option value="4">Feature Request</option>
+                                                    </select>
+                                                    <label for="contact2-subject">Avis SGDPH</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
+                                                        <option value="1">Support</option>
+                                                        <option value="2">Billing</option>
+                                                        <option value="3">Management</option>
+                                                        <option value="4">Feature Request</option>
+                                                    </select>
+                                                    <label for="contact2-subject">Validé par</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
+                                                        <option value="1">Support</option>
+                                                        <option value="2">Billing</option>
+                                                        <option value="3">Management</option>
+                                                        <option value="4">Feature Request</option>
+                                                    </select>
+                                                    <label for="contact2-subject">Approuvée par</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-alt-success">
+                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- END Material Register -->
+                        </div>
+                        <div class="col-md-4">
+                            <!-- Material Register -->
+                            <div class="block block-themed">
+                                <div class="block-header bg-gd-emerald">
+                                    <h3 class="block-title">Volet SEPRE</h3>
+                                    <div class="block-options">
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
                                     </div>
-                                    <div class="font-size-xs text-muted">3 hours ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-plus text-success"></i>
-                                    <div class="font-w600">New user</div>
-                                    <div>
-                                        <a href="javascript:void(0)">StudioWeb - View Profile</a>
+                                </div>
+                                <div class="block-content">
+                                    <form action="be_forms_premade.html" method="post" onsubmit="return false;">
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="register2-username" placeholder="Enter your username..">
+                                                    <label for="register2-username">Identifiant du projet</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="contact2-msg" rows="4" placeholder="Enter your message.."></textarea>
+                                                    <label for="contact2-msg">Remarque</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
+                                                        <option value="1">Support</option>
+                                                        <option value="2">Billing</option>
+                                                        <option value="3">Management</option>
+                                                        <option value="4">Feature Request</option>
+                                                    </select>
+                                                    <label for="contact2-subject">Avis SEPRE</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-alt-success">
+                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- END Material Register -->
+                        </div>
+                        <div class="col-md-8">
+                            <!-- Material Register -->
+                            <div class="block block-themed">
+                                <div class="block-header bg-gd-emerald">
+                                    <h3 class="block-title">Volet ABHT</h3>
+                                    <div class="block-options">
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
                                     </div>
-                                    <div class="font-size-xs text-muted">5 hours ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-wrench text-warning"></i>
-                                    <div class="font-w600">Core v3.9 is available</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Update now</a>
-                                    </div>
-                                    <div class="font-size-xs text-muted">8 hours ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-user-follow text-pulse"></i>
-                                    <div class="font-w600">+1 Friend Request</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Accept</a>
-                                    </div>
-                                    <div class="font-size-xs text-muted">1 day ago</div>
-                                </li>
-                            </ul>
+                                </div>
+                                <div class="block-content">
+                                    <form action="be_forms_premade.html" method="post" onsubmit="return false;">
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="register2-username" placeholder="Enter your username..">
+                                                    <label for="register2-username">Identifiant du projet</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="contact2-msg" rows="4" placeholder="Enter your message.."></textarea>
+                                                    <label for="contact2-msg">Remarque</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
+                                                        <option value="1">Support</option>
+                                                        <option value="2">Billing</option>
+                                                        <option value="3">Management</option>
+                                                        <option value="4">Feature Request</option>
+                                                    </select>
+                                                    <label for="contact2-subject">Avis ABHT</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
+                                                        <option value="1">Support</option>
+                                                        <option value="2">Billing</option>
+                                                        <option value="3">Management</option>
+                                                        <option value="4">Feature Request</option>
+                                                    </select>
+                                                    <label for="contact2-subject">établi par</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
+                                                        <option value="1">Support</option>
+                                                        <option value="2">Billing</option>
+                                                        <option value="3">Management</option>
+                                                        <option value="4">Feature Request</option>
+                                                    </select>
+                                                    <label for="contact2-subject">Validé par</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
+                                                        <option value="1">Support</option>
+                                                        <option value="2">Billing</option>
+                                                        <option value="3">Management</option>
+                                                        <option value="4">Feature Request</option>
+                                                    </select>
+                                                    <label for="contact2-subject">Approuvée par</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-alt-success">
+                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- END Material Register -->
                         </div>
                     </div>
-                    <!-- END Timeline Activity -->
+
+                    
                 </div>
                 <!-- END Page Content -->
             </main>
@@ -909,16 +1114,5 @@ require_once '../Couche_Service/Service_stah.php';
         <script src="assets/js/core/jquery.countTo.min.js"></script>
         <script src="assets/js/core/js.cookie.min.js"></script>
         <script src="assets/js/codebase.js"></script>
-
-        <!-- Page JS Plugins -->
-        <script src="assets/js/plugins/magnific-popup/magnific-popup.min.js"></script>
-
-        <!-- Page JS Code -->
-        <script>
-            jQuery(function () {
-                // Init page helpers (Magnific Popup plugin)
-                Codebase.helpers('magnific-popup');
-            });
-        </script>
     </body>
 </html>

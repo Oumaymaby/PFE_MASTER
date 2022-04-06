@@ -62,8 +62,9 @@ class STAH_Service{
     
  	function update($cat)
  	{
- 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set gid=? ,remarque_sup_stah=?,avis_stah=?,date_avis_stah=?,valide_par_stah=?,approuve_par_stah=?,volume_eau_usee=?,mode_assainissement=? ,reutilisation_qeu=?,reutilisation_niveau_traitement=?,niveau_piezometrique=?,date_niveau_piezometrique=?,piezometre_x=?,piezometre_y=?,traitement_boue=? from prj_inv.projets_investissement where gid=?');
-	 	if ($st->execute(array($cat->getid_pr(),$cat->getremarque_sup_stah(),$cat->getavis_stah(),$cat->getdate_avis_stah(),$cat->getvalide_par_stah(),$cat->getapprouve_par_stah(),$cat->getvolume_eau_usee(),$cat->getmode_assainissement(),$cat->getreutilisation_qeu(),$cat->getreutilisation_niveau_traitement(),$cat->getdate_niveau_piezometrique(),$cat->getpiezometre_x(),$cat->getpiezometre_y(),$cat->gettraitement_boue())))
+ 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set avis_stah=?,date_avis_stah=?,valide_par_stah=?,approuve_par_stah=? ,remarque_sup_stah=? where gid=?');
+		$ec=$st->execute(array($cat->getavis_stah(),$cat->getdate_avis_stah(),$cat->getvalide_par_stah(),$cat->getapprouve_par_stah(),$cat->getremarque_sup_stah(),$cat->getid_pr()));
+	 	if ($st->execute(array($cat->getavis_stah(),$cat->getdate_avis_stah(),$cat->getvalide_par_stah(),$cat->getapprouve_par_stah(),$cat->getremarque_sup_stah(),$cat->getid_pr())))
 		{
 	 	 	return true;
 	 	}

@@ -1,7 +1,7 @@
 <?php
 /**
 * OUMAIMA SABI
-* DATE:30/03/2022
+* DATE:01/04/2022
 */
 require_once '../Couche_Service/Service_Projet.php';
 require_once '../Couche_Service/Service_abht.php';
@@ -9,6 +9,7 @@ require_once '../Couche_Service/Service_sepre.php';
 require_once '../Couche_Service/Service_SQE.php';
 require_once '../Couche_Service/Service_SGDPH.php';
 require_once '../Couche_Service/Service_stah.php';
+
 
 ?>
 <!doctype html>
@@ -18,7 +19,7 @@ require_once '../Couche_Service/Service_stah.php';
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
-        <title>Timeline</title>
+        <title>Details projets</title>
 
         <meta name="description" content="Codebase - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
         <meta name="author" content="pixelcave">
@@ -41,7 +42,8 @@ require_once '../Couche_Service/Service_stah.php';
 
         <!-- Stylesheets -->
         <!-- Page JS Plugins CSS -->
-        <link rel="stylesheet" href="assets/js/plugins/magnific-popup/magnific-popup.min.css">
+        <link rel="stylesheet" href="assets/js/plugins/slick/slick.min.css">
+        <link rel="stylesheet" href="assets/js/plugins/slick/slick-theme.min.css">
 
         <!-- Codebase framework -->
         <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
@@ -51,7 +53,8 @@ require_once '../Couche_Service/Service_stah.php';
         <!-- END Stylesheets -->
     </head>
     <body>
-        <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
+        <div id="page-container" class="sidebar-o sidebar-inverse side-scroll page-header-fixed page-header-modern main-content-boxed">
+            <!-- Side Overlay-->
             <aside id="side-overlay">
                 <!-- Side Overlay Scroll Container -->
                 <div id="side-overlay-scroll">
@@ -423,22 +426,11 @@ require_once '../Couche_Service/Service_stah.php';
                                 <li>
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
-                                <li class="open">
-                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-cup"></i><span class="sidebar-mini-hide">Dashboards</span></a>
-                                    <ul>
-                                        <li>
-                                            <a href="be_pages_dashboard.html">Dashboard 1</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard2.html">Dashboard 2</a>
-                                        </li>
-                                        <li>
-                                            <a class="active" href="be_pages_dashboard3.html">Dashboard 3</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard4.html">Dashboard 4</a>
-                                        </li>
-                                    </ul>
+                                <li>
+                                    <a href="Prj_ajouter.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Nouveau Projet</span></a>
+                                </li>
+                                <li>
+                                    <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -549,7 +541,7 @@ require_once '../Couche_Service/Service_stah.php';
                         <!-- User Dropdown -->
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-rounded btn-dual-secondary" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               Oumaima Sabi<i class="fa fa-angle-down ml-5"></i>
+                                Oumaima Sabi<i class="fa fa-angle-down ml-5"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right min-width-150" aria-labelledby="page-header-user-dropdown">
                                 <a class="dropdown-item" href="be_pages_generic_profile.html">
@@ -626,275 +618,327 @@ require_once '../Couche_Service/Service_stah.php';
                 </div>
                 <!-- END Header Loader -->
             </header>
+            <!-- END Header -->
 
             <!-- Main Container -->
             <main id="main-container">
-                <!-- Page Content -->
+                
+
+                <!-- Blog and Sidebar -->
                 <div class="content">
-                    <!-- Timeline Modern Style -->
-                    <h2 class="content-heading">Details Projet investissement</small></h2>
-                    <div class="block">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Projet Investissement</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                    <i class="si si-refresh"></i>
-                                </button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
-                            </div>
-                        </div>
-                        <div class="block-content block-content-full">
-                            <ul class="list list-timeline list-timeline-modern pull-t">
-                                <!-- Twitter Notification -->
-                                <li>
-                                        <?php $b = new Projet_Service();
-                                                $id=$_GET['id'];
-                                                $bb = $b->findById($id);
-                                                $bb1=$b->dureeprj($id);
-                                                echo '<div class="list-timeline-time">'.$bb1->getdate_arr_bet().' Jours </div>';
-                                                echo '<i class="list-timeline-icon fa fa-user-plus bg-success"></i>';
-                                                echo '<div class="list-timeline-content">';
-                                                echo '<p class="font-w600">L\'Identifiant du Projet: '.$id.'</p>';
-                                                echo '<p>L\'intitulé du projet: '.$bb->getintitule_pr().' </p>';
-                                        ?>
-                                        <div class="row">
-                                            <div class="col-sm-6 col-xl-4">
-                                                <ul class="nav-users push">
-                                                    <li> Maitre d'ouvrage :
-                                                            <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getmaitre_ouv().'</div>';
-                                                            ?>
-                                                    </li>
-                                                    <li>Province :
-                                                        <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getprovince().'</div>';
-                                                            ?>
-                                                        
-                                                    </li>
-                                                    <li>Superficie :
-                                                        <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getsupf().'</div>';
-                                                        ?>
-                                                            
-                                                    </li>
-                                                    <li>Commune :
-                                                        <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getcom().'</div>';
-                                                        ?>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <?php $b = new ABHT_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_abht().'</div>';
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-twitter bg-info"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis ABHT</p>
+                    <h2 class="content-heading d-print-none">
+                        <button type="button" class="btn btn-sm btn-rounded btn-primary float-right"><i class="fa fa-file-word-o"></i> Document WORD</button>
+                         Projet d'investissement 
+                    </h2>
+                    <div class="row invisible" data-toggle="appear">
+                        <!-- Posts -->
+                        <div class="col-xl-8">
+                            
+                            <div class="mb-50">
+                                
+                                <h3 class="h4 font-w700 text-uppercase mb-5">AVIS ABHT</h3>
+                                <div class="text-muted mb-10">
+                                    <span class="mr-15">
                                         <?php $b = new ABHT_Service();
-                                                    $id=$_GET['id'];
-                                                    $avis = $b->findById($id);
-                                                    echo '<p>L\'avis : '.$avis->getavis_abht().'</p>';
-                                                    echo '<p>Remarque: '.$avis->getrem_bet_bes_eau().'</p>';
-                                        ?>  
-                                    </div>
-                                </li>
-                                <!-- END Twitter Notification -->
-
-
-                                <!-- Facebook Notification -->
-                                <li>
-                                    <?php $b = new SEPRE_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);
-                                        if(is_null($avis)){
-                                            echo'';
-                                        }else{
-                                            echo '<div class="list-timeline-time">'.$avis->getdate_avis_sepre().'</div>';
-                                        }         
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-facebook bg-default"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis SEPRE</p>
+                                              $id=$_GET['id'];
+                                              $avis = $b->findById($id);
+                                              echo '<i class="fa fa-fw fa-calendar mr-5"></i>'.$avis->getdate_avis_abht();
+                                        ?>
+                                    </span>
+                                    <a class="text-muted mr-15" href="be_pages_generic_profile.html">
+                                        <?php $b = new ABHT_Service();
+                                              $id=$_GET['id'];
+                                              $avis = $b->findById($id);
+                                              echo '<i class="fa fa-fw fa-user mr-5"></i>'.$avis->getapprouve_par();
+                                        ?>
+                                    </a>
+                                    <a class="text-muted mr-15" href="be_pages_generic_profile.html">
+                                        <?php $b = new ABHT_Service();
+                                              $id=$_GET['id'];
+                                              $avis = $b->findById($id);
+                                              echo '<i class="fa fa-fw fa-user mr-5"></i>'.$avis->getorigine_aep();
+                                        ?>
+                                    </a>
+                                    <a class="text-muted mr-15" href="be_pages_generic_profile.html">
+                                        <?php $b = new ABHT_Service();
+                                              $id=$_GET['id'];
+                                              $avis = $b->findById($id);
+                                              echo '<i class="fa fa-fw fa-user mr-5"></i>'.$avis->getetabli_par();
+                                        ?>
+                                    </a>
+                                    <a class="text-muted" href="javascript:void(0)">
+                                        <?php $b = new ABHT_Service();
+                                              $id=$_GET['id'];
+                                              $avis = $b->findById($id);
+                                              echo '<i class="fa fa-fw fa-tag mr-5"></i>'.$avis->getavis_abht();
+                                        ?>
+                                    </a>
+                                </div>
+                                <?php $b = new ABHT_Service();
+                                    $id=$_GET['id'];
+                                    $avis = $b->findById($id);
+                                    echo '<p>'.$avis->getorigine_aep().'</p>';
+                                ?>
+                                
+                                
+                            </div>
+                            <div class="mb-50">
+                                <h3 class="h4 font-w700 text-uppercase mb-5">Avis SQE</h3>
+                                <div class="text-muted mb-10">
+                                    <span class="mr-15">
+                                        <?php $b = new SQE_Service();
+                                            $id=$_GET['id'];
+                                            $avis = $b->findById($id);
+                                            echo '<i class="fa fa-fw fa-calendar mr-5"></i>'.$avis->getdate_avis_sqe();
+                                        ?>
+                                    </span>
+                                    <a class="text-muted mr-15" href="be_pages_generic_profile.html">
+                                        <?php $b = new SQE_Service();
+                                            $id=$_GET['id'];
+                                            $avis = $b->findById($id);
+                                            echo '<i class="fa fa-fw fa-user mr-5"></i>'.$avis->getvalide_par_sqe();
+                                        ?>
+                                    </a>
+                                    <a class="text-muted" href="javascript:void(0)">
+                                        <?php $b = new SQE_Service();
+                                            $id=$_GET['id'];
+                                            $avis = $b->findById($id);
+                                            echo '<i class="fa fa-fw fa-tag mr-5"></i>'.$avis->getavis_sqe();
+                                        ?>
+                                        
+                                    </a>
+                                </div>
+                                <?php $b = new SQE_Service();
+                                    $id=$_GET['id'];
+                                    $avis = $b->findById($id);
+                                     echo '<p>'.$avis->getremarque_sup_sqe().'</p>';
+                                ?>
+                                
+                            </div>
+                            <div class="mb-50">
+                                <h3 class="h4 font-w700 text-uppercase mb-5">Avis SEPRE</h3>
+                                <div class="text-muted mb-10">
+                                    <span class="mr-15">
                                         <?php $b = new SEPRE_Service();
                                             $id=$_GET['id'];
                                             $avis = $b->findById($id);
-                                            echo '<p> L\'avis :'.$avis->getavis_sepre().'</p>';
-                                            echo '<p> Remarque : '.$avis->getremarques_sup_sepre().'</p>';
+                                            echo '<i class="fa fa-fw fa-calendar mr-5"></i>'.$avis->getdate_avis_sepre();
                                         ?>
-                                    </div>
-                                </li>
-                                <!-- END Facebook Notification -->
-
-                                <!-- System Notification -->
-                                <li>
-                                    <?php $b = new SQE_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);   
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_sqe().'</div>';
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-database bg-pulse"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis SQE</p>
-                                        <?php $b = new SQE_Service();
+                                    </span>
+                                    <a class="text-muted mr-15" href="be_pages_generic_profile.html">
+                                        <i class="fa fa-fw fa-user mr-5"></i>
+                                    </a>
+                                    <a class="text-muted" href="javascript:void(0)">
+                                        <?php $b = new SEPRE_Service();
                                             $id=$_GET['id'];
-                                            $avis = $b->findById($id);   
-                                            echo '<p>l\'avis :'.$avis->getavis_sqe().'</p>';
-                                            echo '<p>La remarque :'.$avis->getremarque_sup_sqe().'</p>';
+                                            $avis = $b->findById($id);
+                                            echo '<i class="fa fa-fw fa-tag mr-5"></i>'.$avis->getavis_sepre();
                                         ?>
-                                        
-                                    </div>
-                                </li>
-                                <!-- END System Notification -->
-
-
-                                <!-- System Notification -->
-                                <li>
-                                    <?php $b = new SGDPH_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);   
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_sgdph().'</div>';
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-cog bg-gray-darker"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis SGDPH</p>
+                                    </a>
+                                </div>
+                                <?php $b = new SEPRE_Service();
+                                    $id=$_GET['id'];
+                                    $avis = $b->findById($id);
+                                    echo '<p>'.$avis->getremarques_sup_sepre().'</p>';
+                                ?>    
+                            </div>
+                            <div class="mb-50">
+                                <h3 class="h4 font-w700 text-uppercase mb-5">Avis SGDPH</h3>
+                                <div class="text-muted mb-10">
+                                    <span class="mr-15">
                                         <?php $b = new SGDPH_Service();
                                             $id=$_GET['id'];
                                             $avis = $b->findById($id);   
-                                            echo '<p>L\'avis:'.$avis->getavis_sgdph().'</p>';
-                                            echo '<p>La remarque:'.$avis->getremarque_sup_sgdph().'</p>';
+                                            echo '<i class="fa fa-fw fa-calendar mr-5"></i>'.$avis->getdate_avis_sgdph();
                                         ?>
-                                        
-                                    </div>
-                                </li>
-                                <!-- END System Notification -->
-                                <!-- System Notification -->
-                                <li>
-                                    <?php $b = new STAH_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);   
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_stah().'</div>';
-                                    ?>
-                                    <i class="list-timeline-icon fa fa-cog bg-gray-darker"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis STAH</p>
+                                    </span>
+                                    <a class="text-muted mr-15" href="be_pages_generic_profile.html">
+                                        <?php $b = new SGDPH_Service();
+                                            $id=$_GET['id'];
+                                            $avis = $b->findById($id);
+                                            echo '<i class="fa fa-fw fa-user mr-5"></i>'.$avis->getvalide_par_sgdph();
+                                        ?>
+                                    </a>
+                                    <a class="text-muted" href="javascript:void(0)">
+                                        <?php $b = new SGDPH_Service();
+                                            $id=$_GET['id'];
+                                            $avis = $b->findById($id);
+                                            echo '<i class="fa fa-fw fa-tag mr-5"></i>'.$avis->getavis_sgdph();
+                                        ?>
+                                    </a>
+                                </div>
+                                <?php $b = new SGDPH_Service();
+                                    $id=$_GET['id'];
+                                    $avis = $b->findById($id);
+                                    echo '<p>'.$avis->getremarque_sup_sgdph().'</p>';
+                                ?> 
+                            </div>
+                            <div class="mb-50">
+                                <h3 class="h4 font-w700 text-uppercase mb-5">avis stah</h3>
+                                <div class="text-muted mb-10">
+                                    <span class="mr-15">
                                         <?php $b = new STAH_Service();
                                             $id=$_GET['id'];
-                                            $avis = $b->findById($id);   
-                                            echo '<p>l\'avis'.$avis->getavis_stah().'</p>';
-                                            echo '<p>La Remarque :'.$avis->getremarque_sup_stah().'</p>';
+                                            $avis = $b->findById($id);
+                                            echo '<i class="fa fa-fw fa-calendar mr-5"></i>'.$avis->getdate_avis_stah();
                                         ?>
-                                    </div>
-                                </li>
-                                <!-- END System Notification -->
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- END Timeline Modern Style -->
-
-                    <!-- Timeline Activity -->
-                    <h2 class="content-heading">Timeline <small>Activity</small></h2>
-                    <div class="block">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Simple Events</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                    <i class="si si-refresh"></i>
-                                </button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                    </span>
+                                    <a class="text-muted mr-15" href="be_pages_generic_profile.html">
+                                        <?php $b = new STAH_Service();
+                                            $id=$_GET['id'];
+                                            $avis = $b->findById($id);
+                                            echo '<i class="fa fa-fw fa-user mr-5"></i>'.$avis->getvalide_par_stah();
+                                        ?>
+                                    </a>
+                                    <a class="text-muted" href="javascript:void(0)">
+                                        <?php $b = new STAH_Service();
+                                            $id=$_GET['id'];
+                                            $avis = $b->findById($id);
+                                            echo '<i class="fa fa-fw fa-tag mr-5"></i>'.$avis->getavis_stah();
+                                        ?>
+                                    </a>
+                                </div>
+                                <?php $b = new STAH_Service();
+                                    $id=$_GET['id'];
+                                    $avis = $b->findById($id);
+                                    echo '<p>'.$avis->getremarque_sup_stah().'</p>';
+                                ?>
+                                
+                                
                             </div>
+                            <hr class="d-xl-none">
                         </div>
-                        <div class="block-content">
-                            <ul class="list list-activity">
-                                <li>
-                                    <i class="si si-wallet text-success"></i>
-                                    <div class="font-w600">+$29 New sale</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Admin Template</a>
+                        <!-- END Posts -->
+
+                        <!-- Sidebar -->
+                        <div class="col-xl-4">
+                            <!-- Categories -->
+                            <div class="block block-transparent">
+                                <div class="block-header">
+                                    <h3 class="block-title text-uppercase">
+                                        <i class="fa fa-fw fa-list mr-5"></i> Information 
+                                    </h3>
+                                </div>
+                                <div class="block-content">
+                                    <ul class="nav nav-pills flex-column push">
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center justify-content-between active" href="javascript:void(0)">
+                                            <span><i class="fa fa-fw fa-book mr-5"></i>Details du projet d'investissement</span>
+                                                
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                                <?php $b = new Projet_Service();
+                                                    $id=$_GET['id'];
+                                                    $bb = $b->findById($id);
+                                                    echo '<span>'. $bb->getintitule_pr().'</span>';
+                                                ?>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                                <?php $b = new Projet_Service();
+                                                    $id=$_GET['id'];
+                                                    $bb = $b->findById($id);
+                                                    echo '<span>Province :'.$bb->getprovince().'</span>';
+                                                ?>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                                <?php $b = new Projet_Service();
+                                                    $id=$_GET['id'];
+                                                    $bb = $b->findById($id);
+                                                    echo '<span>Commune :'.$bb->getcom().'</span>';
+                                                ?>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                                <?php $b = new Projet_Service();
+                                                    $id=$_GET['id'];
+                                                    $bb = $b->findById($id);
+                                                    echo '<span>Superficie :'.$bb->getsupf().'</span>';
+                                                ?>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                                <?php $b = new Projet_Service();
+                                                    $id=$_GET['id'];
+                                                    $bb = $b->findById($id);
+                                                    $bb1=$b->dureeprj($id);
+                                                    echo '<span>la date d\'arrivée au BET :'.$bb->getdate_arr_bet().'</span>';
+                                                    echo '<span class="badge badge-pill badge-secondary">'.$bb1->getdate_arr_bet().' jours </span>';
+                                                ?>
+                                                
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- END Categories -->
+
+                            <!-- Twitter Feed -->
+                            <!-- <div class="block block-transparent">
+                                <div class="block-header">
+                                    <h3 class="block-title text-uppercase">les intervenants</h3>
+                                </div>
+                                <div class="block-content">
+                                    <div class="media mb-20">
+                                        <img class="img-avatar img-avatar32 d-flex mr-20" src="assets/img/avatars/avatar13.jpg" alt="">
+                                        <div class="media-body">
+                                            <p class="mb-5">In gravida nulla. Nulla vel metus scelerisque ante sollicitudin. <a class="text-elegance" href="javascript:void(0)">#startup</a> <a class="text-elegance" href="javascript:void(0)">#life</a></p>
+                                            <div class="font-size-sm text-muted">10 hrs ago</div>
+                                        </div>
                                     </div>
-                                    <div class="font-size-xs text-muted">5 min ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-close text-danger"></i>
-                                    <div class="font-w600">Project removed</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Best Icon Set</a>
+                                    <div class="media mb-20">
+                                        <img class="img-avatar img-avatar32 d-flex mr-20" src="assets/img/avatars/avatar5.jpg" alt="">
+                                        <div class="media-body">
+                                            <p class="mb-5">Vestibulum in vulputate at, tempus viverra turpis. Fusce <a href="javascript:void(0)">condimentum</a> nunc ac nisi vulputate fringilla.</p>
+                                            <div class="font-size-sm text-muted">15 hrs ago</div>
+                                        </div>
                                     </div>
-                                    <div class="font-size-xs text-muted">26 min ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-pencil text-info"></i>
-                                    <div class="font-w600">You edited the file</div>
-                                    <div>
-                                        <a href="javascript:void(0)">
-                                            <i class="fa fa-file-text-o"></i> Docs.doc
-                                        </a>
+                                    <div class="media mb-20">
+                                        <img class="img-avatar img-avatar32 d-flex mr-20" src="assets/img/avatars/avatar6.jpg" alt="">
+                                        <div class="media-body">
+                                            <p class="mb-5">In gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</p>
+                                            <div class="font-size-sm text-muted">2 days ago</div>
+                                        </div>
                                     </div>
-                                    <div class="font-size-xs text-muted">3 hours ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-plus text-success"></i>
-                                    <div class="font-w600">New user</div>
-                                    <div>
-                                        <a href="javascript:void(0)">StudioWeb - View Profile</a>
+                                    <div class="media mb-20">
+                                        <img class="img-avatar img-avatar32 d-flex mr-20" src="assets/img/avatars/avatar16.jpg" alt="">
+                                        <div class="media-body">
+                                            <p class="mb-5">Vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum <a href="javascript:void(0)">nunc</a> ac nisi vulputate fringilla. <a class="text-elegance" href="javascript:void(0)">#web</a> <a class="text-elegance" href="javascript:void(0)">#stuff</a></p>
+                                            <div class="font-size-sm text-muted">5 days ago</div>
+                                        </div>
                                     </div>
-                                    <div class="font-size-xs text-muted">5 hours ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-wrench text-warning"></i>
-                                    <div class="font-w600">Core v3.9 is available</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Update now</a>
+                                    <div class="media mb-20">
+                                        <img class="img-avatar img-avatar32 d-flex mr-20" src="assets/img/avatars/avatar8.jpg" alt="">
+                                        <div class="media-body">
+                                            <p class="mb-5">Vestibulum in vulputate at, tempus viverra turpis. Fusce <a href="javascript:void(0)">condimentum</a> nunc ac nisi vulputate fringilla.</p>
+                                            <div class="font-size-sm text-muted">1 week ago</div>
+                                        </div>
                                     </div>
-                                    <div class="font-size-xs text-muted">8 hours ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-user-follow text-pulse"></i>
-                                    <div class="font-w600">+1 Friend Request</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Accept</a>
-                                    </div>
-                                    <div class="font-size-xs text-muted">1 day ago</div>
-                                </li>
-                            </ul>
+                                </div>
+                            </div> -->
+                            <!-- END Twitter Feed -->
+
+                            
+
                         </div>
+                        <!-- END Sidebar -->
                     </div>
-                    <!-- END Timeline Activity -->
                 </div>
-                <!-- END Page Content -->
+                <!-- END Blog and Sidebar -->
+
+                
             </main>
             <!-- END Main Container -->
 
-            <!-- Footer -->
-            <footer id="page-footer" class="opacity-0">
-                <div class="content py-20 font-size-xs clearfix">
-                    <div class="float-right">
-                        Crafted with <i class="fa fa-heart text-pulse"></i> by <a class="font-w600" href="http://goo.gl/vNS3I" target="_blank">pixelcave</a>
-                    </div>
-                    <div class="float-left">
-                        <a class="font-w600" href="https://goo.gl/po9Usv" target="_blank">Codebase 1.3</a> &copy; <span class="js-year-copy">2017</span>
-                    </div>
-                </div>
-            </footer>
+            
             <!-- END Footer -->
         </div>
         <!-- END Page Container -->
@@ -910,14 +954,14 @@ require_once '../Couche_Service/Service_stah.php';
         <script src="assets/js/core/js.cookie.min.js"></script>
         <script src="assets/js/codebase.js"></script>
 
-        <!-- Page JS Plugins -->
-        <script src="assets/js/plugins/magnific-popup/magnific-popup.min.js"></script>
+        <!-- Page Plugins -->
+        <script src="assets/js/plugins/slick/slick.min.js"></script>
 
         <!-- Page JS Code -->
         <script>
             jQuery(function () {
-                // Init page helpers (Magnific Popup plugin)
-                Codebase.helpers('magnific-popup');
+                // Init page helpers (Slick Slider plugin)
+                Codebase.helpers('slick');
             });
         </script>
     </body>

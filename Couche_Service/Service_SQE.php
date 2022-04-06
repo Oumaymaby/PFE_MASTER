@@ -61,8 +61,9 @@ class SQE_Service{
     
  	function update($cat)
  	{
- 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set gid=? ,avis_sgdph=?,date_avis_sgdph=?,valide_par_sgdph=?,approuve_par_sgdph=?,superficie_bv=?,amenagement_propose=? from prj_inv.projets_investissement where gid=?');
-	 	if ($st->execute(array($cat->getid_pr(),$cat->getremarque_sup_sqe(),$cat->getavis_sqe(),$cat->getdate_avis_sqe(),$cat->getvalide_par_sqe(),$cat->getapprouve_par_sqe())))
+ 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set avis_sqe=? ,date_avis_sqe=?,valide_par_sqe=?,approuve_par_sqe=?,remarque_sup_sqe=? where gid=?');
+		
+	 	if ($st->execute(array($cat->getavis_sqe(),$cat->getdate_avis_sqe(),$cat->getvalide_par_sqe(),$cat->getapprouve_par_sqe(),$cat->getremarque_sup_sqe(),$cat->getid_pr())))
 		{
 	 	 	return true;
 	 	}
@@ -72,17 +73,6 @@ class SQE_Service{
  	 
  	}
     
- 	function supprimer($cat)
- 	{
-
-	 	$st =	$this->db->prepare('delete from prj_inv.projets_investissement where gid=?');
-	 	if ($st->execute(array($cat->getid_pr()))) {
-	 	 	return true;
-	 	}
-	 	else{
-	 	 	return false;
-	 	}
- 	}
 
 	function nombre(){
 		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement');

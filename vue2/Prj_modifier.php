@@ -495,26 +495,17 @@ if(isset($_POST['modifier'])){
                         <!-- Side Navigation -->
                         <div class="content-side content-side-full">
                             <ul class="nav-main">
+                                
                                 <li>
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
-                                <li class="open">
-                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-cup"></i><span class="sidebar-mini-hide">Dashboards</span></a>
-                                    <ul>
-                                        <li>
-                                            <a href="be_pages_dashboard.html">Dashboard 1</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard2.html">Dashboard 2</a>
-                                        </li>
-                                        <li>
-                                            <a class="active" href="be_pages_dashboard3.html">Dashboard 3</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard4.html">Dashboard 4</a>
-                                        </li>
-                                    </ul>
+                                <li>
+                                    <a href="Prj_ajouter.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Nouveau Projet</span></a>
                                 </li>
+                                <li>
+                                    <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
+                                </li>
+                               
                             </ul>
                         </div>
                         <!-- END Side Navigation -->

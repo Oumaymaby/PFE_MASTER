@@ -4,12 +4,35 @@
 * DATE:30/03/2022
 */
 require_once '../Couche_Service/Service_Projet.php';
-require_once '../Couche_Service/Service_abht.php';
-require_once '../Couche_Service/Service_sepre.php';
-require_once '../Couche_Service/Service_SQE.php';
-require_once '../Couche_Service/Service_SGDPH.php';
-require_once '../Couche_Service/Service_stah.php';
+require_once '../Couche_Service/Service_province.php';
+require_once '../Couche_Service/Service_type_projet.php';
+require_once '../Couche_Service/Service_Commune.php';
+require_once '../Couche_Service/Service_province.php';
+if(isset($_POST['submit'])){
+    
+    extract($_POST);
+    $id= htmlspecialchars($_POST["gid"]);
+    $numdoss = htmlspecialchars($_POST["numdoss"]);
+    $datebet = htmlspecialchars($_POST["datebet"]);
+    $dateabht = htmlspecialchars($_POST["dateabht"]);
+    $province = htmlspecialchars($_POST["province"]);
+    $commune = htmlspecialchars($_POST["commune"]);
+    $intprojet = htmlspecialchars($_POST["int_projet"]);
+    $maitreouvrage = htmlspecialchars($_POST["maitreouvrage"]);
+    $architecte = htmlspecialchars($_POST["architecte"]);
+    $tittrefoncier = htmlspecialchars($_POST["tittrefoncier"]);
+    $superficie = htmlspecialchars($_POST["superficie"]);
+    $type_projet = htmlspecialchars($_POST["type_projet"]);
+    $etat_projet = 1;
+    $geom=htmlspecialchars($_POST["geom"]);
+    $geom1="MULTIPOLYGON(((".$geom.")))";
+    $projet = new ProjetInv($id,$numdoss,$datebet,$dateabht,$province,$commune,$intprojet,$maitreouvrage,$architecte,$tittrefoncier,$superficie,$type_projet,$etat_projet,$geom1);
+    $ss = new Projet_Service();
+    if($ss->add($projet)){
+        header("Location:http://localhost/projectpfe/vue2/details.php?id=".$id); 
+    }
 
+}
 ?>
 <!doctype html>
 <!--[if lte IE 9]>     <html lang="en" class="no-focus lt-ie10 lt-ie10-msg"> <![endif]-->
@@ -18,7 +41,7 @@ require_once '../Couche_Service/Service_stah.php';
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
-        <title>Timeline</title>
+        <title>Ajouter Projet</title>
 
         <meta name="description" content="Codebase - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
         <meta name="author" content="pixelcave">
@@ -40,9 +63,6 @@ require_once '../Couche_Service/Service_stah.php';
         <!-- END Icons -->
 
         <!-- Stylesheets -->
-        <!-- Page JS Plugins CSS -->
-        <link rel="stylesheet" href="assets/js/plugins/magnific-popup/magnific-popup.min.css">
-
         <!-- Codebase framework -->
         <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
 
@@ -51,7 +71,9 @@ require_once '../Couche_Service/Service_stah.php';
         <!-- END Stylesheets -->
     </head>
     <body>
+        
         <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
+            <!-- Side Overlay-->
             <aside id="side-overlay">
                 <!-- Side Overlay Scroll Container -->
                 <div id="side-overlay-scroll">
@@ -420,25 +442,15 @@ require_once '../Couche_Service/Service_stah.php';
                         <!-- Side Navigation -->
                         <div class="content-side content-side-full">
                             <ul class="nav-main">
+                                
                                 <li>
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
-                                <li class="open">
-                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-cup"></i><span class="sidebar-mini-hide">Dashboards</span></a>
-                                    <ul>
-                                        <li>
-                                            <a href="be_pages_dashboard.html">Dashboard 1</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard2.html">Dashboard 2</a>
-                                        </li>
-                                        <li>
-                                            <a class="active" href="be_pages_dashboard3.html">Dashboard 3</a>
-                                        </li>
-                                        <li>
-                                            <a href="be_pages_dashboard4.html">Dashboard 4</a>
-                                        </li>
-                                    </ul>
+                                <li>
+                                    <a href="Prj_ajouter.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Nouveau Projet</span></a>
+                                </li>
+                                <li>
+                                    <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -626,259 +638,184 @@ require_once '../Couche_Service/Service_stah.php';
                 </div>
                 <!-- END Header Loader -->
             </header>
+            <!-- END Header -->
 
             <!-- Main Container -->
             <main id="main-container">
                 <!-- Page Content -->
                 <div class="content">
-                    <!-- Timeline Modern Style -->
-                    <h2 class="content-heading">Details Projet investissement</small></h2>
-                    <div class="block">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Projet Investissement</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                    <i class="si si-refresh"></i>
-                                </button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
-                            </div>
-                        </div>
-                        <div class="block-content block-content-full">
-                            <ul class="list list-timeline list-timeline-modern pull-t">
-                                <!-- Twitter Notification -->
-                                <li>
-                                        <?php $b = new Projet_Service();
-                                                $id=$_GET['id'];
-                                                $bb = $b->findById($id);
-                                                $bb1=$b->dureeprj($id);
-                                                echo '<div class="list-timeline-time">'.$bb1->getdate_arr_bet().' Jours </div>';
-                                                echo '<i class="list-timeline-icon fa fa-user-plus bg-success"></i>';
-                                                echo '<div class="list-timeline-content">';
-                                                echo '<p class="font-w600">L\'Identifiant du Projet: '.$id.'</p>';
-                                                echo '<p>L\'intitulé du projet: '.$bb->getintitule_pr().' </p>';
-                                        ?>
+
+                    <!-- Validation Wizards -->
+                    <h2 class="content-heading">Ajouter un nouveau projet</h2>
+                    <div class="row justify-content-center py-20">
+                       
+                        <div class="col-md-8">
+                            <!-- Validation Wizard Material -->
+                            <div class="js-wizard-validation-material block">
+                                <!-- Step Tabs -->
+                                <ul class="nav nav-tabs nav-tabs-alt nav-fill" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#wizard-validation-material-step1" data-toggle="tab">Identifiant et Geometrie</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#wizard-validation-material-step2" data-toggle="tab">Information du projets</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#wizard-validation-material-step3" data-toggle="tab">Complement</a>
+                                    </li>
+                                </ul>
+                                <!-- END Step Tabs -->
+
+                                <!-- Form -->
+                                <form class="js-wizard-validation-material-form" action="Prj_ajouter.php" method="post">
+                                    <!-- Steps Content -->
+                                    <div class="block-content block-content-full tab-content" style="min-height: 267px;">
+                                        <!-- Step 1 -->
+                                        <div class="tab-pane active" id="wizard-validation-material-step1" role="tabpanel">
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <input class="form-control" type="text" id="wizard-validation-material-firstname" name="gid">
+                                                    <label for="wizard-validation-material-firstname">Identifiant</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <textarea class="form-control" id="wizard-validation-material-bio" name="geom" rows="9"></textarea>
+                                                    <label for="wizard-validation-material-bio">Géometrie</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <textarea class="form-control" id="wizard-validation-material-bio" name="int_projet" rows="9"></textarea>
+                                                    <label for="wizard-validation-material-bio">Intitulé du projet</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="maitreouvrage">
+                                                    <label for="wizard-validation-material-location">Maitre d'Ouvrage</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="architecte">
+                                                    <label for="wizard-validation-material-location">Architecte</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="superficie">
+                                                    <label for="wizard-validation-material-location">Superficie</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END Step 1 -->
+
+                                        <!-- Step 2 -->
+                                        <div class="tab-pane" id="wizard-validation-material-step2" role="tabpanel">
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="numdoss">
+                                                    <label for="wizard-validation-material-location">Numéro du dossier</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material">
+                                                    <input class="form-control" type="date" id="wizard-validation-material-location" name="dateabht">
+                                                    <label for="wizard-validation-material-location">Date d'arrivée à l'ABHT</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material">
+                                                    <input class="form-control" type="date" id="wizard-validation-material-location" name="datebet">
+                                                    <label for="wizard-validation-material-location">Date d'arrivée au BET</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <select class="form-control" id="wizard-validation-material-skills" name="commune" size="1">
+                                                    <?php
+                                                        $ss = new Commune_Service();
+                                                        $tc = $ss->findAll();
+                                                        foreach($tc as $row) {
+                                                            echo "<option value=".$row[0]." >".$row["Commune"]."</option>" ; 
+                                                        }
+                                                    ?>
+                                                    </select>
+                                                    <label for="wizard-validation-material-skills">Commune</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <select class="form-control" id="wizard-validation-material-skills" name="province" size="1">
+                                                        <?php
+                                                            $ss = new Province_Service();
+                                                            $tc = $ss->findAll();
+                                                            foreach($tc as $row) {
+                                                                echo "<option value=".$row[0].">".$row["province"]."</option>" ;
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    <label for="wizard-validation-material-skills">Province</label>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <!-- END Step 2 -->
+
+                                        <!-- Step 3 -->
+                                        <div class="tab-pane" id="wizard-validation-material-step3" role="tabpanel">
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="tittrefoncier">
+                                                    <label for="wizard-validation-material-location">Titre Foncier</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-material floating">
+                                                    <select class="form-control" id="wizard-validation-material-skills" name="type_projet" size="1">
+                                                        <?php
+                                                            $ss = new Type_projet_Service();
+                                                            $tc = $ss->findAll();
+                                                            foreach($tc as $row) {
+                                                                echo "<option value=".$row[0].">".$row["type_projet"]."</option>" ;
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    <label for="wizard-validation-material-skills">Type de Projet</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END Step 3 -->
+                                    </div>
+                                    <!-- END Steps Content -->
+
+                                    <!-- Steps Navigation -->
+                                    <div class="block-content block-content-sm block-content-full bg-body-light">
                                         <div class="row">
-                                            <div class="col-sm-6 col-xl-4">
-                                                <ul class="nav-users push">
-                                                    <li> Maitre d'ouvrage :
-                                                            <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getmaitre_ouv().'</div>';
-                                                            ?>
-                                                    </li>
-                                                    <li>Province :
-                                                        <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getprovince().'</div>';
-                                                            ?>
-                                                        
-                                                    </li>
-                                                    <li>Superficie :
-                                                        <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getsupf().'</div>';
-                                                        ?>
-                                                            
-                                                    </li>
-                                                    <li>Commune :
-                                                        <?php $b = new Projet_Service();
-                                                                $id=$_GET['id'];
-                                                                $bb = $b->findById($id);
-                                                                echo '<div class="font-w400 font-size-xs text-muted">'.$bb->getcom().'</div>';
-                                                        ?>
-                                                    </li>
-                                                </ul>
+                                            <div class="col-6">
+                                                <button type="button" class="btn btn-alt-secondary" data-wizard="prev">
+                                                    <i class="fa fa-angle-left mr-5"></i> Previous
+                                                </button>
+                                            </div>
+                                            <div class="col-6 text-right">
+                                                <button type="button" class="btn btn-alt-secondary" data-wizard="next">
+                                                    Next <i class="fa fa-angle-right ml-5"></i>
+                                                </button>
+                                                <button type="submit" name="submit" class="btn btn-alt-primary d-none" data-wizard="finish">
+                                                    <i class="fa fa-check mr-5"></i> Submit
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                                <li>
-                                    <?php $b = new ABHT_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_abht().'</div>';
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-twitter bg-info"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis ABHT</p>
-                                        <?php $b = new ABHT_Service();
-                                                    $id=$_GET['id'];
-                                                    $avis = $b->findById($id);
-                                                    echo '<p>L\'avis : '.$avis->getavis_abht().'</p>';
-                                                    echo '<p>Remarque: '.$avis->getrem_bet_bes_eau().'</p>';
-                                        ?>  
-                                    </div>
-                                </li>
-                                <!-- END Twitter Notification -->
-
-
-                                <!-- Facebook Notification -->
-                                <li>
-                                    <?php $b = new SEPRE_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);
-                                        if(is_null($avis)){
-                                            echo'';
-                                        }else{
-                                            echo '<div class="list-timeline-time">'.$avis->getdate_avis_sepre().'</div>';
-                                        }         
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-facebook bg-default"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis SEPRE</p>
-                                        <?php $b = new SEPRE_Service();
-                                            $id=$_GET['id'];
-                                            $avis = $b->findById($id);
-                                            echo '<p> L\'avis :'.$avis->getavis_sepre().'</p>';
-                                            echo '<p> Remarque : '.$avis->getremarques_sup_sepre().'</p>';
-                                        ?>
-                                    </div>
-                                </li>
-                                <!-- END Facebook Notification -->
-
-                                <!-- System Notification -->
-                                <li>
-                                    <?php $b = new SQE_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);   
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_sqe().'</div>';
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-database bg-pulse"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis SQE</p>
-                                        <?php $b = new SQE_Service();
-                                            $id=$_GET['id'];
-                                            $avis = $b->findById($id);   
-                                            echo '<p>l\'avis :'.$avis->getavis_sqe().'</p>';
-                                            echo '<p>La remarque :'.$avis->getremarque_sup_sqe().'</p>';
-                                        ?>
-                                        
-                                    </div>
-                                </li>
-                                <!-- END System Notification -->
-
-
-                                <!-- System Notification -->
-                                <li>
-                                    <?php $b = new SGDPH_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);   
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_sgdph().'</div>';
-                                    ?>
-                                    
-                                    <i class="list-timeline-icon fa fa-cog bg-gray-darker"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis SGDPH</p>
-                                        <?php $b = new SGDPH_Service();
-                                            $id=$_GET['id'];
-                                            $avis = $b->findById($id);   
-                                            echo '<p>L\'avis:'.$avis->getavis_sgdph().'</p>';
-                                            echo '<p>La remarque:'.$avis->getremarque_sup_sgdph().'</p>';
-                                        ?>
-                                        
-                                    </div>
-                                </li>
-                                <!-- END System Notification -->
-                                <!-- System Notification -->
-                                <li>
-                                    <?php $b = new STAH_Service();
-                                        $id=$_GET['id'];
-                                        $avis = $b->findById($id);   
-                                        echo '<div class="list-timeline-time">'.$avis->getdate_avis_stah().'</div>';
-                                    ?>
-                                    <i class="list-timeline-icon fa fa-cog bg-gray-darker"></i>
-                                    <div class="list-timeline-content">
-                                        <p class="font-w600">Avis STAH</p>
-                                        <?php $b = new STAH_Service();
-                                            $id=$_GET['id'];
-                                            $avis = $b->findById($id);   
-                                            echo '<p>l\'avis'.$avis->getavis_stah().'</p>';
-                                            echo '<p>La Remarque :'.$avis->getremarque_sup_stah().'</p>';
-                                        ?>
-                                    </div>
-                                </li>
-                                <!-- END System Notification -->
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- END Timeline Modern Style -->
-
-                    <!-- Timeline Activity -->
-                    <h2 class="content-heading">Timeline <small>Activity</small></h2>
-                    <div class="block">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Simple Events</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                    <i class="si si-refresh"></i>
-                                </button>
-                                <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                    <!-- END Steps Navigation -->
+                                </form>
+                                <!-- END Form -->
                             </div>
-                        </div>
-                        <div class="block-content">
-                            <ul class="list list-activity">
-                                <li>
-                                    <i class="si si-wallet text-success"></i>
-                                    <div class="font-w600">+$29 New sale</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Admin Template</a>
-                                    </div>
-                                    <div class="font-size-xs text-muted">5 min ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-close text-danger"></i>
-                                    <div class="font-w600">Project removed</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Best Icon Set</a>
-                                    </div>
-                                    <div class="font-size-xs text-muted">26 min ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-pencil text-info"></i>
-                                    <div class="font-w600">You edited the file</div>
-                                    <div>
-                                        <a href="javascript:void(0)">
-                                            <i class="fa fa-file-text-o"></i> Docs.doc
-                                        </a>
-                                    </div>
-                                    <div class="font-size-xs text-muted">3 hours ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-plus text-success"></i>
-                                    <div class="font-w600">New user</div>
-                                    <div>
-                                        <a href="javascript:void(0)">StudioWeb - View Profile</a>
-                                    </div>
-                                    <div class="font-size-xs text-muted">5 hours ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-wrench text-warning"></i>
-                                    <div class="font-w600">Core v3.9 is available</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Update now</a>
-                                    </div>
-                                    <div class="font-size-xs text-muted">8 hours ago</div>
-                                </li>
-                                <li>
-                                    <i class="si si-user-follow text-pulse"></i>
-                                    <div class="font-w600">+1 Friend Request</div>
-                                    <div>
-                                        <a href="javascript:void(0)">Accept</a>
-                                    </div>
-                                    <div class="font-size-xs text-muted">1 day ago</div>
-                                </li>
-                            </ul>
+                            <!-- END Validation Wizard 2 -->
                         </div>
                     </div>
-                    <!-- END Timeline Activity -->
+                    <!-- END Validation Wizards -->
                 </div>
                 <!-- END Page Content -->
             </main>
@@ -911,14 +848,11 @@ require_once '../Couche_Service/Service_stah.php';
         <script src="assets/js/codebase.js"></script>
 
         <!-- Page JS Plugins -->
-        <script src="assets/js/plugins/magnific-popup/magnific-popup.min.js"></script>
+        <script src="assets/js/plugins/bootstrap-wizard/jquery.bootstrap.wizard.js"></script>
+        <script src="assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+        <script src="assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
 
         <!-- Page JS Code -->
-        <script>
-            jQuery(function () {
-                // Init page helpers (Magnific Popup plugin)
-                Codebase.helpers('magnific-popup');
-            });
-        </script>
+        <script src="assets/js/pages/be_forms_wizard.js"></script>
     </body>
 </html>

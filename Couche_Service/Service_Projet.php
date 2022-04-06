@@ -33,8 +33,8 @@ class Projet_Service{
 		  $prj->getetat_dossier(),
 		  $prj->getgeom()))) 
 		{
-			var_dump($st);
- 	 	echo"entré";
+			
+ 	 		return true;
  		}
  		else{
  	 		return false;
@@ -311,6 +311,75 @@ class Projet_Service{
 		}
 		else{
 			echo "Problème ";
+			return null;
+		}
+	}
+
+	//selection des nombre de projet avec leur jour et leur moi et annee de la dernière semaine 
+	function number_lastweek(){
+		$st =	$this->db->prepare("select count(*) as noon,date_arrivee_bet,EXTRACT(dow from date_arrivee_bet)as daye from prj_inv.projets_investissement 
+		where etatdossier = 1 
+		group by daye,date_arrivee_bet 
+		having ( date_arrivee_bet >= NOW()::DATE-EXTRACT(DOW FROM NOW())::INTEGER-7
+			AND date_arrivee_bet <  NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER
+			  ) ORDER BY daye ");
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
+	//selection des nombre de projet avec leur moi et annee [etatdossier=2 ]
+	function number_prj_ann_mois_nouveau(){
+		$st =	$this->db->prepare("SELECT count(*),EXTRACT(MONTH FROM date_arrivee_bet)as mois,EXTRACT(Year FROM date_arrivee_bet) as annee
+		from prj_inv.projets_investissement 
+		where etatdossier=2
+		group by mois,annee
+		order by annee");
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
+	//selection des nombre de projet avec leur moi et annee [etatdossier=3 ]
+	function number_prj_ann_mois_cloture(){
+		$st =	$this->db->prepare("SELECT count(*),EXTRACT(MONTH FROM date_arrivee_bet)as mois,EXTRACT(Year FROM date_arrivee_bet) as annee
+		from prj_inv.projets_investissement 
+		where etatdossier=3
+		group by mois,annee
+		order by annee");
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
+	//selection des nombre de projet avec annee [etatdossier=2 ]
+	function number_prj_ann_nouveau(){
+		$st =	$this->db->prepare("SELECT count(*),EXTRACT(Year FROM date_arrivee_bet) as annee from prj_inv.projets_investissement where etatdossier=2 group by annee");
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
+	
+	//selection des nombre de projet avec annee [etatdossier=3 ]
+	function number_prj_ann_cloture(){
+		$st =	$this->db->prepare("SELECT count(*),EXTRACT(Year FROM date_arrivee_bet) as annee from prj_inv.projets_investissement where etatdossier=3 group by annee");
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
 			return null;
 		}
 	}

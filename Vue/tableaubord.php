@@ -1057,19 +1057,19 @@ $(function () {
             }
             
 
-        var chart1= new Chart ( ctxt , {
+          var chart1= new Chart ( ctxt , {
             type:"bar",
             data: data2,
             options: {
-            legend: { display: false },
-            title: {
+              legend: { display: true },
+              title: {
                 display: true,
                 text: 'Nombre des projets chaque année selon leur etat'
+              }
             }
-            }
-        });
-      },
-    });
+          });
+        },
+      });
 });
 </script>
 </body>
