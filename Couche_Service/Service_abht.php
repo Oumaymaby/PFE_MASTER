@@ -41,11 +41,11 @@ class ABHT_Service{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('select inv.gid ,v.avis,inv.date_avis_abht,inv.etabli_par,inv.valide_par,inv.approuve_par,inv.origine_aep,inv.origine_autre,inv.besoin_eau_domestique,inv.besoin_eau_irrigation,inv.remarque_bet_besoin_eau from prj_inv.projets_investissement inv inner join prj_inv.ls_prj_avis v on v.id=inv.avis_abht where inv.gid=?');
+		$st =$this->db->prepare('select inv.gid ,v.avis,inv.date_avis_abht,inv.etabli_par,inv.valide_par,inv.approuve_par,inv.remarques_generales_bet ,inv.etatdossier from prj_inv.projets_investissement inv inner join prj_inv.ls_prj_avis v on v.id=inv.avis_abht where inv.gid=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
-				return new ABHT($row->gid,$row->avis,$row->date_avis_abht,$row->etabli_par,$row->valide_par,$row->approuve_par,$row->origine_aep,$row->origine_autre,$row->besoin_eau_domestique,$row->besoin_eau_irrigation,$row->remarque_bet_besoin_eau);		
+				return new ABHT($row->gid,$row->avis,$row->date_avis_abht,$row->etabli_par,$row->valide_par,$row->approuve_par,$row->remarques_genereles_bet,$row->etatdossier);		
 			}
 			elseif(empty($row)){
 				return new ABHT('0','0','0','0','0','0','0','0','0','0','0');
@@ -60,8 +60,8 @@ class ABHT_Service{
     
  	function update($avis)
  	{
- 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set gid=? ,avis_abht=?,date_avis_abht=?,etabli_par=?,valide_par=?,approuve_par=?,origine_aep=?,origine_autre=?,besoin_eau_domestique=?,besoin_eau_irrigation=?,remarque_bet_besoin_eau=?,avis_abht=? from prj_inv.projets_investissement where gid=?');
-	 	if ($st->execute(array($avis->getid_pr(),$avis->getid_pr(),$avis->getavis_abht(),$avis->getdate_avis_abht(),$avis->getetabli_par(),$avis->getvalide_par(),$avis->getapprouve_par(),$avis->getorigine_AEP(),$avis->getorigine_autre(),$avis->getbes_eau_dom(),$avis->getbes_eau_irrig(),$avis->getrem_bet_bes_eau())))
+ 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set remarques_generales_bet=?,avis_abht=?,date_avis_abht=?,etabli_par=?,valide_par=?,approuve_par=?,etatdossier=? where gid=?');
+	 	if ($st->execute(array($avis->getrem_general(),$avis->getavis_abht(),$avis->getdate_avis_abht(),$avis->getetabli_par(),$avis->getvalide_par(),$avis->getapprouve_par(),$avis->getetatdossier(),$avis->getid_pr())))
 		{
 	 	 	return true;
 	 	}
@@ -84,7 +84,7 @@ class ABHT_Service{
  	}
 
 	function nombre(){
-		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement');
+		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement where avis_abht IS NOT NULL');
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}

@@ -1,58 +1,17 @@
 <?php
 /**
 * OUMAIMA SABI
-* DATE:31/03/2022
+* DATE:08/04/2022
 */
+require_once '../Couche_Service/Service_etat.php';
 require_once '../Couche_Service/Service_Projet.php';
-require_once '../Couche_Service/Service_abht.php';
 require_once '../Couche_Service/Service_sepre.php';
-require_once '../Couche_Service/Service_SQE.php';
-require_once '../Couche_Service/Service_SGDPH.php';
+require_once '../Couche_Service/Service_sgdph.php';
+require_once '../Couche_Service/Service_sqe.php';
 require_once '../Couche_Service/Service_stah.php';
-require_once '../Couche_Service/Service_avis.php';
-require_once '../Couche_Service/Service_user.php';
+require_once '../Couche_Service/Service_abht.php';
 
 
-if(isset($_GET['id'])){
-
-    $id = htmlspecialchars($_GET['id']);
-    $ss = new Projet_Service();
-    $tc = $ss->findById($id);
-    $id1=$tc->getid_pr(); 
-    
-}
-
-if(isset($_POST['sqe'])){
-    //filtre et validation du formulaire
-    $id_sqe = htmlspecialchars($_POST["id_sqe"]);
-    $rem_sqe = htmlspecialchars($_POST["rem_sqe"]);
-    $avis_sqe = htmlspecialchars($_POST["avis_sqe"]);
-    $valide_sqe = htmlspecialchars($_POST["valide_sqe"]);
-    $approuve_sqe = htmlspecialchars($_POST["approuve_sqe"]);
-    $date_sqe=date("Y-m-d");
-    $avis_sq = new SQE($id_sqe,$avis_sqe,$date_sqe,$valide_sqe,$approuve_sqe,$rem_sqe);
-    var_dump($avis_sq);
-    $p= new SQE_Service();
-    if($p->update($avis_sq)){
-        header("Location: ajouter_avis.php?id=".$id_sqe); }
-    
-}
-
-if(isset($_POST['stah'])){
-    //filtre et validation du formulaire
-    $id_stah = htmlspecialchars($_POST["id_stah"]);
-    $rem_stah = htmlspecialchars($_POST["rema_stah"]);
-    $avis_stah = htmlspecialchars($_POST["avis_stah"]);
-    $valide_stah = htmlspecialchars($_POST["valide_stah"]);
-    $approuve_stah = htmlspecialchars($_POST["approuve_stah"]);
-    $date_stah=date("Y-m-d");
-    $avis_st = new STAH($id_stah,$avis_stah,$date_stah,$valide_stah,$approuve_stah,$rem_stah);
-    $p= new STAH_Service();
-    var_dump($avis_st);
-    if($p->update($avis_st)){
-        header("Location: ajouter_avis.php?id=".$id_stah); }
-    
-}
 
 ?>
 <!doctype html>
@@ -62,7 +21,7 @@ if(isset($_POST['stah'])){
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
-        <title>Ajouter un Avis </title>
+        <title>avis</title>
 
         <meta name="description" content="Codebase - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
         <meta name="author" content="pixelcave">
@@ -83,13 +42,23 @@ if(isset($_POST['stah'])){
         <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
         <!-- END Icons -->
 
+         <!-- Page JS Plugins CSS -->
+         <link rel="stylesheet" href="assets/js/plugins/datatables/dataTables.bootstrap4.min.css">
+
         <!-- Stylesheets -->
         <!-- Codebase framework -->
         <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
 
-        <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
-        <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/flat.min.css"> -->
-        <!-- END Stylesheets -->
+        <!-- leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+        <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
+        <link href='assets/css/map/leaflet.fullscreen.css' rel='stylesheet' />
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css'>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
+        
     </head>
     <body>
         <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
@@ -112,7 +81,7 @@ if(isset($_POST['stah'])){
                                 <a class="img-link mr-5" href="be_pages_generic_profile.html">
                                     <img class="img-avatar img-avatar32" src="assets/img/avatars/avatar15.jpg" alt="">
                                 </a>
-                                <a class="align-middle link-effect text-primary-dark font-w600" href="be_pages_generic_profile.html">John Smith</a>
+                                <a class="align-middle link-effect text-primary-dark font-w600" href="be_pages_generic_profile.html">Oumaima Sabi </a>
                             </div>
                             <!-- END User Info -->
                         </div>
@@ -174,29 +143,29 @@ if(isset($_POST['stah'])){
                                 <ul class="nav-users push">
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar4.jpg" alt="">
-                                            <i class="fa fa-circle text-success"></i> Carol Ray
+                                            <img class="img-avatar" src="assets/img/avatars/avatar1.jpg" alt="">
+                                            <i class="fa fa-circle text-success"></i> Lori Moore
                                             <div class="font-w400 font-size-xs text-muted">Photographer</div>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar14.jpg" alt="">
-                                            <i class="fa fa-circle text-success"></i> Ralph Murray
+                                            <img class="img-avatar" src="assets/img/avatars/avatar10.jpg" alt="">
+                                            <i class="fa fa-circle text-success"></i> Jack Estrada
                                             <div class="font-w400 font-size-xs text-muted">Web Designer</div>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="be_pages_generic_profile.html">
                                             <img class="img-avatar" src="assets/img/avatars/avatar3.jpg" alt="">
-                                            <i class="fa fa-circle text-warning"></i> Carol White
+                                            <i class="fa fa-circle text-warning"></i> Betty Kelley
                                             <div class="font-w400 font-size-xs text-muted">UI Designer</div>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar10.jpg" alt="">
-                                            <i class="fa fa-circle text-danger"></i> Scott Young
+                                            <img class="img-avatar" src="assets/img/avatars/avatar16.jpg" alt="">
+                                            <i class="fa fa-circle text-danger"></i> Jose Mills
                                             <div class="font-w400 font-size-xs text-muted">Copywriter</div>
                                         </a>
                                     </li>
@@ -386,6 +355,7 @@ if(isset($_POST['stah'])){
                 </div>
                 <!-- END Side Overlay Scroll Container -->
             </aside>
+           
             <nav id="sidebar">
                 <!-- Sidebar Scroll Container -->
                 <div id="sidebar-scroll">
@@ -465,7 +435,7 @@ if(isset($_POST['stah'])){
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
                                 <li>
-                                    <a href="Prj_ajouter.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Nouveau Projet</span></a>
+                                    <a href="Avis_prj.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Gestion des avis</span></a>
                                 </li>
                                 <li>
                                     <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
@@ -478,6 +448,7 @@ if(isset($_POST['stah'])){
                 </div>
                 <!-- END Sidebar Scroll Container -->
             </nav>
+            <!-- END Sidebar -->
 
             <!-- Header -->
             <header id="page-header">
@@ -578,7 +549,7 @@ if(isset($_POST['stah'])){
                         <!-- User Dropdown -->
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-rounded btn-dual-secondary" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                J. Smith<i class="fa fa-angle-down ml-5"></i>
+                               Oumaima Sabi<i class="fa fa-angle-down ml-5"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right min-width-150" aria-labelledby="page-header-user-dropdown">
                                 <a class="dropdown-item" href="be_pages_generic_profile.html">
@@ -661,429 +632,136 @@ if(isset($_POST['stah'])){
             <main id="main-container">
                 <!-- Page Content -->
                 <div class="content">
-                    <!-- Register Forms -->
-                    <h2 class="content-heading">Veuillez rajouter des remarques pour les projets d'investissement</h2>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <!-- Material Register -->
-                            <div class="block block-themed">
-                                <div class="block-header bg-gd-emerald">
-                                    <h3 class="block-title">Volet SQE</h3>
-                                    <div class="block-options">
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                            <i class="si si-refresh"></i>
-                                        </button>
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                    <div class="row invisible" data-toggle="appear">
+                        <!-- Row #1 -->
+                        <div class="col-4 col-xl-2">
+                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
+                                <div class="block-content block-content-full clearfix">
+                                    <div class="float-right mt-15 d-none d-sm-block">
+                                        <i class="si si-bag fa-2x text-primary-light"></i>
                                     </div>
+                                    <?php $b = new SEPRE_Service();
+                                        $bb= $b->nombre();
+                                        foreach($bb as $row){
+                                        echo '<div class="font-size-h3 font-w600 text-primary" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
+                                        }
+                                    ?>
+                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis SEPRE</div>
                                 </div>
-                                <div class="block-content">
-                                    <form action="ajouter_avis.php" method="post" >
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <input type="text" class="form-control" id="register2-username" name="id_sqe" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
-                                                    <label for="register2-username">Identifiant du projet</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <textarea class="form-control" id="contact2-msg" name="rem_sqe" rows="4" placeholder="Enter une remarque"></textarea>
-                                                    <label for="contact2-msg">Remarque</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="avis_sqe" size="1">
-                                                    <option value=''></option>
-                                                    <?php
-                                                        $ss = new Avis_Service();
-                                                        $tc = $ss->findAll();
-                                                        foreach($tc as $row) {
-                                                            echo "<option value=".$row[0].">".$row[1]."</option>" ;  
-                                                        }
-                                                    ?>
-                                                    </select>
-                                                    <label for="contact2-subject">Avis SQE</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="valide_sqe" size="1">
-                                                    <option value=''></option>
-                                                        <?php
-                                                            $ss = new User_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="contact2-subject">Validé par</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="approuve_sqe" size="1">
-                                                    <option value=''></option>
-                                                        <?php
-                                                            $ss = new User_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="contact2-subject">Approuvé par</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                       
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-alt-success" name="sqe">
-                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- END Material Register -->
+                            </a>
                         </div>
-                        <div class="col-md-4">
-                            <!-- Material Register -->
-                            <div class="block block-themed">
-                                <div class="block-header bg-gd-emerald">
-                                    <h3 class="block-title">Volet STAH</h3>
-                                    <div class="block-options">
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                            <i class="si si-refresh"></i>
-                                        </button>
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                        <div class="col-4 col-xl-2">
+                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
+                                <div class="block-content block-content-full clearfix">
+                                    <div class="float-right mt-15 d-none d-sm-block">
+                                        <i class="si si-wallet fa-2x text-earth-light"></i>
                                     </div>
+                                    <?php $b = new SGDPH_Service();
+                                        $bb= $b->nombre();
+                                        foreach($bb as $row){
+                                        echo '<div class="font-size-h3 font-w600 text-earth"><span data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</span></div>';
+                                        }
+                                    ?>
+                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis SGDPH</div>
                                 </div>
-                                <div class="block-content">
-                                    <form action="ajouter_avis.php" method="post" >
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <input type="text" class="form-control" id="register2-username" name="id_stah" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
-                                                    <label for="register2-username">Identifiant du projet</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <textarea class="form-control" id="contact2-msg" name="rema_stah" rows="4" placeholder="Enter your message.."></textarea>
-                                                    <label for="contact2-msg">Remarque</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="avis_stah" size="1">
-                                                    <option value=''></option>
-                                                        <?php
-                                                            $ss = new Avis_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="contact2-subject">Avis STAH</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="valide_stah" size="1">
-                                                        <option value=''></option>
-                                                        <?php
-                                                            $ss = new User_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="contact2-subject">Validé par</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="approuve_stah" size="1">
-                                                        <option value=''></option>
-                                                        <?php
-                                                            $ss = new User_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="contact2-subject">Approuvée par</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-alt-success" name="stah">
-                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- END Material Register -->
+                            </a>
                         </div>
-                        <div class="col-md-4">
-                            <!-- Material Register -->
-                            <div class="block block-themed">
-                                <div class="block-header bg-gd-emerald">
-                                    <h3 class="block-title">Volet SGDPH</h3>
-                                    <div class="block-options">
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                            <i class="si si-refresh"></i>
-                                        </button>
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                        <div class="col-4 col-xl-2">
+                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
+                                <div class="block-content block-content-full clearfix">
+                                    <div class="float-right mt-15 d-none d-sm-block">
+                                        <i class="si si-envelope-open fa-2x text-elegance-light"></i>
                                     </div>
+                                    <?php $b = new SQE_Service();
+                                        $bb= $b->nombre();
+                                        foreach($bb as $row){
+                                        echo '<div class="font-size-h3 font-w600 text-elegance" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
+                                        }
+                                    ?>
+                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis SQE</div>
                                 </div>
-                                <div class="block-content">
-                                    <form action="be_forms_premade.html" method="post" onsubmit="return false;">
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <input type="text" class="form-control" id="register2-username" name="register2-username" placeholder="Enter your username..">
-                                                    <label for="register2-username">Identifiant du projet</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <textarea class="form-control" id="contact2-msg" name="contact2-msg" rows="4" placeholder="Enter your message.."></textarea>
-                                                    <label for="contact2-msg">Remarque</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
-                                                        <option value="1">Support</option>
-                                                        <option value="2">Billing</option>
-                                                        <option value="3">Management</option>
-                                                        <option value="4">Feature Request</option>
-                                                    </select>
-                                                    <label for="contact2-subject">Avis SGDPH</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
-                                                        <option value="1">Support</option>
-                                                        <option value="2">Billing</option>
-                                                        <option value="3">Management</option>
-                                                        <option value="4">Feature Request</option>
-                                                    </select>
-                                                    <label for="contact2-subject">Validé par</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
-                                                        <option value="1">Support</option>
-                                                        <option value="2">Billing</option>
-                                                        <option value="3">Management</option>
-                                                        <option value="4">Feature Request</option>
-                                                    </select>
-                                                    <label for="contact2-subject">Approuvée par</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-alt-success">
-                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- END Material Register -->
+                            </a>
                         </div>
-                        <div class="col-md-4">
-                            <!-- Material Register -->
-                            <div class="block block-themed">
-                                <div class="block-header bg-gd-emerald">
-                                    <h3 class="block-title">Volet SEPRE</h3>
-                                    <div class="block-options">
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                            <i class="si si-refresh"></i>
-                                        </button>
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                        <div class="col-4 col-xl-2">
+                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
+                                <div class="block-content block-content-full clearfix">
+                                    <div class="float-right mt-15 d-none d-sm-block">
+                                        <i class="si si-envelope-open fa-2x text-elegance-light"></i>
                                     </div>
+                                    <?php $b = new STAH_Service();
+                                        $bb= $b->nombre();
+                                        foreach($bb as $row){
+                                        echo '<div class="font-size-h3 font-w600 text-elegance" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
+                                        }
+                                    ?>
+                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis STAH</div>
                                 </div>
-                                <div class="block-content">
-                                    <form action="be_forms_premade.html" method="post" onsubmit="return false;">
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <input type="text" class="form-control" id="register2-username" name="register2-username" placeholder="Enter your username..">
-                                                    <label for="register2-username">Identifiant du projet</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <textarea class="form-control" id="contact2-msg" name="contact2-msg" rows="4" placeholder="Enter your message.."></textarea>
-                                                    <label for="contact2-msg">Remarque</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
-                                                        <option value="1">Support</option>
-                                                        <option value="2">Billing</option>
-                                                        <option value="3">Management</option>
-                                                        <option value="4">Feature Request</option>
-                                                    </select>
-                                                    <label for="contact2-subject">Avis SEPRE</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-alt-success">
-                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- END Material Register -->
+                            </a>
                         </div>
-                        <div class="col-md-8">
-                            <!-- Material Register -->
-                            <div class="block block-themed">
-                                <div class="block-header bg-gd-emerald">
-                                    <h3 class="block-title">Volet ABHT</h3>
-                                    <div class="block-options">
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                            <i class="si si-refresh"></i>
-                                        </button>
-                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                        <div class="col-4 col-xl-2">
+                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
+                                <div class="block-content block-content-full clearfix">
+                                    <div class="float-right mt-15 d-none d-sm-block">
+                                        <i class="si si-envelope-open fa-2x text-elegance-light"></i>
                                     </div>
+                                    <?php $b = new ABHT_Service();
+                                        $bb= $b->nombre();
+                                        foreach($bb as $row){
+                                        echo '<div class="font-size-h3 font-w600 text-elegance" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
+                                        }
+                                    ?>
+                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis ABHT</div>
                                 </div>
-                                <div class="block-content">
-                                    <form action="be_forms_premade.html" method="post" onsubmit="return false;">
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <input type="text" class="form-control" id="register2-username" name="register2-username" placeholder="Enter your username..">
-                                                    <label for="register2-username">Identifiant du projet</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <textarea class="form-control" id="contact2-msg" name="contact2-msg" rows="4" placeholder="Enter your message.."></textarea>
-                                                    <label for="contact2-msg">Remarque</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
-                                                        <option value="1">Support</option>
-                                                        <option value="2">Billing</option>
-                                                        <option value="3">Management</option>
-                                                        <option value="4">Feature Request</option>
-                                                    </select>
-                                                    <label for="contact2-subject">Avis ABHT</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
-                                                        <option value="1">Support</option>
-                                                        <option value="2">Billing</option>
-                                                        <option value="3">Management</option>
-                                                        <option value="4">Feature Request</option>
-                                                    </select>
-                                                    <label for="contact2-subject">établi par</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
-                                                        <option value="1">Support</option>
-                                                        <option value="2">Billing</option>
-                                                        <option value="3">Management</option>
-                                                        <option value="4">Feature Request</option>
-                                                    </select>
-                                                    <label for="contact2-subject">Validé par</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="contact2-subject" size="1">
-                                                        <option value="1">Support</option>
-                                                        <option value="2">Billing</option>
-                                                        <option value="3">Management</option>
-                                                        <option value="4">Feature Request</option>
-                                                    </select>
-                                                    <label for="contact2-subject">Approuvée par</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-alt-success">
-                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- END Material Register -->
+                            </a>
                         </div>
                     </div>
 
-                    
+                    <div class="row invisible" data-toggle="appear">
+                        <!-- Row #3 -->
+                        <div class="col-md-12">
+                            <div class="block block-rounded block-bordered">
+                                <div class="block-header block-header-default border-b">
+                                        <h3 class="block-title">Projet d'investissement</h3>
+                                        <div class="block-options">
+                                            <a type="button" href="Prj_ajouter.php" class="btn btn-outline-success mr-5 mb-5">
+                                                <i class="fa fa-plus mr-5"></i>Ajouter Projet
+                                            </a>
+                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                                <i class="si si-refresh"></i>
+                                            </button>
+                                            <button type="button" class="btn-block-option">
+                                                <i class="si si-wrench"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                <div class="block-content block-content-full">
+                                <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/be_tables_datatables.js -->
+                                <table class="table table-bordered table-striped table-vcenter" id="tab" style="overflow-x:auto;">
+                                    <thead style="font-size: 10px; color:black">
+                                        <tr>
+                                            <th >id_projet</th>
+                                            <th >numéro de dossier</th>
+                                            <th >intitule_projet</th>
+                                            <th >la durée en jour</th>
+                                            <th >Etat du dossier </th>
+                                            <th width="15%">Action</th>
+                                            <th >Avis Sepre</th>
+                                            <th >Avis Sqe</th>
+                                            <th >Avis Sgdph</th>
+                                            <th >Avis Stah</th>
+                                            <th >Avis Abht</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </div>
+       
+                        
+                    </div>
                 </div>
                 <!-- END Page Content -->
             </main>
@@ -1092,11 +770,11 @@ if(isset($_POST['stah'])){
             <!-- Footer -->
             <footer id="page-footer" class="opacity-0">
                 <div class="content py-20 font-size-xs clearfix">
-                    <div class="float-right">
+                    <!-- <div class="float-right">
                         Crafted with <i class="fa fa-heart text-pulse"></i> by <a class="font-w600" href="http://goo.gl/vNS3I" target="_blank">pixelcave</a>
-                    </div>
+                    </div> -->
                     <div class="float-left">
-                        <a class="font-w600" href="https://goo.gl/po9Usv" target="_blank">Codebase 1.3</a> &copy; <span class="js-year-copy">2017</span>
+                        <a class="font-w600" href="https://goo.gl/po9Usv" target="_blank">oumaima sabi</a> &copy; <span class="js-year-copy">2022</span>
                     </div>
                 </div>
             </footer>
@@ -1114,5 +792,534 @@ if(isset($_POST['stah'])){
         <script src="assets/js/core/jquery.countTo.min.js"></script>
         <script src="assets/js/core/js.cookie.min.js"></script>
         <script src="assets/js/codebase.js"></script>
+        
+        
+
+        <!-- Page JS Plugins -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <!-- Page JS Code -->
+        <script src="assets/js/pages/be_pages_dashboard.js"></script>
+
+         <!-- Page JS Plugins -->
+         <script src="assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="assets/js/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+
+        <!-- Page JS Code -->
+        <script src="assets/js/pages/be_tables_datatables.js"></script>
+
+        <!-- leaflet  -->
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+
+        <!-- leaflet parametrage -->
+        <script type="text/javascript" src="assets/js/map/measure.js"></script>
+        <script src='assets/js/map/Leaflet.fullscreen.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js'></script>
+        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+        <script type="text/javascript" src="assets/js/map/leaflet.browser.print.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
+        <script>
+            $(document).ready( function() {
+                
+                $.ajax({
+                    url:"http://localhost/projectpfe/data/data_chart_etat.php",
+                    type:"GET",
+                    data:'data',
+                    // dataType:"json",
+                    // dataSrc: 'data',
+                    success:function(data){
+                        console.log(data);
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+                        // console.log(d1);
+                        var nb= Object.keys(d.data[0])[0]; // return name of index1
+                        // console.log(d.data[2].nombre);
+
+                        var n = [];
+                                var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    console.log(n.push(d.data[count].nombre));
+                                    e.push(d.data[count].etat);
+                        c.push(d.data[count].color);
+                                }
+                        // console.log(n);
+                        
+                        var ctxt=$("#pieChart").get(0).getContext('2d');
+                        var data2={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "etat",
+                            data: n,
+                            backgroundColor:c,
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"doughnut",
+                        data: data2
+                        }
+                        );
+                    },
+                });
+
+                $.ajax({
+                    url:"http://localhost/projectpfe/data/data_chart_number.php",
+                    type:"GET",
+                    data:'data',
+                    // dataType:"json",
+                    // dataSrc: 'data',
+                    success:function(data){
+                        console.log(data);
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+                        // console.log(d1);
+                        var nb= Object.keys(d.data[0])[0]; // return name of index1
+                        // console.log(d.data[2].nombre);
+
+                        var n = [];
+                        var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    console.log(n.push(d.data[count].nombre));
+                                    e.push(d.data[count].description);
+                                    c.push(d.data[count].color);
+                                }
+                        // console.log(n);
+                        
+                        var ctxt=$("#piechart2").get(0).getContext('2d');
+                        var data3={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "durée",
+                            data: n,
+                            backgroundColor:c,
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"bar",
+                        data: data3
+                        }
+                        );
+                    },
+                });
+
+                // $.ajax({
+                //     url:"http://localhost/projectpfe/data/data_chart_mois.php",
+                //     type:"GET",
+                //         data:'data',
+                //         // dataType:"json",
+                //         // dataSrc: 'data',
+                            
+                //         success:function(data){
+                //             console.log(data);
+                //             var d =JSON.parse(data);
+                //             var d1= Object.keys(d.data).length;
+                //             // console.log(d1);
+                //             var nb= Object.keys(d.data[0])[0]; // return name of index1
+                //             // console.log(d.data[2].nombre);
+
+                //             var n = [];
+                //             var p = [];
+                //             var c=[];
+                //             var e=[];
+                //             var color=[];
+                //             var ma=[];
+                //             for(var count = 0; count <d1; count++){
+                //                 n.push(d.data[count].nombre);
+                //                 p.push(d.data[count].mois);
+                //                 c.push(d.data[count].annee);
+                //                 e.push(d.data[count].etat_dossier);
+                //                 color.push(d.data[count].color);
+                //                 ma.push(d.data[count].mois_annee);
+                //                 }
+                //             // console.log(n);
+                        
+                //             var ctxt=$("#barchart").get(0).getContext('2d');
+                //             var data2={
+                //                 labels :ma,
+                //                 datasets : [
+                //                 {
+                //                     data: n,
+                //                     backgroundColor:color,
+                //                 },
+                //                 ]
+                //             }
+                            
+
+                //         var chart1= new Chart ( ctxt , {
+                //             type:"bar",
+                //             data: data2,
+                //             options: {
+                //             legend: { display: false },
+                //             title: {
+                //                 display: true,
+                //                 // text: 'Nombre des projets chaque année selon leur etat'
+                //             }
+                //             }
+                //         });
+                //     },
+                // });
+
+                
+
+            });
+            var ajax1={url: "http://localhost/projectpfe/data/data_dure_prj_new.php",type: 'POST',dataSrc: 'data'};
+            var ajax2 ={url: "http://localhost/projectpfe/data/data_dureemoin10.php",type: 'POST',dataSrc: 'data'};
+            var ajax3={url: "http://localhost/projectpfe/data/data_chartentre10et30.php",type: 'POST',dataSrc: 'data'};
+            var ajax4={url: "http://localhost/projectpfe/data/data_dureeplus30.php",type: 'POST',dataSrc: 'data'};
+            var column1=[{data:'id',
+                            render: function (data) {
+                                    return '<a href="http://localhost/projectpfe/vue2/details.php?id='+ data+'"><i class="si si-eye fa-2x"/></a>'
+                                },
+                            orderable: false},
+                            {data:'id'},
+                            { data: 'numero_dossier' },
+                            {data:'intitule_projet'},
+                            {data:'duree'},
+                            {data:'etat_dossier'}
+                        ];
+            var column2=[{
+                            data: 'action',
+                            className: "dt-center editor-edit",
+                            render: function (data) {
+                                    return '<span class="badge badge-success">'+ data+'</span>'},
+                            orderable: false,   
+                            },
+                            { data:'id'},
+                            { data: 'numero_dossier' },
+                            {data:'intitule_projet'},
+                            {data:'duree'},
+                            {data:'etat_dossier'},  
+                        ];
+            var column3= [{
+                            data: 'action',
+                            className: "dt-center editor-edit",
+                            render: function (data) {
+                                    return '<span class="badge badge-warning">'+ data+'</span>'},
+                            orderable: false,   
+                            },
+                            { data:'id'},
+                            { data: 'numero_dossier' },
+                            {data:'intitule_projet'},
+                            {data:'duree'},
+                            {data:'etat_dossier'},
+                            
+                        ];
+            var column4=[{
+                            data: 'action',
+                            className: "dt-center editor-edit",
+                            render: function (data) {
+                                    return '<span class="badge badge-danger">'+ data+'</span>'},
+                            orderable: false,   
+                            },
+                            { data:'id'},
+                            { data: 'numero_dossier' },
+                            {data:'intitule_projet'},
+                            {data:'duree'},
+                            {data:'etat_dossier'},
+                            
+                        ];
+                        var column5=[
+                            { data:'id',className:"data1"},
+                            { data: 'numero_dossier',className:"data2" },
+                            {data:'intitule_projet',className:"data3"},
+                            {data:'duree',
+                            render: function (data) {
+                                if ( data <= 10 ) {
+                                    return '<span class="badge badge-success">'+ data+' jours</span>';
+                                }else if(data > 10 && data <= 30 )
+                                {
+                                    return '<span class="badge badge-warning">'+ data+' jours </span>';
+                                }
+                                else{
+                                    return '<span class="badge badge-danger">'+ data+' jours </span>' 
+                                }
+                            },
+                            orderable: false },
+                            {data:'etat_dossier'},
+                            {data:'id',
+                            render: function (data) {
+                                    return '<a id="edit" href="Prj_modifier.php?id='+data+'" type="button" class="btn btn-sm btn-circle btn-alt-warning mr-5 mb-5"><i class="fa fa-pencil"></i></a><a href="supprimerprojet.php?id='+data+'" onclick = "fun()" type="button" class="btn btn-sm btn-circle btn-alt-danger mr-5 mb-5"><i class="fa fa-times"></i></a><a class="btn btn-sm btn-circle btn-alt-info mr-5 mb-5" href="http://localhost/projectpfe/vue2/details.php?id='+ data+'"><i class="fa fa-info"></i></a>';
+                                },
+                            orderable: false}, 
+                            {data: function (data,type,row) {
+                                if (data.avis_sepre == null){
+                                    return '<a type="button" href="ajouter_avis_sepre.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                }else{
+                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
+                                }
+                            },
+                            orderable: false}, 
+                            {data:function (data,type,row) {
+                                if (data.avis_sqe == null){
+                                    return '<a type="button" href="ajouter_avis_sqe.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                }else{
+                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
+                                }
+                            },
+                            orderable: false}, 
+                            {data:function (data,type,row) {
+                                if (data.avis_sgdph == null){
+                                    return '<a type="button" href="ajouter_avis_sgdph.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                }else{
+                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
+                                }
+                            },
+                            orderable: false},
+                            {data: function (data,type,row) {
+                                if (data.avis_stah == null){
+                                    return '<a type="button" href="ajouter_avis_stah.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                }else{
+                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
+                                }
+                                },
+                            orderable: false},
+                            {data: function (data,type,row) {
+                                if (data.avis_sepre !== null && data.avis_sqe !== null && data.avis_sgdph !== null && data.avis_stah !== null && data.avis_abht == null){
+                                    return '<a type="button" href="ajouter_avis_stah.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                }else{
+                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-warning mr-5 mb-5" disabled><i class="fa fa-exclamation"></i></a>';
+                                }
+                                
+                            },
+                            orderable: false},
+                        ];
+
+            $('#example2').DataTable({
+                "createdRow": function( row, data ) {
+                        if ( data['duree'] > 30 ) {        
+                            $(row).addClass('table-danger');
+                        }
+                        // else{
+                        //     if ( data['duree'] < 10 )
+                        //     {        
+                        //         $(row).addClass('table-info');
+                        //     }
+                        // }
+                        
+                    },
+                    "paging"   : true,
+                    "lengthChange": true,
+                    "searching "  : true,
+                    "ordering"    : true,
+                    "info  "      : true,
+                    "autoWidth"   : true,
+                    "scrollX": true,
+                    "sScrollX": '100%',
+                    "pageLength": 5,
+                        ajax: ajax1 ,
+                        columns:column1,
+                        select: true,
+                        retrieve: true,
+            });
+
+            $('#tab').DataTable({
+                "paging"   : true,
+                "lengthChange": true,
+                "searching "  : true,
+                "ordering"    : true,
+                "info  "      : true,
+                "autoWidth"   : true,
+                "scrollX": true,
+                "sScrollX": '100%',
+                "pageLength": 5,
+                ajax: ajax1,
+                columns:column5,
+                columnDefs: [
+               { width: 200, targets: 0 }
+               ],
+               fixedColumns: true
+            });
+
+            function showDataSet1(){
+                $('#example1').DataTable({
+                    "paging"   : true,
+                    "lengthChange": true,
+                    "searching "  : true,
+                    "ordering"    : true,
+                    "info  "      : true,
+                    "autoWidth"   : true,
+                    "scrollX": true,
+                    "sScrollX": '100%',
+                    "pageLength": 5,
+                    ajax: ajax3,
+                    columns:column3,
+                });
+            };
+
+            function showDataSet2(){
+                    $('#example1').DataTable({
+                    "paging"   : true,
+                    "lengthChange": true,
+                    "searching "  : true,
+                    "ordering"    : true,
+                    "info  "      : true,
+                    "autoWidth"   : true,
+                    "scrollX": true,
+                    "sScrollX": '100%',
+                    "pageLength": 5,
+                    ajax: ajax3,
+                    columns:column3,
+                });
+            };
+
+            function showDataSet3(){
+                $('#example1').DataTable({
+                    "paging"   : true,
+                    "lengthChange": true,
+                    "searching "  : true,
+                    "ordering"    : true,
+                    "info  "      : true,
+                    "autoWidth"   : true,
+                    "scrollX": true,
+                    "sScrollX": '100%',
+                    "pageLength": 5,
+                    ajax: ajax4,
+                    columns:column4,
+                });
+            };
+
+        $.ajax({
+            url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
+            type:"GET",
+             data:'data',
+                // dataType:"json",
+                // dataSrc: 'data',
+			
+            success:function(data){
+                console.log(data);
+                var d =JSON.parse(data);
+                var d1= Object.keys(d.data).length;
+                // console.log(d1);
+                var nb= Object.keys(d.data[0])[0]; // return name of index1
+                // console.log(d.data[2].nombre);
+
+                var n = [];
+                var p = [];
+                var color=[];
+                
+                for(var count = 0; count <d1; count++){
+                    n.push(d.data[count].nombre);
+                    if(d.data[count].jour==="0"){
+                        p.push('Lundi');
+                    }
+                    if(d.data[count].jour==="1"){
+                        p.push('Mardi');
+                    }
+                    if(d.data[count].jour==="2"){
+                        p.push('Mercredi');
+                    }
+                    if(d.data[count].jour==="3"){
+                        p.push('Jeudi');
+                    }
+                    if(d.data[count].jour==="4"){
+                        p.push('Vendredi');
+                    }
+                    if(d.data[count].jour==="5"){
+                        p.push('Samedi');
+                    }
+                    if(d.data[count].jour==="6"){
+                        p.push('Dimanche');
+                    }
+                    color.push(d.data[count].color);
+                }
+                // console.log(n);
+        
+                var ctxt=$("#bar1").get(0).getContext('2d');
+                var data2={
+                    labels :p,
+                    datasets : [
+                    {
+                        data: n,
+                        backgroundColor:color,
+                        tension: 0.5
+                    },
+                    ]
+                }
+            
+
+                var chart1= new Chart ( ctxt , {
+                    type:"line",
+                    data: data2,
+                    options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Nombre des projets chaque année selon leur etat'
+                    }
+                    }
+                });
+            },
+        });
+
+        $.ajax({
+            url:"http://localhost/projectpfe/data/data_line_mois_anne_new.php",
+            type:"GET",
+             data:'data',
+                // dataType:"json",
+                // dataSrc: 'data',
+			
+            success:function(data){
+                console.log(data);
+                var d =JSON.parse(data);
+                var d1= Object.keys(d.data).length;
+                // console.log(d1);
+                var nb= Object.keys(d.data[0])[0]; // return name of index1
+                // console.log(d.data[2].nombre);
+
+                var n = [];
+                var p = [];
+                var c= [];
+                var color=[];
+                var date=[];
+                
+                for(var count = 0; count <d1; count++){
+                    n.push(d.data[count].nombre);
+                    p.push(d.data[count].mois);
+                    c.push(d.data[count].annee);
+                    color.push(d.data[count].color);
+                    date.push(d.data[count].date);
+                }
+                // console.log(n);
+                var ctxt=$("#bar2").get(0).getContext('2d');
+                var data2={
+                    labels :date,
+                    datasets : [
+                    {
+                        data: n,
+                        backgroundColor:color,
+                        tension: 0.5
+                    },
+                    ]
+                }
+            
+
+                var chart1= new Chart ( ctxt , {
+                    type:"line",
+                    data: data2,
+                    options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Nombre des projets chaque année selon leur etat'
+                    }
+                    }
+                });
+            },
+        }); 
+        </script>
     </body>
 </html>

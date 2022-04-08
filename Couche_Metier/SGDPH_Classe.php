@@ -5,8 +5,8 @@
 */
 class SGDPH
 {
-	private $id_pr,$remarque_sup_sgdph,$avis_sgdph,$date_avis_sgdph,$valide_par_sgdph,$approuve_par_sgdph,$superficie_bv,$amenagement_propose;
-	function __construct($a,$p,$q,$r,$s,$t,$u,$v)
+	private $id_pr,$remarque_sup_sgdph,$avis_sgdph,$date_avis_sgdph,$valide_par_sgdph,$approuve_par_sgdph;
+	function __construct($a,$p,$q,$r,$s,$t)
 	{
         $this->id_pr = $a;
         $this->remarque_sup_sgdph=$p;
@@ -14,8 +14,8 @@ class SGDPH
         $this->date_avis_sgdph=$r;
         $this->valide_par_sgdph=$s;
         $this->approuve_par_sgdph=$t;
-        $this->superficie_bv=$u;
-        $this->amenagement_propose=$v;
+        // $this->superficie_bv=$u;
+        // $this->amenagement_propose=$v;
 	}
     function getid_pr(){
 		return $this->id_pr;
@@ -53,18 +53,18 @@ class SGDPH
 	function setapprouve_par_sgdph($a){
 		$this->approuve_par_sgdph=$a;
 	}
-    function getsuperficie_bv(){
-		return $this->superficie_bv;
-	}
-	function setsuperficie_bv($a){
-		$this->superficie_bv=$a;
-	}
-    function getamenagement_propose(){
-		return $this->amenagement_propose;
-	}
-	function setamenagement_propose($a){
-		$this->amenagement_propose=$a;
-	}
+    // function getsuperficie_bv(){
+	// 	return $this->superficie_bv;
+	// }
+	// function setsuperficie_bv($a){
+	// 	$this->superficie_bv=$a;
+	// }
+    // function getamenagement_propose(){
+	// 	return $this->amenagement_propose;
+	// }
+	// function setamenagement_propose($a){
+	// 	$this->amenagement_propose=$a;
+	// }
 }
 
 

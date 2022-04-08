@@ -438,7 +438,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
                                 <li>
-                                    <a href="Prj_ajouter.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Nouveau Projet</span></a>
+                                    <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Gestion des Avis</span></a>
                                 </li>
                                 <li>
                                     <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
@@ -716,9 +716,9 @@ require_once '../Couche_Service/Service_Projet.php';
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
-                                    <div class="pull-all pt-50">
+                                    <div class="pull-all pt-50" >
                                         <!-- Lines Chart Container -->
-                                        <canvas class="" id="pieChart"></canvas>
+                                        <canvas class="" id="pieChart" style="height:60px;width:60px;"></canvas>
                                     </div>
                                 </div>
                                 <div class="block-content">
@@ -965,7 +965,9 @@ require_once '../Couche_Service/Service_Projet.php';
                                 <div class="block-header block-header-default border-b">
                                         <h3 class="block-title">Projet d'investissement</h3>
                                         <div class="block-options">
-                                            
+                                            <a type="button" href="Prj_ajouter.php" class="btn btn-outline-success mr-5 mb-5">
+                                                <i class="fa fa-plus mr-5"></i>Ajouter Projet
+                                            </a>
                                             <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
                                                 <i class="si si-refresh"></i>
                                             </button>
@@ -985,7 +987,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                             <th>province</th>
                                             <th>maitre_ouvrage</th> -->
                                             <th width="15%">intitule_projet</th>
-                                            <th width="15%">la durée en jour</th>
+                                            <!-- <th width="15%">la durée en jour</th> -->
                                             <th width="15%">Etat du dossier </th>
                                             <th width="15%">Action</th>
                                             <!-- <th class="text-center" style="width: 15%;">Profile</th> -->
@@ -1148,7 +1150,7 @@ require_once '../Couche_Service/Service_Projet.php';
                         }
 
                         var chart1= new Chart ( ctxt , {
-                        type:"doughnut",
+                        type:"bar",
                         data: data3
                         }
                         );
@@ -1275,19 +1277,19 @@ require_once '../Couche_Service/Service_Projet.php';
                             { data:'id',className:"data1"},
                             { data: 'numero_dossier',className:"data2" },
                             {data:'intitule_projet',className:"data3"},
-                            {data:'duree',
-                            render: function (data) {
-                                if ( data <= 10 ) {
-                                    return '<span class="badge badge-success">'+ data+' jours</span>';
-                                }else if(data > 10 && data <= 30 )
-                                {
-                                    return '<span class="badge badge-warning">'+ data+' jours </span>';
-                                }
-                                else{
-                                    return '<span class="badge badge-danger">'+ data+' jours </span>' 
-                                }
-                            },
-                            orderable: false },
+                            // {data:'duree',
+                            // render: function (data) {
+                            //     if ( data <= 10 ) {
+                            //         return '<span class="badge badge-success">'+ data+' jours</span>';
+                            //     }else if(data > 10 && data <= 30 )
+                            //     {
+                            //         return '<span class="badge badge-warning">'+ data+' jours </span>';
+                            //     }
+                            //     else{
+                            //         return '<span class="badge badge-danger">'+ data+' jours </span>' 
+                            //     }
+                            // },
+                            // orderable: false },
                             {data:'etat_dossier'},
                             {data:'id',
                             render: function (data) {

@@ -5,8 +5,8 @@
 */
 class ABHT
 {
-	private $id_pr,$avis_abht,$date_avis_abht,$etabli_par,$valide_par,$approuve_par,$origine_AEP,$origine_autre,$bes_eau_dom,$bes_eau_irrig,$rem_bet_bes_eau;
-	function __construct($a,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y)
+	private $id_pr,$avis_abht,$date_avis_abht,$etabli_par,$valide_par,$approuve_par,$rem_general,$etatdossier;
+	function __construct($a,$p,$q,$r,$s,$t,$y,$x)
 	{
         $this->id_pr = $a;
         $this->avis_abht=$p;
@@ -14,11 +14,8 @@ class ABHT
         $this->etabli_par=$r;
         $this->valide_par=$s;
         $this->approuve_par=$t;
-        $this->origine_AEP=$u;
-        $this->origine_autre=$v;
-        $this->bes_eau_dom=$w;
-        $this->bes_eau_irrig=$x;
-        $this->rem_bet_bes_eau=$y;
+        $this->rem_general=$y;
+		$this->etatdossier=$x;
 	}
     function getid_pr(){
 		return $this->id_pr;
@@ -56,37 +53,17 @@ class ABHT
 	function setapprouve_par($a){
 		$this->approuve_par=$a;
 	}
-    function getorigine_AEP(){
-		return $this->origine_AEP;
+    function getrem_general(){
+		return $this->rem_general;
 	}
-	function setorigine_AEP($a){
-		$this->origine_AEP=$a;
+	function setrem_general($a){
+		$this->rem_general=$a;
 	}
-    
-    function getorigine_autre(){
-		return $this->origine_autre;
+	function getetatdossier(){
+		return $this->etatdossier;
 	}
-	function setorigine_autre($a){
-		$this->origine_autre=$a;
-	}
-
-    function getbes_eau_dom(){
-		return $this->bes_eau_dom;
-	}
-	function setbes_eau_dom($a){
-		$this->bes_eau_dom=$a;
-	}
-    function getbes_eau_irrig(){
-		return $this->bes_eau_irrig;
-	}
-	function setbes_eau_irrig($a){
-		$this->bes_eau_irrig=$a;
-	}
-    function getrem_bet_bes_eau(){
-		return $this->rem_bet_bes_eau;
-	}
-	function setrem_bet_bes_eau($a){
-		$this->rem_bet_bes_eau=$a;
+	function setetatdossier($a){
+		$this->etatdossier=$a;
 	}
 }
 

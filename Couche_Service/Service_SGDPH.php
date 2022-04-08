@@ -62,8 +62,8 @@ class SGDPH_Service{
     
  	function update($cat)
  	{
- 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set gid=? ,avis_sgdph=?,date_avis_sgdph=?,valide_par_sgdph=?,approuve_par_sgdph=?,superficie_bv=?,amenagement_propose=? from prj_inv.projets_investissement where gid=?');
-	 	if ($st->execute(array($cat->getid_pr(),$cat->getavis_sgdph(),$cat->getremarque_sup_sgdph(),$cat->getdate_avis_sgdph(),$cat->getvalide_par_sgdph(),$cat->getapprouve_par_sgdph(),$cat->getsuperficie_bv(),$cat->getamenagement_propose())))
+ 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set remarque_sup_sgdph=?,avis_sgdph=?,date_avis_sgdph=?,valide_par_sgdph=?,approuve_par_sgdph=? where gid=?');
+	 	if ($st->execute(array($cat->getremarque_sup_sgdph(),$cat->getavis_sgdph(),$cat->getdate_avis_sgdph(),$cat->getvalide_par_sgdph(),$cat->getapprouve_par_sgdph(),$cat->getid_pr())))
 		{
 	 	 	return true;
 	 	}
@@ -86,13 +86,13 @@ class SGDPH_Service{
  	}
 
 	function nombre(){
-		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement');
+		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement where avis_sgdph IS NOT NULL');
 	 	if ($st->execute()) {
-	 	 		return $st->fetchAll();
-	 		}
-	 	 	else{
-	 	 		return null;
-	 	 	}
+	 	 	return $st->fetchAll();
+	 	}
+	 	else{
+	 	 	return null;
+	 	}
 	}
 
     

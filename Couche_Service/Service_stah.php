@@ -87,7 +87,7 @@ class STAH_Service{
  	}
 
 	function nombre(){
-		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement');
+		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement where avis_stah IS NOT NULL');
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}

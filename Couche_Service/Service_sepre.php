@@ -62,8 +62,8 @@ class SEPRE_Service{
     
  	function update($avis)
  	{
- 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set gid=? ,avis_abht=?,date_avis_abht=?,etabli_par=?,valide_par=?,approuve_par=?,origine_aep=?,origine_autre=?,besoin_eau_domestique=?,besoin_eau_irrigation=?,remarque_bet_besoin_eau=?,avis_abht=? from prj_inv.projets_investissement where gid=?');
-	 	if ($st->execute(array($avis->getid_pr(),$avis->getid_pr(),$avis->getavis_abht(),$avis->getdate_avis_abht(),$avis->getetabli_par(),$avis->getvalide_par(),$avis->getapprouve_par(),$avis->getorigine_AEP(),$avis->getorigine_autre(),$avis->getbes_eau_dom(),$avis->getbes_eau_irrig(),$avis->getrem_bet_bes_eau())))
+ 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set avis_sepre=?,date_avis_sepre=?,remarques_sup_sepre=? where gid=?');
+	 	if ($st->execute(array($avis->getavis_sepre(),$avis->getdate_avis_sepre(),$avis->getremarques_sup_sepre(),$avis->getid_pr())))
 		{
 	 	 	return true;
 	 	}
@@ -86,13 +86,13 @@ class SEPRE_Service{
  	}
 
 	function nombre(){
-		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement');
+		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement where avis_sepre IS NOT NULL');
 	 	if ($st->execute()) {
-	 	 		return $st->fetchAll();
-	 		}
-	 	 	else{
-	 	 		return null;
-	 	 	}
+	 	 	return $st->fetchAll();
+	 	}
+	 	else{
+	 	 	return null;
+	 	}
 	}
 
 }

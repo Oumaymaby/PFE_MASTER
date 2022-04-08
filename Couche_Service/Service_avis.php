@@ -200,6 +200,16 @@ class Avis_Service{
 			return null;
 		}
 	}
+
+	function avis_not_null(){
+		$st =	$this->db->prepare('SELECT * FROM prj_inv.projets_investissement where avis_abht  IS NOT NULL and avis_sepre IS NOT NULL and avis_stah IS NOT NULL and avis_sqe IS NOT NULL and avis_sgdph IS NOT NULL');
+		if ($st->execute()) {
+			return $st->fetchAll();
+		}
+		else{
+			return null;
+		}
+	}
 }
 
 // $b = new Avis_Service();

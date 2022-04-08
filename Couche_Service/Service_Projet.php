@@ -384,6 +384,39 @@ class Projet_Service{
 		}
 	}
 
+	//selection des projets avec une duree de jour de la date d'arrivée au BET avec leur etatdossier moin de 10j 
+	function dureedayetatprj10_new(){
+		$st =	$this->db->prepare("select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier,inv.avis_sepre,inv.avis_sqe,inv.avis_sgdph,inv.avis_stah,inv.avis_abht, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree from prj_inv.projets_investissement inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and v.etatdossier='Nouveau dossier'and DATE_PART('day', Now() - inv.date_arrivee_bet) <= 10");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection des projets avec une duree de jour de la date d'arrivée au BET avec leur etatdossier entre 10 et 30 
+	function dureedayetatprj30_new(){
+		$st =	$this->db->prepare("select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier,inv.avis_sepre,inv.avis_sqe,inv.avis_sgdph,inv.avis_stah,inv.avis_abht, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree from prj_inv.projets_investissement inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) > 10  and DATE_PART('day', Now() - inv.date_arrivee_bet) <= 30 and v.etatdossier='Nouveau dossier'");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection des projets avec une duree de jour de la date d'arrivée au BET avec leur etatdossier plus 30j 
+	function dureedayetatprjplus30_new(){
+		$st =	$this->db->prepare("select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier,inv.avis_sepre,inv.avis_sqe,inv.avis_sgdph,inv.avis_stah,inv.avis_abht, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree from prj_inv.projets_investissement inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) > 30 and v.etatdossier='Nouveau dossier'");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
 
 
 

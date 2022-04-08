@@ -75,13 +75,13 @@ class SQE_Service{
     
 
 	function nombre(){
-		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement');
+		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.projets_investissement where avis_sqe IS NOT NULL');
 	 	if ($st->execute()) {
-	 	 		return $st->fetchAll();
-	 		}
-	 	 	else{
-	 	 		return null;
-	 	 	}
+	 	 	return $st->fetchAll();
+	 	}
+	 	else{
+	 	 	return null;
+	 	}
 	}
 
     
