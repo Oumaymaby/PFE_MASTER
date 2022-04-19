@@ -11,6 +11,7 @@ require_once '../Couche_Service/Service_SGDPH.php';
 require_once '../Couche_Service/Service_stah.php';
 require_once '../Couche_Service/Service_avis.php';
 require_once '../Couche_Service/Service_user.php';
+require_once '../Couche_Service/Service_OrigineAep.php';
 
 
 if(isset($_GET['id'])){
@@ -24,11 +25,16 @@ if(isset($_GET['id'])){
 if(isset($_POST['sepre'])){
     //filtre et validation du formulaire
     $id_sepre = htmlspecialchars($_POST["id_sepre"]);
+    $orig_aep = htmlspecialchars($_POST["orig_aep"]);
+    $besoin_domes = htmlspecialchars($_POST["besoin_domes"]);
+    $speci_autre = htmlspecialchars($_POST["speci_autre"]);
+    $besoin_irr = htmlspecialchars($_POST["besoin_irr"]);
+    $rem_bet = htmlspecialchars($_POST["rem_bet"]);
     $rem_sepre = htmlspecialchars($_POST["rem_sepre"]);
     $avis_sepre = htmlspecialchars($_POST["avis_sepre"]);
-
     $date_sepre=date("Y-m-d");
-    $avis_st = new SEPRE($id_sepre,$rem_sepre,$avis_sepre,$date_sepre);
+    $avis_st = new SEPRE($id_sepre,$rem_sepre,$avis_sepre,$date_sepre,$rem_bet,$orig_aep,$speci_autre,$besoin_domes,$besoin_irr);
+    // var_dump($avis_st);
     $p= new SEPRE_Service();
     if($p->update($avis_st)){
         header("Location: ajouter_avis.php?id=".$id_sepre); }
@@ -648,7 +654,7 @@ if(isset($_POST['sepre'])){
                     <!-- Register Forms -->
                     <h2 class="content-heading">Veuillez rajouter des remarques pour les projets d'investissement</h2>
                     <div class="row justify-content-center py-20">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <!-- Material Register -->
                             <div class="block block-themed">
                                 <div class="block-header bg-gd-emerald">
@@ -663,7 +669,7 @@ if(isset($_POST['sepre'])){
                                 <div class="block-content">
                                     <form action="ajouter_avis_sepre.php" method="post">
                                         <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-6">
                                                 <div class="form-material">
                                                     <input type="text" class="form-control" id="register2-username" name="id_sepre" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
                                                     <label for="register2-username">Identifiant du projet</label>
@@ -671,15 +677,58 @@ if(isset($_POST['sepre'])){
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-6">
                                                 <div class="form-material">
-                                                    <textarea class="form-control" id="contact2-msg" name="rem_sepre" rows="4"></textarea>
-                                                    <label for="contact2-msg">Remarque</label>
+                                                    <select class="form-control" id="contact2-subject" name="orig_aep" size="1">
+                                                        <option value=''></option>
+                                                        <?php
+                                                            $ss = new OrigineAep_Service();
+                                                            $tc = $ss->findAll();
+                                                            foreach($tc as $row) {
+                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    <label for="register2-username">Origine de l'eau potable </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="besoin_domes">
+                                                    <label for="register2-username">Besoin en eau domestique</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-6">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="speci_autre" rows="4"></textarea>
+                                                    <label for="contact2-msg">Specifier si autre</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="besoin_irr" rows="4"></textarea>
+                                                    <label for="contact2-msg">Besoin en eau d'irrigation</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="rem_bet" rows="4"></textarea>
+                                                    <label for="contact2-msg">Remarques de BET sur les besoins en eau</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="rem_sepre" rows="4"></textarea>
+                                                    <label for="contact2-msg">Remarques Supplémentaires du SEPRE</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
                                                 <div class="form-material">
                                                     <select class="form-control" id="contact2-subject" name="avis_sepre" size="1">
                                                         <option value=''></option>

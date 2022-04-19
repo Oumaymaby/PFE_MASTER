@@ -45,10 +45,10 @@ class ABHT_Service{
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
-				return new ABHT($row->gid,$row->avis,$row->date_avis_abht,$row->etabli_par,$row->valide_par,$row->approuve_par,$row->remarques_genereles_bet,$row->etatdossier);		
+				return new ABHT($row->gid,$row->avis,$row->date_avis_abht,$row->etabli_par,$row->valide_par,$row->approuve_par,$row->remarques_generales_bet,$row->etatdossier);		
 			}
 			elseif(empty($row)){
-				return new ABHT('0','0','0','0','0','0','0','0','0','0','0');
+				return new ABHT('0','0','0','0','0','0','0','0');
 			}
 		}
 		else{

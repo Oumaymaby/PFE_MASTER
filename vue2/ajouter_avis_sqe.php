@@ -11,6 +11,7 @@ require_once '../Couche_Service/Service_SGDPH.php';
 require_once '../Couche_Service/Service_stah.php';
 require_once '../Couche_Service/Service_avis.php';
 require_once '../Couche_Service/Service_user.php';
+require_once '../Couche_Service/Service_modeAssain.php';
 
 
 if(isset($_GET['id'])){
@@ -29,30 +30,26 @@ if(isset($_POST['sqe'])){
     $avis_sqe = htmlspecialchars($_POST["avis_sqe"]);
     $valide_sqe = htmlspecialchars($_POST["valide_sqe"]);
     $approuve_sqe = htmlspecialchars($_POST["approuve_sqe"]);
+    $rem_sqe= htmlspecialchars($_POST["rem_sqe"]);
+    $rem_bet= htmlspecialchars($_POST["rem_bet"]);
+    $volum= htmlspecialchars($_POST["volume_use"]);
+    $mode_assai= htmlspecialchars($_POST["mode_assai"]);
+    $reutil= htmlspecialchars($_POST["reutil"]);
+    $niv_trat= htmlspecialchars($_POST["niv_trat"]);
+    $niveau_piezo= htmlspecialchars($_POST["niveau_piezo"]);
+    $datenivea= htmlspecialchars($_POST["datenivea"]);
+    $coord_x= htmlspecialchars($_POST["coord_x"]);
+    $coord_y= htmlspecialchars($_POST["coord_y"]);
+    $trat_boue= htmlspecialchars($_POST["trat_boue"]);
     $date_sqe=date("Y-m-d");
-    $avis_sq = new SQE($id_sqe,$avis_sqe,$date_sqe,$valide_sqe,$approuve_sqe,$rem_sqe);
+    $avis_sq = new SQE($id_sqe,$avis_sqe,$date_sqe,$valide_sqe,$approuve_sqe,$rem_sqe,$rem_bet,$volum,$mode_assai,$reutil,$niv_trat,$niveau_piezo,$datenivea,$coord_x,$coord_y,$trat_boue);
     var_dump($avis_sq);
     $p= new SQE_Service();
     if($p->update($avis_sq)){
-        header("Location: ajouter_avis.php?id=".$id_sqe); }
+        header("Location: details.php?id=".$id_sqe); }
     
 }
 
-if(isset($_POST['stah'])){
-    //filtre et validation du formulaire
-    $id_stah = htmlspecialchars($_POST["id_stah"]);
-    $rem_stah = htmlspecialchars($_POST["rema_stah"]);
-    $avis_stah = htmlspecialchars($_POST["avis_stah"]);
-    $valide_stah = htmlspecialchars($_POST["valide_stah"]);
-    $approuve_stah = htmlspecialchars($_POST["approuve_stah"]);
-    $date_stah=date("Y-m-d");
-    $avis_st = new STAH($id_stah,$avis_stah,$date_stah,$valide_stah,$approuve_stah,$rem_stah);
-    $p= new STAH_Service();
-    var_dump($avis_st);
-    if($p->update($avis_st)){
-        header("Location: ajouter_avis.php?id=".$id_stah); }
-    
-}
 
 ?>
 <!doctype html>
@@ -664,7 +661,7 @@ if(isset($_POST['stah'])){
                     <!-- Register Forms -->
                     <h2 class="content-heading">Veuillez Rajouter Remarque SQE pour le projet d'investissement</h2>
                     <div class="row justify-content-center py-20">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <!-- Material Register -->
                             <div class="block block-themed">
                                 <div class="block-header bg-gd-emerald">
@@ -677,9 +674,9 @@ if(isset($_POST['stah'])){
                                     </div>
                                 </div>
                                 <div class="block-content">
-                                    <form action="ajouter_avis.php" method="post" >
+                                    <form action="ajouter_avis_sqe.php" method="post" >
                                         <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-6">
                                                 <div class="form-material">
                                                     <input type="text" class="form-control" id="register2-username" name="id_sqe" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
                                                     <label for="register2-username">Identifiant du projet</label>
@@ -687,15 +684,92 @@ if(isset($_POST['stah'])){
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-4">
                                                 <div class="form-material">
-                                                    <textarea class="form-control" id="contact2-msg" name="rem_sqe" rows="4" placeholder="Enter une remarque"></textarea>
-                                                    <label for="contact2-msg">Remarque</label>
+                                                    <input type="text" class="form-control" id="register2-username" name="volume_use">
+                                                    <label for="register2-username">Volumes des eaux usées</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="mode_assai" size="1">
+                                                    <option value=''></option>
+                                                    <?php
+                                                        $ss = new ModeAssain_Service();
+                                                        $tc = $ss->findAll();
+                                                        foreach($tc as $row) {
+                                                            echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                        }
+                                                    ?>
+                                                    </select>
+                                                    <label for="register2-username">Mode d'assainissement</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="reutil">
+                                                    <label for="register2-username">Réutilisation QEU</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-4">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="niv_trat">
+                                                    <label for="register2-username">Niveau de traitement</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="niveau_piezo">
+                                                    <label for="register2-username">Niveau Piézométrique</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-material">
+                                                    <input type="date" class="form-control" id="register2-username" name="datenivea">
+                                                    <label for="register2-username">Date Niveau Piézométrique</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-4">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="coord_x">
+                                                    <label for="register2-username">Coordonnées X du périmètre</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="coord_y">
+                                                    <label for="register2-username">Coordonnées Y du périmètre</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-material">
+                                                    <input type="text" class="form-control" id="register2-username" name="trat_boue">
+                                                    <label for="register2-username">Traitement de la boue</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-12">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="rem_bet" rows="4" placeholder="Enter une remarque"></textarea>
+                                                    <label for="contact2-msg">Remarque du BET</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="rem_sqe" rows="4" placeholder="Enter une remarque"></textarea>
+                                                    <label for="contact2-msg">Remarque Supplémentaires du SQE</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-4">
                                                 <div class="form-material">
                                                     <select class="form-control" id="contact2-subject" name="avis_sqe" size="1">
                                                     <option value=''></option>
@@ -710,9 +784,7 @@ if(isset($_POST['stah'])){
                                                     <label for="contact2-subject">Avis SQE</label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-4">
                                                 <div class="form-material">
                                                     <select class="form-control" id="contact2-subject" name="valide_sqe" size="1">
                                                     <option value=''></option>
@@ -727,9 +799,7 @@ if(isset($_POST['stah'])){
                                                     <label for="contact2-subject">Validé par</label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-4">
                                                 <div class="form-material">
                                                     <select class="form-control" id="contact2-subject" name="approuve_sqe" size="1">
                                                     <option value=''></option>

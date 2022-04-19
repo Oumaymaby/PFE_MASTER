@@ -8,31 +8,243 @@ require_once '../Couche_Service/Service_province.php';
 require_once '../Couche_Service/Service_type_projet.php';
 require_once '../Couche_Service/Service_Commune.php';
 require_once '../Couche_Service/Service_province.php';
-if(isset($_POST['submit'])){
-    
-    extract($_POST);
-    $id= htmlspecialchars($_POST["gid"]);
-    $numdoss = htmlspecialchars($_POST["numdoss"]);
-    $datebet = htmlspecialchars($_POST["datebet"]);
-    $dateabht = htmlspecialchars($_POST["dateabht"]);
-    $province = htmlspecialchars($_POST["province"]);
-    $commune = htmlspecialchars($_POST["commune"]);
-    $intprojet = htmlspecialchars($_POST["int_projet"]);
-    $maitreouvrage = htmlspecialchars($_POST["maitreouvrage"]);
-    $architecte = htmlspecialchars($_POST["architecte"]);
-    $tittrefoncier = htmlspecialchars($_POST["tittrefoncier"]);
-    $superficie = htmlspecialchars($_POST["superficie"]);
-    $type_projet = htmlspecialchars($_POST["type_projet"]);
-    $etat_projet = 1;
-    $geom=htmlspecialchars($_POST["geom"]);
-    $geom1="MULTIPOLYGON(((".$geom.")))";
-    $projet = new ProjetInv($id,$numdoss,$datebet,$dateabht,$province,$commune,$intprojet,$maitreouvrage,$architecte,$tittrefoncier,$superficie,$type_projet,$etat_projet,$geom1);
-    $ss = new Projet_Service();
-    if($ss->add($projet)){
-        header("Location:http://localhost/projectpfe/vue2/details.php?id=".$id); 
-    }
+require_once '../Couche_Service/Service_abht.php';
+require_once '../Couche_Service/Service_sepre.php';
+require_once '../Couche_Service/Service_SQE.php';
+require_once '../Couche_Service/Service_SGDPH.php';
+require_once '../Couche_Service/Service_stah.php';
+require_once '../Couche_Service/Service_avis.php';
+require_once '../Couche_Service/Service_user.php';
+require_once '../Couche_Service/Service_OrigineAep.php';
+require_once '../Couche_Service/Service_modeAssain.php';
+require_once '../Couche_Service/Service_typeceau.php';
+require_once '../Couche_Service/Service_NatureCeau.php';
 
+
+if(isset($_GET['id'])){
+    $id = htmlspecialchars($_GET['id']);
+    $ss = new Projet_Service();
+    $tc = $ss->findById($id);
+    $id1=$tc->getid_pr(); 
+
+    if (is_null($tc)) {
+        $message="Le projet est introuvable";
+        header("Loation:Avis_prj.php?message=$message");
+    }else{
+        $b = new ABHT_Service();
+        $bb=$b->findById($id);
+        $rem_gen1 = $bb->getrem_general();
+        $avis_abht1 = $bb->getavis_abht();
+        $etabli_abht1 =$bb->getetabli_par() ;
+        $valide_abht1 = $bb->getvalide_par();
+        $approuve_abht1 = $bb->getapprouve_par();
+
+        $b1= new STAH_Service();
+        $bb1=$b1->findById($id);
+        $avis_stah1=$bb1->getavis_stah();
+        $avis_abht_amen1=$bb1->getavis_abht_amen();
+        $date_avis_stah1=$bb1->getdate_avis_stah();
+        $valide_par_stah1=$bb1->getvalide_par_stah();
+        $approuve_par_stah1=$bb1->getapprouve_par_stah();
+        $rem_sup_stah1=$bb1->getremarque_sup_stah();
+        $amen_prop1=$bb1->getamena_prop();
+        $superfi_bv1=$bb1->getsuperficie_bv();
+
+        $b2=new SQE_Service();
+        $bb2=$b2->findById($id);
+        $avis_sqe1=$bb2->getavis_sqe();
+        $date_avis_sque1=$bb2->getdate_avis_sqe();
+        $valide_sqe1=$bb2->getvalide_par_sqe();
+        $approuve_par_sqe1=$bb2->getapprouve_par_sqe();
+        $remarque_sup_sqe1=$bb2->getremarque_sup_sqe();
+        $remarque_bet_assai1=$bb2->getremarque_bet_assai();
+        $volume_eau_use1=$bb2->getvolume_eau_use();
+        $modeassai1=$bb2->getmodeassai();
+        $reut_qeu1=$bb2->getreut_qeu();
+        $niv_trait1=$bb2->getniv_trait();
+        $niv_piezo1=$bb2->getniv_piezo();
+        $date_piezo1=$bb2->getdate_piezo();
+        $coord_x1=$bb2->getcoord_x();
+        $coord_y1=$bb2->getcoord_y();
+        $trat_boue1=$bb2->gettrait_boue();
+
+        $b3=new SEPRE_Service();
+        $bb3=$b3->findById($id);
+        $remarque_sup_sepre1=$bb3->getremarques_sup_sepre();
+        $avis_sepre1=$bb3->getavis_sepre();
+        $date_avis_sepre1=$bb3->getdate_avis_sepre();
+        $remarque_bet_besoin_eau1=$bb3->getremarque_bet_besoin_eau();
+        $origine_eau_pot1=$bb3->getorigine_eau_pot();
+        $origine_autre1=$bb3->getorigine_autre();
+        $bet_eau_dom1=$bb3->getbes_eau_dom();
+        $bes_eau_irrg1=$bb3->getbes_eau_irrg();
+
+        $b4=new SGDPH_Service();
+        $bb4=$b4->findById($id);
+        $rem_sgdoh1 = $bb4->getremarque_sup_sgdph();
+        $rem_bet1=$bb4->getremarque_bet_sgdph();
+        $avis_sgdph1 =$bb4->getavis_sgdph();
+        $valide_sgdph1 =$bb4->getvalide_par_sgdph();
+        $approuve_sgdph1 = $bb4->getapprouve_par_sgdph();
+        $type_cours1 = $bb4->gettype_cours_eau();
+        $nom_cours1 = $bb4->getnom_cours_eau();
+        $debit_cours1 =$bb4->getcrue_100();
+        $nature_cours1 = $bb4->getnature_cours();
+        $servitude1 =$bb4->getservitude();
+        $origine_eaux1 =$bb4->getorigine_x();
+        $origine_eauy1 =$bb4->getorigine_y();
+        $aut_creus1=$bb4->getaut_creus();
+        $aut_prele1=$bb4->getaut_prelev();
+        $aut_dev1=$bb4->getaut_dever(); 
+        $aut_occ1=$bb4->getaut_occu_dph();  
+        $date_aut_creus1 = $bb4->getdate_creus();
+        $date_aut_prelev1 =$bb4->getdate_prelev();
+        $date_aut_dev1 = $bb4->getdate_dever();
+        $date_aut_occ1 = $bb4->getdate_occup_dph();
+        $num_aut_creus1 = $bb4->getnum_creus();
+        $num_aut_prelev1 = $bb4->getnum_prelev();
+        $num_aut_dev1 = $bb4->getnum_devers();
+        $num_aut_occ1 = $bb4->getnum_occup();
+        $autre_autorisation1 = $bb4->getautre_aut();
+    }
 }
+if(isset($_POST['abht'])){
+    //filtre et validation du formulaire
+    $id_abht = htmlspecialchars($_POST["id_abht"]);
+    $rem_gen = htmlspecialchars($_POST["rem_gen"]);
+    $avis_abht = htmlspecialchars($_POST["avis_abht"]);
+    $etabli_abht = htmlspecialchars($_POST["etabli_abht"]);
+    $valide_abht = htmlspecialchars($_POST["valide_abht"]);
+    $approuve_abht = htmlspecialchars($_POST["approuve_abht"]);
+    $date_abht=date("Y-m-d");
+    $etatdossier=3;
+    $avis_ab = new ABHT($id_abht,$avis_abht,$date_abht,$etabli_abht,$valide_abht,$approuve_abht ,$rem_gen,$etatdossier);
+    $p= new ABHT_Service();
+    if($p->update($avis_ab)){
+        header("Location: details.php?id=".$id_abht); }
+    
+}
+
+if(isset($_POST['sepre'])){
+    //filtre et validation du formulaire
+    $id_sepre = htmlspecialchars($_POST["id_sepre"]);
+    $orig_aep = htmlspecialchars($_POST["orig_aep"]);
+    $besoin_domes = htmlspecialchars($_POST["besoin_domes"]);
+    $speci_autre = htmlspecialchars($_POST["speci_autre"]);
+    $besoin_irr = htmlspecialchars($_POST["besoin_irr"]);
+    $rem_bet = htmlspecialchars($_POST["rem_bet"]);
+    $rem_sepre = htmlspecialchars($_POST["rem_sepre"]);
+    $avis_sepre = htmlspecialchars($_POST["avis_sepre"]);
+    $date_sepre=date("Y-m-d");
+    $avis_st = new SEPRE($id_sepre,$rem_sepre,$avis_sepre,$date_sepre,$rem_bet,$orig_aep,$speci_autre,$besoin_domes,$besoin_irr);
+    // var_dump($avis_st);
+    $p= new SEPRE_Service();
+    if($p->update($avis_st)){
+        header("Location: details.php?id=".$id_sepre); }
+    
+}
+
+if(isset($_POST['sgdph'])){
+    //filtre et validation du formulaireif
+    $id_sgdph = htmlspecialchars($_POST["id_sgdph"]);
+    $rem_sgdoh = htmlspecialchars($_POST["rem_sgdph"]);
+    $rem_bet=htmlspecialchars($_POST["rem_sgdph"]);
+    $avis_sgdph = htmlspecialchars($_POST["avis_sgdph"]);
+    $valide_sgdph = htmlspecialchars($_POST["valide_sgdph"]);
+    $approuve_sgdph = htmlspecialchars($_POST["approuvee_sgdph"]);
+    $type_cours = htmlspecialchars($_POST["type_cours"]);
+    $nom_cours = htmlspecialchars($_POST["nom_cours"]);
+    $debit_cours = htmlspecialchars($_POST["debit_cours"]);
+    $nature_cours = htmlspecialchars($_POST["nature_cours"]);
+    $servitude = htmlspecialchars($_POST["servitude"]);
+    $origine_eaux = htmlspecialchars($_POST["origine_eaux"]);
+    $origine_eauy = htmlspecialchars($_POST["origine_eauy"]);
+
+    if(isset($_POST["aut1"])){
+        var_dump($_POST["aut1"]);
+    }else{
+        $_POST["aut1"]="0";
+        var_dump($_POST["aut1"]);
+    }
+    if(isset($_POST["aut_dev"])){
+        var_dump($_POST["aut_dev"]);
+    }else{
+        $_POST["aut_dev"]="0";
+        var_dump($_POST["aut_dev"]);
+    }
+    if(isset($_POST["aut_occ"])){
+        var_dump($_POST["aut_occ"]);
+    }else{
+        $_POST["aut_occ"]="0";
+        var_dump($_POST["aut_occ"]);
+    }
+    if(isset($_POST["aut_prele"])){
+        var_dump($_POST["aut_prele"]);
+    }else{
+        $_POST["aut_prele"]="0";
+        var_dump($_POST["aut_prele"]);
+    }   
+    $date_aut_creus = htmlspecialchars($_POST["date_aut_creus"]);
+    $date_aut_prelev = htmlspecialchars($_POST["date_aut_prelev"]);
+    $date_aut_dev = htmlspecialchars($_POST["date_aut_dev"]);
+    $date_aut_occ = htmlspecialchars($_POST["date_aut_occ"]);
+    $num_aut_creus = htmlspecialchars($_POST["num_aut_creus"]);
+    $num_aut_prelev = htmlspecialchars($_POST["num_aut_prelev"]);
+    $num_aut_dev = htmlspecialchars($_POST["num_aut_dev"]);
+    $num_aut_occ = htmlspecialchars($_POST["num_aut_occ"]);
+    $autre_autorisation = htmlspecialchars($_POST["autre_autorisation"]);
+    $date_sgdph=date("Y-m-d");
+    $avis_sdh = new SGDPH($id_sgdph,$rem_sgdoh,$rem_bet,$avis_sgdph,$date_sgdph,$valide_sgdph,$approuve_sgdph,$type_cours,$nom_cours,$debit_cours,$nature_cours,$servitude,$origine_eaux,$origine_eauy,$_POST["aut1"],$_POST["aut_prele"],$_POST["aut_dev"],$_POST["aut_occ"],$date_aut_creus,$date_aut_prelev ,$date_aut_dev ,$date_aut_occ,$num_aut_creus,$num_aut_prelev,$num_aut_dev,$num_aut_occ,$autre_autorisation);
+    $p= new SGDPH_Service();
+    if($p->update($avis_sdh)){
+        header("Location: details.php?id=".$id_sgdph); }  
+}
+
+if(isset($_POST['sqe'])){
+    //filtre et validation du formulaire
+    $id_sqe = htmlspecialchars($_POST["id_sqe"]);
+    $rem_sqe = htmlspecialchars($_POST["rem_sqe"]);
+    $avis_sqe = htmlspecialchars($_POST["avis_sqe"]);
+    $valide_sqe = htmlspecialchars($_POST["valide_sqe"]);
+    $approuve_sqe = htmlspecialchars($_POST["approuve_sqe"]);
+    $rem_sqe= htmlspecialchars($_POST["rem_sqe"]);
+    $rem_bet= htmlspecialchars($_POST["rem_bet"]);
+    $volum= htmlspecialchars($_POST["volume_use"]);
+    $mode_assai= htmlspecialchars($_POST["mode_assai"]);
+    $reutil= htmlspecialchars($_POST["reutil"]);
+    $niv_trat= htmlspecialchars($_POST["niv_trat"]);
+    $niveau_piezo= htmlspecialchars($_POST["niveau_piezo"]);
+    $datenivea= htmlspecialchars($_POST["datenivea"]);
+    $coord_x= htmlspecialchars($_POST["coord_x"]);
+    $coord_y= htmlspecialchars($_POST["coord_y"]);
+    $trat_boue= htmlspecialchars($_POST["trat_boue"]);
+    $date_sqe=date("Y-m-d");
+    $avis_sq = new SQE($id_sqe,$avis_sqe,$date_sqe,$valide_sqe,$approuve_sqe,$rem_sqe,$rem_bet,$volum,$mode_assai,$reutil,$niv_trat,$niveau_piezo,$datenivea,$coord_x,$coord_y,$trat_boue);
+    var_dump($avis_sq);
+    $p= new SQE_Service();
+    if($p->update($avis_sq)){
+        header("Location: details.php?id=".$id_sqe); }
+    
+}
+
+if(isset($_POST['stah'])){
+    //filtre et validation du formulaire
+    $id_stah = htmlspecialchars($_POST["id_stah"]);
+    $super_bv = htmlspecialchars($_POST["super_bv"]);
+    $rem_stah = htmlspecialchars($_POST["rema_stah"]);
+    $rem_bet = htmlspecialchars($_POST["rema_bet"]);
+    $avis_amng = htmlspecialchars($_POST["avis_amng"]);
+    $avis_stah = htmlspecialchars($_POST["avis_stah"]);
+    $valide_stah = htmlspecialchars($_POST["valide_stah"]);
+    $approuve_stah = htmlspecialchars($_POST["approuve_stah"]);
+    $date_stah=date("Y-m-d");
+    $avis_st = new STAH($id_stah,$avis_stah,$avis_amng,$date_stah,$valide_stah,$approuve_stah,$rem_stah,$rem_bet,$super_bv);
+    $p= new STAH_Service();
+    if($p->update($avis_st)){
+        header("Location: details.php?id=".$id_stah); }
+    
+}
+
 ?>
 <!doctype html>
 <!--[if lte IE 9]>     <html lang="en" class="no-focus lt-ie10 lt-ie10-msg"> <![endif]-->
@@ -69,6 +281,27 @@ if(isset($_POST['submit'])){
         <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
         <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/flat.min.css"> -->
         <!-- END Stylesheets -->
+
+        <style>
+        fieldset {
+        margin:14px ;
+        border: 1px solid #ccc;
+        padding: 20px 20px;
+        }
+
+        legend {
+        color: #000;
+        /* margin: auto; */
+        font-size: small;
+        font-weight: bolder;
+        }
+
+        .form-control[readonly]{
+            background-color: gray;
+            border-bottom: 1px dashed #ccc;
+            box-shadow: none;
+        }
+        </style>
     </head>
     <body>
         
@@ -649,179 +882,923 @@ if(isset($_POST['submit'])){
                     <h2 class="content-heading">Ajouter un nouveau projet</h2>
                     <div class="row justify-content-center py-20">
                        
-                        <div class="col-md-8">
-                            <!-- Validation Wizard Material -->
-                            <div class="js-wizard-validation-material block">
-                                <!-- Step Tabs -->
-                                <ul class="nav nav-tabs nav-tabs-alt nav-fill" role="tablist">
+                        <div class="col-lg-12">
+                            <!-- Block Tabs Animated Slide Up -->
+                            <div class="block">
+                                <ul class="nav nav-tabs nav-tabs-block" data-toggle="tabs" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" href="#wizard-validation-material-step1" data-toggle="tab">Identifiant et Geometrie</a>
+                                        <a class="nav-link active" href="#btabs-animated-slideup-ABHT">ABHT</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#wizard-validation-material-step2" data-toggle="tab">Information du projets</a>
+                                        <a class="nav-link" href="#btabs-animated-slideup-SEPRE">SEPRE</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#wizard-validation-material-step3" data-toggle="tab">Complement</a>
+                                        <a class="nav-link" href="#btabs-animated-slideup-STAH">STAH</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#btabs-animated-slideup-SQE">SQE</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#btabs-animated-slideup-SGDPH">SGDPH</a>
+                                    </li>
+                                    <li class="nav-item ml-auto">
+                                        <a class="nav-link" href="#btabs-animated-slideup-settings"><i class="si si-settings"></i></a>
                                     </li>
                                 </ul>
-                                <!-- END Step Tabs -->
-
-                                <!-- Form -->
-                                <form class="js-wizard-validation-material-form" action="Prj_ajouter.php" method="post">
-                                    <!-- Steps Content -->
-                                    <div class="block-content block-content-full tab-content" style="min-height: 267px;">
-                                        <!-- Step 1 -->
-                                        <div class="tab-pane active" id="wizard-validation-material-step1" role="tabpanel">
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <input class="form-control" type="text" id="wizard-validation-material-firstname" name="gid">
-                                                    <label for="wizard-validation-material-firstname">Identifiant</label>
+                                <div class="block-content tab-content overflow-hidden">
+                                    <div class="tab-pane show active" id="btabs-animated-slideup-ABHT"  role="tabpanel">
+                                        <div class="block-content">
+                                        <form action="Prj_ajouter.php" method="post">
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" value="<?php if(isset($id1)) {echo $id1;} ?>" name="id_abht" readonly>
+                                                        <label for="register2-username">Identifiant du projet</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <textarea class="form-control" id="wizard-validation-material-bio" name="geom" rows="9"></textarea>
-                                                    <label for="wizard-validation-material-bio">Géometrie</label>
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <div class="form-material">
+                                                        <textarea class="form-control" id="contact2-msg" name="rem_gen" rows="4"  <?php if($rem_gen1!=="0"){echo "readonly";} ?> > <?php if($rem_gen1!=="0") {echo $rem_gen1;} ?></textarea>
+                                                        <label for="contact2-msg">Remarque</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <textarea class="form-control" id="wizard-validation-material-bio" name="int_projet" rows="9"></textarea>
-                                                    <label for="wizard-validation-material-bio">Intitulé du projet</label>
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="contact2-subject" name="avis_abht" size="1">
+                                                            
+                                                            <?php
+                                                                $ss = new Avis_Service();
+                                                                $tc = $ss->findAll();
+                                                                if($avis_abht1!=="0"){
+                                                                    foreach($tc as $row) {
+                                                                        if($avis_abht1== $row[0]){
+                                                                            echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                        }else{
+                                                                            echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                        }
+                                                                    }
+                                                                }else{
+                                                                    echo "<option></option>";
+                                                                    foreach($tc as $row) {
+                                                                        echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        <label for="contact2-subject">Avis ABHT</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="maitreouvrage">
-                                                    <label for="wizard-validation-material-location">Maitre d'Ouvrage</label>
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="contact2-subject" name="etabli_abht" size="1">
+                                                            <?php
+                                                                $ss = new User_Service();
+                                                                $tc = $ss->findAll();
+                                                                if($avis_abht1!=="0"){
+                                                                    foreach($tc as $row) {
+                                                                        if($etabli_abht1== $row[0]){
+                                                                            echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                        }else{
+                                                                            echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                        }
+                                                                    }
+                                                                }else{
+                                                                    echo "<option></option>";
+                                                                    foreach($tc as $row) {
+                                                                        echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        <label for="contact2-subject">établi par</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="architecte">
-                                                    <label for="wizard-validation-material-location">Architecte</label>
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="contact2-subject" name="valide_abht" size="1">
+                                                            <?php
+                                                                $ss = new User_Service();
+                                                                $tc = $ss->findAll();
+                                                                if($avis_abht1!=="0"){
+                                                                    foreach($tc as $row) {
+                                                                        if($valide_abht1== $row[0]){
+                                                                            echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                        }else{
+                                                                            echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                        }
+                                                                    }
+                                                                }else{
+                                                                    echo "<option></option>";
+                                                                    foreach($tc as $row) {
+                                                                        echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        <label for="contact2-subject">Validé par</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="superficie">
-                                                    <label for="wizard-validation-material-location">Superficie</label>
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="contact2-subject" name="approuve_abht" size="1">
+                                                            <?php
+                                                                $ss = new User_Service();
+                                                                $tc = $ss->findAll();
+                                                                if($avis_abht1!=="0"){
+                                                                    foreach($tc as $row) {
+                                                                        if($approuve_abht1== $row[0]){
+                                                                            echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                        }else{
+                                                                            echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                        }
+                                                                    }
+                                                                }else{
+                                                                    echo "<option></option>";
+                                                                    foreach($tc as $row) {
+                                                                        echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        <label for="contact2-subject">Approuvée par</label>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                <?php 
+                                                    if($avis_abht1 !=="0"){ 
+                                                        echo '<button class="btn btn-alt-success" name="abht">
+                                                            <i class="fa fa-check mr-5"></i>Avis Ajouté
+                                                        </button>';  
+                                                    } else {
+                                                        echo '<button type="submit" class="btn btn-alt-success" name="abht">
+                                                        <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                    </button>'; 
+                                                    }
+                                                ?>
+                                                </div>
+                                            </div>
+                                        </form>
                                         </div>
-                                        <!-- END Step 1 -->
-
-                                        <!-- Step 2 -->
-                                        <div class="tab-pane" id="wizard-validation-material-step2" role="tabpanel">
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="numdoss">
-                                                    <label for="wizard-validation-material-location">Numéro du dossier</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-material">
-                                                    <input class="form-control" type="date" id="wizard-validation-material-location" name="dateabht">
-                                                    <label for="wizard-validation-material-location">Date d'arrivée à l'ABHT</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-material">
-                                                    <input class="form-control" type="date" id="wizard-validation-material-location" name="datebet">
-                                                    <label for="wizard-validation-material-location">Date d'arrivée au BET</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <select class="form-control" id="wizard-validation-material-skills" name="commune" size="1">
-                                                    <?php
-                                                        $ss = new Commune_Service();
-                                                        $tc = $ss->findAll();
-                                                        foreach($tc as $row) {
-                                                            echo "<option value=".$row[0]." >".$row["Commune"]."</option>" ; 
-                                                        }
-                                                    ?>
-                                                    </select>
-                                                    <label for="wizard-validation-material-skills">Commune</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <select class="form-control" id="wizard-validation-material-skills" name="province" size="1">
-                                                        <?php
-                                                            $ss = new Province_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row["province"]."</option>" ;
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="wizard-validation-material-skills">Province</label>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <!-- END Step 2 -->
-
-                                        <!-- Step 3 -->
-                                        <div class="tab-pane" id="wizard-validation-material-step3" role="tabpanel">
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <input class="form-control" type="text" id="wizard-validation-material-location" name="tittrefoncier">
-                                                    <label for="wizard-validation-material-location">Titre Foncier</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-material floating">
-                                                    <select class="form-control" id="wizard-validation-material-skills" name="type_projet" size="1">
-                                                        <?php
-                                                            $ss = new Type_projet_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row["type_projet"]."</option>" ;
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="wizard-validation-material-skills">Type de Projet</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- END Step 3 -->
                                     </div>
-                                    <!-- END Steps Content -->
+                                    <div class="tab-pane" id="btabs-animated-slideup-SEPRE" href="#btabs-animated-slideup-SEPRE" role="tabpanel">
+                                        <div class="block-content">
+                                            <form action="Prj_ajouter.php" method="post">
+                                                <div class="form-group row">
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="id_sepre" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
+                                                            <label for="register2-username">Identifiant du projet</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="orig_aep" size="1">
+                                                                <?php
+                                                                
+                                                                    $ss = new OrigineAep_Service();
+                                                                    $tc = $ss->findAll();
+                                                                    if($orig_aep1!=="0"){
+                                                                        foreach($tc as $row) {
+                                                                            if($orig_aep1== $row[0]){
+                                                                                echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                            }else{
+                                                                                echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                            }
+                                                                        }
+                                                                    }else{
+                                                                        echo "<option></option>";
+                                                                        foreach($tc as $row) {
+                                                                            echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                            <label for="register2-username">Origine de l'eau potable </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="besoin_domes" value="<?php if($bet_eau_dom1!=="0") {echo $bet_eau_dom1;} ?>" <?php if($avis_sepre1!=="0") {echo "readonly";} ?> >
+                                                            <label for="register2-username">Besoin en eau domestique</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                            <textarea class="form-control" id="contact2-msg" name="speci_autre" rows="4"  <?php if($avis_sepre1!=="0") {echo "readonly";} ?> ><?php if($origine_autre1!=="0"){echo $origine_autre1;} ?></textarea>
+                                                            <label for="contact2-msg">Specifier si autre</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                            <textarea class="form-control" id="contact2-msg" name="besoin_irr" rows="4" <?php if($avis_sepre1!=="0") {echo "readonly";} ?> ><?php if($origine_autre1!=="0"){echo $origine_autre1;} ?> </textarea>
+                                                            <label for="contact2-msg">Besoin en eau d'irrigation</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                            <textarea class="form-control" id="contact2-msg" name="rem_bet" rows="4" <?php if($remarque_bet_besoin_eau1!=="0") {echo "readonly";} ?> ><?php if($remarque_bet_besoin_eau1!=="0"){echo $remarque_bet_besoin_eau1;} ?> </textarea>
+                                                            <label for="contact2-msg">Remarques de BET sur les besoins en eau</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                            <textarea class="form-control" id="contact2-msg" name="rem_sepre" rows="4" <?php if($remarque_sup_sepre1!==NULL) {echo "readonly";} ?> ><?php if($remarque_sup_sepre1!==NULL){echo $remarque_sup_sepre1;} ?></textarea>
+                                                            <label for="contact2-msg">Remarques Supplémentaires du SEPRE</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="avis_sepre" size="1">
+                                                                <?php
+                                                                    $ss = new Avis_Service();
+                                                                    $tc = $ss->findAll();
+                                                                    if($avis_sepre1!=="0"){
+                                                                        foreach($tc as $row) {
+                                                                            if($avis_sepre1== $row[0]){
+                                                                                echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                            }else{
+                                                                                echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                            }
+                                                                        }
+                                                                    }else{
+                                                                        echo "<option></option>";
+                                                                        foreach($tc as $row) {
+                                                                            echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                            <label for="contact2-subject">Avis SEPRE</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <?php 
+                                                            if($avis_sepre1!=="0"){ 
+                                                                echo '<button class="btn btn-alt-success" name="sepre">
+                                                                    <i class="fa fa-check mr-5"></i>Avis déjà Ajouté
+                                                                </button>';
+                                                            }else{
+                                                                echo '<button type="submit" class="btn btn-alt-success" name="sepre">
+                                                                <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                            </button>'; 
+                                                            }
 
-                                    <!-- Steps Navigation -->
-                                    <div class="block-content block-content-sm block-content-full bg-body-light">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <button type="button" class="btn btn-alt-secondary" data-wizard="prev">
-                                                    <i class="fa fa-angle-left mr-5"></i> Previous
-                                                </button>
-                                            </div>
-                                            <div class="col-6 text-right">
-                                                <button type="button" class="btn btn-alt-secondary" data-wizard="next">
-                                                    Next <i class="fa fa-angle-right ml-5"></i>
-                                                </button>
-                                                <button type="submit" name="submit" class="btn btn-alt-primary d-none" data-wizard="finish">
-                                                    <i class="fa fa-check mr-5"></i> Submit
-                                                </button>
-                                            </div>
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
-                                    <!-- END Steps Navigation -->
-                                </form>
-                                <!-- END Form -->
+                                    <div class="tab-pane" id="btabs-animated-slideup-STAH" role="tabpanel">
+                                        <div class="block-content">
+                                            <form action="Prj_ajouter.php" method="post" >
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="id_stah" value="<?php if(isset($id1)){echo $id1;} ?>" readonly>
+                                                            <label for="register2-username">Identifiant du projet</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <div class="form-material">
+                                                            <textarea class="form-control" id="contact2-msg" name="rema_bet_stah" rows="4" <?php if($rem_sup_stah1!==NULL) {echo "readonly";} ?> ><?php if($rem_sup_stah1!==NULL){echo var_dump($remarque_bet_assai1);} ?></textarea>
+                                                            <label for="contact2-msg">Remarque Supplémentaire STAH</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <div class="form-material">
+                                                            <textarea class="form-control" id="contact2-msg" name="rema_stah" rows="4" <?php if($amen_prop1!==NULL) {echo "readonly";} ?> ><?php if($amen_prop1!==NULL){echo $amen_prop1;} ?></textarea>
+                                                            <label for="contact2-msg">Amengaments Proposés</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="avis_stah" size="1">
+                                                                <?php
+                                                                    $ss = new Avis_Service();
+                                                                    $tc = $ss->findAll();
+                                                                    if($avis_stah1!=="0"){
+                                                                        foreach($tc as $row) {
+                                                                            if($avis_stah1== $row[0]){
+                                                                                echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                            }else{
+                                                                                echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                            }
+                                                                        }
+                                                                    }else{
+                                                                        echo "<option></option>";
+                                                                        foreach($tc as $row) {
+                                                                            echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                            <label for="contact2-subject">Avis STAH</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="valide_stah" size="1">
+                                                                <?php
+                                                                    $ss = new User_Service();
+                                                                    $tc = $ss->findAll();
+                                                                    if($avis_stah1!=="0"){
+                                                                        foreach($tc as $row) {
+                                                                            if($valide_par_stah1== $row[0]){
+                                                                                echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                            }else{
+                                                                                echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                            }
+                                                                        }
+                                                                    }else{
+                                                                        echo "<option></option>";
+                                                                        foreach($tc as $row) {
+                                                                            echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                            <label for="contact2-subject">Validé par</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="approuve_stah" size="1">>
+                                                                <?php
+                                                                    $ss = new User_Service();
+                                                                    $tc = $ss->findAll();
+                                                                    if($avis_stah1!=="0"){
+                                                                        foreach($tc as $row) {
+                                                                            if($valide_par_stah1== $row[0]){
+                                                                                echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                            }else{
+                                                                                echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                            }
+                                                                        }
+                                                                    }else{
+                                                                        echo "<option></option>";
+                                                                        foreach($tc as $row) {
+                                                                            echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                            <label for="contact2-subject">Approuvée par</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <?php 
+                                                            if(isset($avis_abht1)){ 
+                                                                echo '<button class="btn btn-alt-success" name="stah">
+                                                                    <i class="fa fa-check mr-5"></i>Avis déjà Ajouté
+                                                                </button>';
+                                                            }else{
+                                                                echo '<button type="submit" class="btn btn-alt-success" name="stah">
+                                                                <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                            </button>'; 
+                                                            }
+
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="btabs-animated-slideup-SQE" role="tabpanel">
+                                        <div class="block-content">
+                                            <form action="Prj_ajouter.php" method="post" >
+                                                <div class="form-group row">
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="id_sqe" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
+                                                            <label for="register2-username">Identifiant du projet</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="volume_use" value="<?php if($volume_eau_use1!==NULL) {echo $volume_eau_use1;} ?>" <?php if($volume_eau_use1!==NULL) {echo "readonly";} ?>>
+                                                            <label for="register2-username">Volumes des eaux usées</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="mode_assai" size="1">
+                                                            <?php
+                                                                $ss = new ModeAssain_Service();
+                                                                $tc = $ss->findAll();
+                                                                if($modeassai1!=="0"){
+                                                                    foreach($tc as $row) {
+                                                                        if($modeassai1== $row[0]){
+                                                                            echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                        }else{
+                                                                            echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                        }
+                                                                    }
+                                                                }else{
+                                                                    echo "<option></option>";
+                                                                    foreach($tc as $row) {
+                                                                        echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                            </select>
+                                                            <label for="register2-username">Mode d'assainissement</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" value=" <?php if($reut_qeu1!==NULL) {echo $reut_qeu1;} ?> " name="reutil" <?php if($reut_qeu1!==NULL) {echo "readonly";} ?>>
+                                                            <label for="register2-username">Réutilisation QEU</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="niv_trat" value="<?php if($niv_trait1!==NULL) {echo $niv_trait1;} ?>" <?php if($niv_trait1!==NULL) {echo "readonly";} ?>>
+                                                            <label for="register2-username">Niveau de traitement</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="niveau_piezo" value="<?php if($niv_piezo1!==NULL) {echo $niv_piezo1;} ?>" <?php if($niv_piezo1!==NULL) {echo "readonly";} ?>>
+                                                            <label for="register2-username">Niveau Piézométrique</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <input type="date" class="form-control" id="register2-username" name="datenivea" value="<?php if($date_piezo1!==NULL) {echo $date_piezo1;} ?>" <?php if($date_piezo1!==NULL) {echo "readonly";} ?>>
+                                                            <label for="register2-username">Date Niveau Piézométrique</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="coord_x" value="<?php if($coord_x1!==NULL) {echo $coord_x1;} ?>" <?php if($coord_x1!==NULL) {echo "readonly";} ?>>
+                                                            <label for="register2-username">Coordonnées X du périmètre</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="coord_y" value="<?php if($coord_y1!==NULL) {echo $coord_y1;} ?>" <?php if($coord_y1!==NULL) {echo "readonly";} ?>>
+                                                            <label for="register2-username">Coordonnées Y du périmètre</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="trat_boue" value="<?php if($trat_boue1!==NULL) {echo $trat_boue1;}?>" <?php if($trat_boue1!==NULL) {echo "readonly";} ?> >
+                                                            <label for="register2-username">Traitement de la boue</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <div class="form-material">
+                                                            <textarea class="form-control" id="contact2-msg" name="rem_bet" rows="4" <?php if($remarque_bet_assai1!==NULL) {echo "readonly";} ?> ><?php if($remarque_bet_assai1!==NULL) {echo $remarque_bet_assai1;}  ?></textarea>
+                                                            <label for="contact2-msg">Remarque du BET</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <div class="form-material">
+                                                            <textarea class="form-control" id="contact2-msg" name="rem_sqe" rows="4" <?php if($remarque_sup_sqe1!==NULL) {echo "readonly";} ?>><?php if($remarque_sup_sqe1!==NULL) {echo $remarque_sup_sqe1;}  ?></textarea>
+                                                            <label for="contact2-msg">Remarque Supplémentaires du SQE</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="avis_sqe" size="1">
+                                                            <?php
+                                                                $ss = new Avis_Service();
+                                                                $tc = $ss->findAll();
+                                                                if($avis_sqe1!=="0"){
+                                                                    foreach($tc as $row) {
+                                                                        if($avis_sqe1== $row[0]){
+                                                                            echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                        }else{
+                                                                            echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                        }
+                                                                    }
+                                                                }else{
+                                                                    echo "<option></option>";
+                                                                    foreach($tc as $row) {
+                                                                        echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                            </select>
+                                                            <label for="contact2-subject">Avis SQE</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="valide_sqe" size="1">
+                                                            
+                                                                <?php
+                                                                    $ss = new User_Service();
+                                                                    $tc = $ss->findAll();
+                                                                    if($avis_sqe1!=="0"){
+                                                                        foreach($tc as $row) {
+                                                                            if($valide_sqe1== $row[0]){
+                                                                                echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                            }else{
+                                                                                echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                            }
+                                                                        }
+                                                                    }else{
+                                                                        echo "<option></option>";
+                                                                        foreach($tc as $row) {
+                                                                            echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                            <label for="contact2-subject">Validé par</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="approuve_sqe" size="1">
+                                                                <?php
+                                                                    $ss = new User_Service();
+                                                                    $tc = $ss->findAll();
+                                                                    if($approuve_par_sqe1!=="0"){
+                                                                        foreach($tc as $row) {
+                                                                            if($approuve_par_sqe1== $row[0]){
+                                                                                echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                            }else{
+                                                                                echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                            }
+                                                                        }
+                                                                    }else{
+                                                                        echo "<option></option>";
+                                                                        foreach($tc as $row) {
+                                                                            echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                            <label for="contact2-subject">Approuvé par</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-alt-success" name="sqe">
+                                                                <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                            </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="btabs-animated-slideup-SGDPH" role="tabpanel">
+                                        <div class="block-content">
+                                            <form action="Prj_ajouter.php" method="post">
+                                                <fieldset class="inputTextWrap">
+                                                    <legend>informations</legend>
+                                                    <div class="form-group row">
+                                                
+                                                        <div class="col-4">
+                                                            <div class="form-material ">
+                                                                <input type="text" class="form-control" id="register2-username" name="id_sgdph" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
+                                                                <label for="register2-username">Identifiant du projet</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <select class="form-control" id="contact2-subject" name="type_cours" size="1">
+                                                                    <?php
+                                                                        $ss = new TypeCEau_Service();
+                                                                        $tc = $ss->findAll();
+                                                                        if($type_cours1!=="0"){
+                                                                            foreach($tc as $row) {
+                                                                                if($type_cours1== $row[0]){
+                                                                                    echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                                }else{
+                                                                                    echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                                }
+                                                                            }
+                                                                        }else{
+                                                                            echo "<option></option>";
+                                                                            foreach($tc as $row) {
+                                                                                echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </select>
+                                                                <label for="register2-username">Type du cours d'eau</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="nom_cours" value="<?php if($nom_cours1!=="0" || $nom_cours1!==NULL ) {echo $nom_cours1;} ?>" <?php if($nom_cours1!=="0" || $nom_cours1!==NULL ) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Nom du cours d'eau</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="debit_cours" value="<?php if($debit_cours1!=="0" || $debit_cours1!==NULL) {echo $debit_cours1;} ?>" <?php if($debit_cours1!=="0" || $debit_cours1!==NULL) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Débit centennale (m3/s)</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <select class="form-control" id="contact2-subject" name="nature_cours" size="1">
+                                                                    <?php
+                                                                        $ss = new NatureCeau_Service();
+                                                                        $tc = $ss->findAll();
+                                                                        if($nature_cours1!=="0"){
+                                                                            foreach($tc as $row) {
+                                                                                if($nature_cours1== $row[0]){
+                                                                                    echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                                }else{
+                                                                                    echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                                }
+                                                                            }
+                                                                        }else{
+                                                                            echo "<option></option>";
+                                                                            foreach($tc as $row) {
+                                                                                echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </select>
+                                                                <label for="register2-username">Nature du cours d'eau</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="servitude" value="<?php if($servitude1!==NULL || $servitude1!=="0" ) {echo $servitude1;} ?>" <?php if($servitude1!==NULL || $servitude1!=="0" ) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Servitude</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                <fieldset class="inputTextWrap">
+                                                    <legend>informations de creusement</legend>
+                                                    <div class="form-group row">
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="origine_eaux" value="<?php if($origine_eaux1!=NULL || $origine_eaux1="0") {echo $origine_eaux1;} ?>" <?php if($origine_eaux1!=NULL || $origine_eaux1="0") {echo "readonly";} ?>>
+                                                                <label for="register2-username">Origine de l'eau potable Puits X</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="origine_eauy" value="<?php if($origine_eauy1!=NULL || $origine_eauy1="0") {echo $origine_eauy1;} ?>" <?php if($origine_eauy1!=NULL || $origine_eauy1="0") {echo "readonly";} ?>>
+                                                                <label for="register2-username">Origine de l'eau potable Puits Y</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="date" class="form-control" id="register2-username" name="date_aut_creus" value="<?php if($date_aut_creus1!==NULL) {echo $date_aut_creus1;} ?>" <?php if($date_aut_creus1!==NULL) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Date d'autorisation de creusement </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="num_aut_creus" value="<?php if($num_aut_creus1 !==NULL) {echo $num_aut_creus1;} ?>" <?php if($num_aut_creus1!==NULL) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Numéro d'autorisation de creusement  </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label class="css-control css-control-success css-switch disabled">
+                                                                <input type="checkbox" class="css-control-input" id="box" name="aut1" <?php if($aut_creus1!==NULL) { if($aut_creus1="1"){echo "checked disabled"; } } ?>>
+                                                                <span class="css-control-indicator"></span> Autorisation de creusement
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                                
+                                                </fieldset>
+                                                <fieldset class="inputTextWrap">
+                                                    <legend>informations de prelevelement</legend>
+                                                    <div class="form-group row">
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="date" class="form-control" id="register2-username" name="date_aut_prelev" value="<?php if($date_aut_prelev1!==NULL) {echo $date_aut_prelev1;} ?>" <?php if(isset($date_aut_prelev1)) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Date d'autorisation de prelevelement  </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="num_aut_prelev" value="<?php if($num_aut_prelev1!==NULL) {echo $num_aut_prelev1;} ?>" <?php if($num_aut_prelev1!==NULL) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Numéro d'autorisation de prelevelement </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label class="css-control css-control-success css-switch disabled">
+                                                                <input type="checkbox" class="css-control-input" name="aut_prele" <?php if($aut_prele1!==NULL) { if($aut_prele1="1"){echo "checked"; } } ?>>
+                                                                <span class="css-control-indicator"></span> Autorisation de prelevelement 
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                <fieldset class="inputTextWrap">
+                                                    <legend>informations de deversement</legend>
+                                                    <div class="form-group row">
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="date" class="form-control" id="register2-username" name="date_aut_dev" value="<?php if($avis_sgdph1!==NULL) {echo $date_aut_dev1;} ?>" <?php if($date_aut_dev1!==NULL) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Date d'autorisation de deversement </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="num_aut_dev" value="<?php if($num_aut_dev1!==NULL) {echo $num_aut_dev1;} ?>" <?php if($num_aut_dev1!==NULL) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Numéro d'autorisation de deversement</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label class="css-control css-control-success css-switch disabled">
+                                                                <input type="checkbox" class="css-control-input" name="aut_dev"  <?php if($aut_dev1!==NULL) { if($aut_dev1="1"){echo "checked"; } } ?>>
+                                                                <span class="css-control-indicator"></span> Autorisation de deversement 
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                <fieldset class="inputTextWrap">
+                                                    <legend>informations d'occupation de DPH</legend>
+                                                    <div class="form-group row">
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="date" class="form-control" id="register2-username" name="date_aut_occ" value="<?php if($date_aut_occ1!==NULL) {echo $date_aut_occ1;} ?>" <?php if($date_aut_occ1!==NULL) {echo "readonly";} ?> >
+                                                                <label for="register2-username">Date d'autorisation de l'occupation du dph </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="num_aut_occ" value="<?php if($num_aut_occ1!==NULL) {echo $num_aut_occ1;} ?>" <?php if($num_aut_occ1!==NULL) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Numéro d'autorisation de l'occupation du dph</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label class="css-control css-control-success css-switch disabled">
+                                                                <input type="checkbox" class="css-control-input" name="aut_occ"  <?php if($aut_occ1!==NULL) { if($aut_occ1="1"){echo "checked"; } } ?>>
+                                                                <span class="css-control-indicator"></span> Autorisation de l'occupation du dph
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <input type="text" class="form-control" id="register2-username" name="autre_autorisation" value="<?php if($autre_autorisation1!==NULL) {echo $autre_autorisation1;} ?>" <?php if($autre_autorisation1!==NULL) {echo "readonly";} ?>>
+                                                                <label for="register2-username">Autre autorisation</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                <fieldset class="inputTextWrap">
+                                                    <legend>Avis et Remarques</legend>
+                                                    <div class="form-group row">
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <textarea class="form-control" id="contact2-msg" name="rem_sgdph" rows="4" <?php if($rem_sgdoh1!==NULL) {echo "readonly";} ?> ><?php if($rem_sgdoh1!==NULL) {echo $rem_sgdoh1;}  ?></textarea>
+                                                                <label for="contact2-msg">Remarque Supplémentaires du SGDPH</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <textarea class="form-control" id="contact2-msg" name="rem_bet" rows="4" <?php if($rem_bet1!==NULL) {echo "readonly";} ?> ><?php if($rem_bet1!==NULL) {echo $rem_bet1;}  ?></textarea>
+                                                                <label for="contact2-msg">Remarque BET su le DPH</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <select class="form-control" id="contact2-subject" name="avis_sgdph" size="1">
+                                                                    <?php
+                                                                        $ss = new Avis_Service();
+                                                                        $tc = $ss->findAll();
+                                                                        if($avis_sgdph1!==NULL){
+                                                                            foreach($tc as $row) {
+                                                                                if($avis_sgdph1== $row[0]){
+                                                                                    echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                                }else{
+                                                                                    echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                                }
+                                                                            }
+                                                                        }else{
+                                                                            echo "<option></option>";
+                                                                            foreach($tc as $row) {
+                                                                                echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </select>
+                                                                <label for="contact2-subject">Avis SGDPH</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <select class="form-control" id="contact2-subject" name="valide_sgdph" size="1">
+
+                                                                    <?php
+                                                                        $ss = new User_Service();
+                                                                        $tc = $ss->findAll();
+                                                                        if($valide_sgdph1!==NULL){
+                                                                            foreach($tc as $row) {
+                                                                                if($valide_sgdph1== $row[0]){
+                                                                                    echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                                }else{
+                                                                                    echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                                }
+                                                                            }
+                                                                        }else{
+                                                                            echo "<option></option>";
+                                                                            foreach($tc as $row) {
+                                                                                echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </select>
+                                                                <label for="contact2-subject">Validé par</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="form-material">
+                                                                <select class="form-control" id="contact2-subject" name="approuvee_sgdph" size="1">
+                                                                    <?php
+                                                                        $ss = new User_Service();
+                                                                        $tc = $ss->findAll();
+                                                                        if($approuve_sgdph1!==NULL){
+                                                                            foreach($tc as $row) {
+                                                                                if($approuve_sgdph1== $row[0]){
+                                                                                    echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                                }else{
+                                                                                    echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                                }
+                                                                            }
+                                                                        }else{
+                                                                            echo "<option></option>";
+                                                                            foreach($tc as $row) {
+                                                                                echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </select>
+                                                                <label for="contact2-subject">Approuvée par</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                    <div class="form-group row">
+                                                        <div class="col-12">
+                                                            <button type="submit" class="btn btn-alt-success" name="sgdph">
+                                                                <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- END Validation Wizard 2 -->
                         </div>
                     </div>
-                    <!-- END Validation Wizards -->
                 </div>
-                <!-- END Page Content -->
             </main>
-            <!-- END Main Container -->
-
-            <!-- Footer -->
             <footer id="page-footer" class="opacity-0">
                 <div class="content py-20 font-size-xs clearfix">
                     <div class="float-right">
@@ -832,11 +1809,7 @@ if(isset($_POST['submit'])){
                     </div>
                 </div>
             </footer>
-            <!-- END Footer -->
         </div>
-        <!-- END Page Container -->
-
-        <!-- Codebase Core JS -->
         <script src="assets/js/core/jquery.min.js"></script>
         <script src="assets/js/core/popper.min.js"></script>
         <script src="assets/js/core/bootstrap.min.js"></script>

@@ -260,7 +260,7 @@ class Projet_Service{
 
 	//selection de nombre de projets avec une durée de jour de la date d'arrivé au BET [moins 10jours]
 	function dureechartprj10(){
-		$st =	$this->db->prepare("select count(*) as number1 from prj_inv.projets_investissement where DATE_PART('day', Now() - date_arrivee_bet) < 10");
+		$st =	$this->db->prepare("select count(*) as number1 from prj_inv.projets_investissement where DATE_PART('day', Now() - date_arrivee_bet) < 10 and etatdossier=1");
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -271,7 +271,7 @@ class Projet_Service{
 
 	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [entre 10jours et 30 jours]
 	function dureechartprj10_30(){
-		$st =	$this->db->prepare("select count(*) as number2 from prj_inv.projets_investissement where DATE_PART('day', Now() - date_arrivee_bet) >= 10 and DATE_PART('day', Now() - date_arrivee_bet)<=30");
+		$st =	$this->db->prepare("select count(*) as number2 from prj_inv.projets_investissement where DATE_PART('day', Now() - date_arrivee_bet) >= 10 and DATE_PART('day', Now() - date_arrivee_bet)<=30 and etatdossier=1");
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -282,7 +282,7 @@ class Projet_Service{
 
 	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [30 jours]
 	function dureechartprj30(){
-		$st =	$this->db->prepare("select count(*) as number3 from prj_inv.projets_investissement where DATE_PART('day', Now() - date_arrivee_bet) > 30");
+		$st =	$this->db->prepare("select count(*) as number3 from prj_inv.projets_investissement where DATE_PART('day', Now() - date_arrivee_bet) > 30 and etatdossier=1");
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -335,7 +335,6 @@ class Projet_Service{
 	function number_prj_ann_mois_nouveau(){
 		$st =	$this->db->prepare("SELECT count(*),EXTRACT(MONTH FROM date_arrivee_bet)as mois,EXTRACT(Year FROM date_arrivee_bet) as annee
 		from prj_inv.projets_investissement 
-		where etatdossier=2
 		group by mois,annee
 		order by annee");
 		if ($st->execute()) {
@@ -416,6 +415,9 @@ class Projet_Service{
 	 	 		return null;
 	 	 	}
 	}
+
+	
+
 
 
 

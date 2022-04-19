@@ -11,6 +11,8 @@ require_once '../Couche_Service/Service_SGDPH.php';
 require_once '../Couche_Service/Service_stah.php';
 require_once '../Couche_Service/Service_avis.php';
 require_once '../Couche_Service/Service_user.php';
+require_once '../Couche_Service/Service_typeceau.php';
+require_once '../Couche_Service/Service_NatureCeau.php';
 
 
 if(isset($_GET['id'])){
@@ -23,19 +25,117 @@ if(isset($_GET['id'])){
 }
 
 if(isset($_POST['sgdph'])){
-    //filtre et validation du formulaire
+    //filtre et validation du formulaireif
     $id_sgdph = htmlspecialchars($_POST["id_sgdph"]);
     $rem_sgdoh = htmlspecialchars($_POST["rem_sgdph"]);
+    $rem_bet=htmlspecialchars($_POST["rem_sgdph"]);
     $avis_sgdph = htmlspecialchars($_POST["avis_sgdph"]);
     $valide_sgdph = htmlspecialchars($_POST["valide_sgdph"]);
     $approuve_sgdph = htmlspecialchars($_POST["approuvee_sgdph"]);
+    $type_cours = htmlspecialchars($_POST["type_cours"]);
+    $nom_cours = htmlspecialchars($_POST["nom_cours"]);
+    $debit_cours = htmlspecialchars($_POST["debit_cours"]);
+    $nature_cours = htmlspecialchars($_POST["nature_cours"]);
+    $servitude = htmlspecialchars($_POST["servitude"]);
+    $origine_eaux = htmlspecialchars($_POST["origine_eaux"]);
+    $origine_eauy = htmlspecialchars($_POST["origine_eauy"]);
+
+    if(isset($_POST["aut1"])){
+        var_dump($_POST["aut1"]);
+    }else{
+        $_POST["aut1"]="0";
+        var_dump($_POST["aut1"]);
+    }
+
+    if(isset($_POST["aut_dev"])){
+        var_dump($_POST["aut_dev"]);
+    }else{
+        $_POST["aut_dev"]="0";
+        var_dump($_POST["aut_dev"]);
+    }
+    if(isset($_POST["aut_occ"])){
+        var_dump($_POST["aut_occ"]);
+    }else{
+        $_POST["aut_occ"]="0";
+        var_dump($_POST["aut_occ"]);
+    }
+    if(isset($_POST["aut_prele"])){
+        var_dump($_POST["aut_prele"]);
+    }else{
+        $_POST["aut_prele"]="0";
+        var_dump($_POST["aut_prele"]);
+    }   
+    $date_aut_creus = htmlspecialchars($_POST["date_aut_creus"]);
+    $date_aut_prelev = htmlspecialchars($_POST["date_aut_prelev"]);
+    $date_aut_dev = htmlspecialchars($_POST["date_aut_dev"]);
+    $date_aut_occ = htmlspecialchars($_POST["date_aut_occ"]);
+    $num_aut_creus = htmlspecialchars($_POST["num_aut_creus"]);
+    $num_aut_prelev = htmlspecialchars($_POST["num_aut_prelev"]);
+    $num_aut_dev = htmlspecialchars($_POST["num_aut_dev"]);
+    $num_aut_occ = htmlspecialchars($_POST["num_aut_occ"]);
+    $autre_autorisation = htmlspecialchars($_POST["autre_autorisation"]);
     $date_sgdph=date("Y-m-d");
-    $avis_sdh = new SGDPH($id_sgdph,$rem_sgdoh,$avis_sgdph ,$date_sgdph,$valide_sgdph,$approuve_sgdph);
+    $avis_sdh = new SGDPH($id_sgdph,$rem_sgdoh,$rem_bet,$avis_sgdph,$date_sgdph,$valide_sgdph,$approuve_sgdph,$type_cours,$nom_cours,$debit_cours,$nature_cours,$servitude,$origine_eaux,$origine_eauy,$_POST["aut1"],$_POST["aut_prele"],$_POST["aut_dev"],$_POST["aut_occ"],$date_aut_creus,$date_aut_prelev ,$date_aut_dev ,$date_aut_occ,$num_aut_creus,$num_aut_prelev,$num_aut_dev,$num_aut_occ,$autre_autorisation);
     $p= new SGDPH_Service();
-    var_dump($avis_sdh);
+    //var_dump($avis_sdh);
+    //var_dump($p->update($avis_sdh));
     if($p->update($avis_sdh)){
         header("Location: prj_detail.php?id=".$id_sgdph); }
-    
+    // echo "id_sgdph";
+    // echo "rem_sgdoh";
+    // echo "rem_bet";
+    // echo "avis_sgdph";
+    // echo "date_sgdph";
+    // echo "valide_sgdph";
+    // echo "approuve_sgdph";
+    // echo "type_cours";
+    // echo "nom_cours";
+    // echo "debit_cours";
+    // echo "nature_cours";
+    // echo "servitude";
+    // echo "origine_eaux";
+    // echo "origine_eauy";
+    // echo "aut1";
+    // echo "aut_prele";
+    // echo "aut_dev";
+    // echo "aut_occ";
+    // echo "date_aut_creus";
+    // echo "date_aut_prelev ";
+    // echo "date_aut_dev";
+    // echo "date_aut_occ";
+    // echo "num_aut_creus";
+    // echo "num_aut_prelev";
+    // echo "num_aut_dev";
+    // echo "num_aut_occ";
+    // echo "autre_autorisation";
+
+    // var_dump($id_sgdph);
+    // var_dump($rem_sgdoh);
+    // var_dump($rem_bet);
+    // var_dump($avis_sgdph);
+    // var_dump($date_sgdph);
+    // var_dump($valide_sgdph);
+    // var_dump($approuve_sgdph);
+    // var_dump($type_cours);
+    // var_dump($nom_cours);
+    // var_dump($debit_cours);
+    // var_dump($nature_cours);
+    // var_dump($servitude);
+    // var_dump($origine_eaux);
+    // var_dump($origine_eauy);
+    // var_dump($_POST["aut1"]);
+    // var_dump($_POST["aut_prele"]);
+    // var_dump($_POST["aut_dev"]);
+    // var_dump($_POST["aut_occ"]);
+    // var_dump($date_aut_creus);
+    // var_dump($date_aut_prelev);
+    // var_dump($date_aut_dev);
+    // var_dump($date_aut_occ);    
+    // var_dump($num_aut_creus);
+    // var_dump($num_aut_prelev);
+    // var_dump($num_aut_dev);
+    // var_dump($num_aut_occ);
+    // var_dump($autre_autorisation);    
 }
 
 ?>
@@ -74,6 +174,20 @@ if(isset($_POST['sgdph'])){
         <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
         <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/flat.min.css"> -->
         <!-- END Stylesheets -->
+        <style>
+        fieldset {
+        margin:14px ;
+        border: 1px solid #ccc;
+        padding: 10px 10px;
+        }
+
+        legend {
+        color: #000;
+        /* margin: auto; */
+        font-size: small;
+        font-weight: bolder;
+        }
+        </style>
     </head>
     <body>
         <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
@@ -648,7 +762,7 @@ if(isset($_POST['sgdph'])){
                     <!-- Register Forms -->
                     <h2 class="content-heading">Veuillez rajouter des remarques pour les projets d'investissement</h2>
                     <div class="row justify-content-center py-20">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <!-- Material Register -->
                             <div class="block block-themed">
                                 <div class="block-header bg-gd-emerald">
@@ -662,80 +776,250 @@ if(isset($_POST['sgdph'])){
                                 </div>
                                 <div class="block-content">
                                     <form action="ajouter_avis_sgdph.php" method="post">
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <input type="text" class="form-control" id="register2-username" name="id_sgdph" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
-                                                    <label for="register2-username">Identifiant du projet</label>
+                                        <fieldset class="inputTextWrap">
+                                            <legend>informations</legend>
+                                            <div class="form-group row">
+                                        
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="id_sgdph" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
+                                                        <label for="register2-username">Identifiant du projet</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="contact2-subject" name="type_cours" size="1">
+                                                            <option value=''></option>
+                                                            <?php
+                                                                $ss = new TypeCEau_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        <label for="register2-username">Type du cours d'eau</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="nom_cours" >
+                                                        <label for="register2-username">Nom du cours d'eau</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="debit_cours" >
+                                                        <label for="register2-username">Débit centennale (m3/s)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="contact2-subject" name="nature_cours" size="1">
+                                                            <option value=''></option>
+                                                            <?php
+                                                                $ss = new NatureCeau_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        <label for="register2-username">Nature du cours d'eau</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="servitude" >
+                                                        <label for="register2-username">Servitude</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <textarea class="form-control" id="contact2-msg" name="rem_sgdph" rows="4" ></textarea>
-                                                    <label for="contact2-msg">Remarque</label>
+                                        </fieldset>
+                                        <fieldset class="inputTextWrap">
+                                            <legend>informations de creusement</legend>
+                                            <div class="form-group row">
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="origine_eaux" >
+                                                        <label for="register2-username">Origine de l'eau potable Puits X</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="origine_eauy" >
+                                                        <label for="register2-username">Origine de l'eau potable Puits Y</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="avis_sgdph" size="1">
-                                                        <option value=''></option>
-                                                        <?php
-                                                            $ss = new Avis_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="contact2-subject">Avis SGDPH</label>
+                                            <div class="form-group row">
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="date" class="form-control" id="register2-username" name="date_aut_creus" >
+                                                        <label for="register2-username">Date d'autorisation de creusement </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="num_aut_creus" >
+                                                        <label for="register2-username">Numéro d'autorisation de creusement  </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label class="css-control css-control-success css-switch">
+                                                        <input type="checkbox" class="css-control-input" id="box" name="aut1" value=<?php echo true; ?>>
+                                                        <span class="css-control-indicator"></span> Autorisation de creusement
+                                                    </label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="valide_sgdph" size="1">
-                                                        <option value=''></option>
-                                                        <?php
-                                                            $ss = new User_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="contact2-subject">Validé par</label>
+                                                        
+                                        </fieldset>
+                                        <fieldset class="inputTextWrap">
+                                            <legend>informations de prelevelement</legend>
+                                            <div class="form-group row">
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="date" class="form-control" id="register2-username" name="date_aut_prelev" >
+                                                        <label for="register2-username">Date d'autorisation de prelevelement  </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="num_aut_prelev" >
+                                                        <label for="register2-username">Numéro d'autorisation de prelevelement </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label class="css-control css-control-success css-switch">
+                                                        <input type="checkbox" class="css-control-input" name="aut_prele" value=<?php echo true; ?>>
+                                                        <span class="css-control-indicator"></span> Autorisation de prelevelement 
+                                                    </label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <div class="form-material">
-                                                    <select class="form-control" id="contact2-subject" name="approuvee_sgdph" size="1">
-                                                        <option value=''></option>
-                                                        <?php
-                                                            $ss = new User_Service();
-                                                            $tc = $ss->findAll();
-                                                            foreach($tc as $row) {
-                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    <label for="contact2-subject">Approuvée par</label>
+                                        </fieldset>
+                                        <fieldset class="inputTextWrap">
+                                            <legend>informations de creusement</legend>
+                                            <div class="form-group row">
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="date" class="form-control" id="register2-username" name="date_aut_dev" >
+                                                        <label for="register2-username">Date d'autorisation de deversement </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="num_aut_dev" >
+                                                        <label for="register2-username">Numéro d'autorisation de deversement</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label class="css-control css-control-success css-switch">
+                                                        <input type="checkbox" class="css-control-input" name="aut_dev" value=<?php echo true; ?>>
+                                                        <span class="css-control-indicator"></span> Autorisation de deversement 
+                                                    </label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
-                                                <button type="submit" name ="sgdph" class="btn btn-alt-success">
-                                                    <i class="fa fa-plus mr-5"></i> Ajouter Avis
-                                                </button>
+                                        </fieldset>
+                                        <fieldset class="inputTextWrap">
+                                            <legend>informations de creusement</legend>
+                                            <div class="form-group row">
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="date" class="form-control" id="register2-username" name="date_aut_occ" >
+                                                        <label for="register2-username">Date d'autorisation de l'occupation du dph </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="num_aut_occ" >
+                                                        <label for="register2-username">Numéro d'autorisation de l'occupation du dph</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label class="css-control css-control-success css-switch">
+                                                        <input type="checkbox" class="css-control-input" name="aut_occ" value=<?php echo true; ?> >
+                                                        <span class="css-control-indicator"></span> Autorisation de l'occupation du dph
+                                                    </label>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="register2-username" name="autre_autorisation" >
+                                                        <label for="register2-username">Autre autorisation</label>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </fieldset>
+                                        <fieldset class="inputTextWrap">
+                                            <legend>informations de creusement</legend>
+                                            <div class="form-group row">
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <textarea class="form-control" id="contact2-msg" name="rem_sgdph" rows="4" ></textarea>
+                                                        <label for="contact2-msg">Remarque Supplémentaires du SGDPH</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <textarea class="form-control" id="contact2-msg" name="rem_bet" rows="4" ></textarea>
+                                                        <label for="contact2-msg">Remarque BET su le DPH</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="contact2-subject" name="avis_sgdph" size="1">
+                                                            <option value=''></option>
+                                                            <?php
+                                                                $ss = new Avis_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        <label for="contact2-subject">Avis SGDPH</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="contact2-subject" name="valide_sgdph" size="1">
+                                                            <option value=''></option>
+                                                            <?php
+                                                                $ss = new User_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        <label for="contact2-subject">Validé par</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="contact2-subject" name="approuvee_sgdph" size="1">
+                                                            <option value=''></option>
+                                                            <?php
+                                                                $ss = new User_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        <label for="contact2-subject">Approuvée par</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <button type="submit" name ="sgdph" class="btn btn-alt-success">
+                                                        <i class="fa fa-plus mr-5"></i> Ajouter Avis
+                                                    </button>
+                                                </div>
+                                            </div>
                                     </form>
                                 </div>
                             </div>

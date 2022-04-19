@@ -23,15 +23,20 @@ if(isset($_GET['id'])){
 }
 if(isset($_POST['stah'])){
     //filtre et validation du formulaire
+    
+
+
     $id_stah = htmlspecialchars($_POST["id_stah"]);
+    $super_bv = htmlspecialchars($_POST["super_bv"]);
     $rem_stah = htmlspecialchars($_POST["rema_stah"]);
+    $rem_bet = htmlspecialchars($_POST["rema_bet"]);
+    $avis_amng = htmlspecialchars($_POST["avis_amng"]);
     $avis_stah = htmlspecialchars($_POST["avis_stah"]);
     $valide_stah = htmlspecialchars($_POST["valide_stah"]);
     $approuve_stah = htmlspecialchars($_POST["approuve_stah"]);
     $date_stah=date("Y-m-d");
-    $avis_st = new STAH($id_stah,$avis_stah,$date_stah,$valide_stah,$approuve_stah,$rem_stah);
+    $avis_st = new STAH($id_stah,$avis_stah,$avis_amng,$date_stah,$valide_stah,$approuve_stah,$rem_stah,$rem_bet,$super_bv);
     $p= new STAH_Service();
-    var_dump($avis_st);
     if($p->update($avis_st)){
         header("Location: ajouter_avis.php?id=".$id_stah); }
     
@@ -647,7 +652,7 @@ if(isset($_POST['stah'])){
                     <!-- Register Forms -->
                     <h2 class="content-heading">Veuillez rajouter des remarques pour les projets d'investissement</h2>
                     <div class="row justify-content-center py-20">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <!-- Material Register -->
                             <div class="block block-themed">
                                 <div class="block-header bg-gd-emerald">
@@ -660,25 +665,52 @@ if(isset($_POST['stah'])){
                                     </div>
                                 </div>
                                 <div class="block-content">
-                                    <form action="ajouter_avis.php" method="post" >
+                                    <form action="ajouter_avis_stah.php" method="post" >
                                         <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-6">
                                                 <div class="form-material">
                                                     <input type="text" class="form-control" id="register2-username" name="id_stah" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
                                                     <label for="register2-username">Identifiant du projet</label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-6">
                                                 <div class="form-material">
-                                                    <textarea class="form-control" id="contact2-msg" name="rema_stah" rows="4" placeholder="Enter your message.."></textarea>
-                                                    <label for="contact2-msg">Remarque</label>
+                                                    <input type="text" class="form-control" id="register2-username" name="super_bv">
+                                                    <label for="register2-username">Superficie Bv</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-6">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="rema_bet" rows="4" placeholder="Enter your message.."></textarea>
+                                                    <label for="contact2-msg">Amenagement proposé</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-material">
+                                                    <textarea class="form-control" id="contact2-msg" name="rema_stah" rows="4" placeholder="Enter your message.."></textarea>
+                                                    <label for="contact2-msg">Remarques Supplémentaire du Stah</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <div class="form-material">
+                                                    <select class="form-control" id="contact2-subject" name="avis_amng" size="1">
+                                                    <option value=''></option>
+                                                        <?php
+                                                            $ss = new Avis_Service();
+                                                            $tc = $ss->findAll();
+                                                            foreach($tc as $row) {
+                                                                echo "<option value=".$row[0].">".$row[1]."</option>" ;  
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    <label for="contact2-subject">Avis de l'ABHT Amenagement</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
                                                 <div class="form-material">
                                                     <select class="form-control" id="contact2-subject" name="avis_stah" size="1">
                                                     <option value=''></option>
@@ -690,12 +722,12 @@ if(isset($_POST['stah'])){
                                                             }
                                                         ?>
                                                     </select>
-                                                    <label for="contact2-subject">Avis STAH</label>
+                                                    <label for="contact2-subject">Avis du Stah</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-6">
                                                 <div class="form-material">
                                                     <select class="form-control" id="contact2-subject" name="valide_stah" size="1">
                                                         <option value=''></option>
@@ -710,9 +742,7 @@ if(isset($_POST['stah'])){
                                                     <label for="contact2-subject">Validé par</label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-12">
+                                            <div class="col-6">
                                                 <div class="form-material">
                                                     <select class="form-control" id="contact2-subject" name="approuve_stah" size="1">
                                                         <option value=''></option>

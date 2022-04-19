@@ -5,24 +5,18 @@
 */
 class STAH
 {
-	private $id_pr,$remarque_sup_stah,$avis_stah,$date_avis_stah,$valide_par_stah,$approuve_par_stah;
-	function __construct($a,$q,$r,$s,$t,$p)
+	private $id_pr,$remarque_sup_stah,$avis_stah,$date_avis_stah,$valide_par_stah,$approuve_par_stah,$remarque_bet_prot_inn,$avis_abht_amen,$amena_prop,$superficie_bv;
+	function __construct($a,$q,$v,$r,$s,$t,$p,$g,$h)
 	{
         $this->id_pr = $a;
         $this->avis_stah=$q;
+		$this->avis_abht_amen=$v;
         $this->date_avis_stah=$r;
         $this->valide_par_stah=$s;
         $this->approuve_par_stah=$t;
 		$this->remarque_sup_stah= $p;
-        // $this->volume_eau_usee=$u;
-        // $this->mode_assainissement=$v;
-        // $this->reutilisation_qeu=$w;
-        // $this->reutilisation_niveau_traitement=$x;
-        // $this->niveau_piezometrique=$y;
-        // $this->date_niveau_piezometrique=$b;
-        // $this->piezometre_x=$d;
-        // $this->piezometre_y=$c;
-        // $this->traitement_boue=$z;
+		$this->amena_prop=$g;
+		$this->superficie_bv=$h;
 	}
     function getid_pr(){
 		return $this->id_pr;
@@ -60,56 +54,31 @@ class STAH
 	function setapprouve_par_stah($a){
 		$this->approuve_par_stah=$a;
 	}
-    // function getvolume_eau_usee(){
-	// 	return $this->volume_eau_usee;
-	// }
-	// function setvolume_eau_usee($a){
-	// 	$this->volume_eau_usee=$a;
-	// }
+	function getremarque_bet_prot_inn(){
+		return $this->remarque_bet_prot_inn;
+	}
+	function setremarque_bet_prot_inn($a){
+		$this->remarque_bet_prot_inn=$a;
+	}
+	function getavis_abht_amen(){
+		return $this->avis_abht_amen;
+	}
+	function setavis_abht_amen($a){
+		$this->avis_abht_amen=$a;
+	}
+	function getamena_prop(){
+		return $this->amena_prop;
+	}
+	function setamena_prop($a){
+		$this->amena_prop=$a;
+	}
+	function getsuperficie_bv(){
+		return $this->superficie_bv;
+	}
+	function setsuperficie_bv($a){
+		$this->superficie_bv=$a;
+	}
     
-    // function getmode_assainissement(){
-	// 	return $this->mode_assainissement;
-	// }
-	// function setmode_assainissement($a){
-	// 	$this->mode_assainissement=$a;
-	// }
-
-    // function getreutilisation_qeu(){
-	// 	return $this->reutilisation_qeu;
-	// }
-	// function setreutilisation_qeu($a){
-	// 	$this->reutilisation_qeu=$a;
-	// }
-    // function getreutilisation_niveau_traitement(){
-	// 	return $this->reutilisation_niveau_traitement;
-	// }
-	// function setreutilisation_niveau_traitement($a){
-	// 	$this->reutilisation_niveau_traitement=$a;
-	// }
-    // function getdate_niveau_piezometrique(){
-	// 	return $this->date_niveau_piezometrique;
-	// }
-	// function setdate_niveau_piezometrique($a){
-	// 	$this->date_niveau_piezometrique=$a;
-	// }
-    // function getpiezometre_x(){
-	// 	return $this->piezometre_x;
-	// }
-	// function setpiezometre_x($a){
-	// 	$this->piezometre_x=$a;
-	// }
-    // function getpiezometre_y(){
-	// 	return $this->piezometre_y;
-	// }
-	// function setpiezometre_y($a){
-	// 	$this->piezometre_y=$a;
-	// }
-    // function gettraitement_boue(){
-	// 	return $this->traitement_boue;
-	// }
-	// function settraitement_boue($a){
-	// 	$this->traitement_boue=$a;
-	// }
 }
 
 //  $avis = new ABHT(1,"favorable","10/12/2010","1","2","3","origine_AEP","origine_autre","bes_eau_dom","bes_eau_irrig","rem_bet_bes_eau");

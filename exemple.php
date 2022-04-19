@@ -49,7 +49,31 @@ $p2=implode(",", $p1);
 echo $p2;
 
 
+if(isset($_POST['submit'])){
+    
+    extract($_POST);
+    $id= htmlspecialchars($_POST["gid"]);
+    $numdoss = htmlspecialchars($_POST["numdoss"]);
+    $datebet = htmlspecialchars($_POST["datebet"]);
+    $dateabht = htmlspecialchars($_POST["dateabht"]);
+    $province = htmlspecialchars($_POST["province"]);
+    $commune = htmlspecialchars($_POST["commune"]);
+    $intprojet = htmlspecialchars($_POST["int_projet"]);
+    $maitreouvrage = htmlspecialchars($_POST["maitreouvrage"]);
+    $architecte = htmlspecialchars($_POST["architecte"]);
+    $tittrefoncier = htmlspecialchars($_POST["tittrefoncier"]);
+    $superficie = htmlspecialchars($_POST["superficie"]);
+    $type_projet = htmlspecialchars($_POST["type_projet"]);
+    $etat_projet = 1;
+    $geom=htmlspecialchars($_POST["geom"]);
+    $geom1="MULTIPOLYGON(((".$geom.")))";
+    $projet = new ProjetInv($id,$numdoss,$datebet,$dateabht,$province,$commune,$intprojet,$maitreouvrage,$architecte,$tittrefoncier,$superficie,$type_projet,$etat_projet,$geom1);
+    $ss = new Projet_Service();
+    if($ss->add($projet)){
+        header("Location:http://localhost/projectpfe/vue2/details.php?id=".$id); 
+    }
 
+}
 
 
 

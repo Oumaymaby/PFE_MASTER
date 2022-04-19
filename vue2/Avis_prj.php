@@ -698,19 +698,20 @@ require_once '../Couche_Service/Service_abht.php';
                                 </div>
                             </a>
                         </div>
+                        
                         <div class="col-4 col-xl-2">
                             <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
                                 <div class="block-content block-content-full clearfix">
                                     <div class="float-right mt-15 d-none d-sm-block">
                                         <i class="si si-envelope-open fa-2x text-elegance-light"></i>
                                     </div>
-                                    <?php $b = new ABHT_Service();
-                                        $bb= $b->nombre();
+                                    <?php $b = new Etat_Service();
+                                        $bb= $b->nbclose();
                                         foreach($bb as $row){
                                         echo '<div class="font-size-h3 font-w600 text-elegance" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
                                         }
                                     ?>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis ABHT</div>
+                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Cloturé</div>
                                 </div>
                             </a>
                         </div>
@@ -721,7 +722,7 @@ require_once '../Couche_Service/Service_abht.php';
                         <div class="col-md-12">
                             <div class="block block-rounded block-bordered">
                                 <div class="block-header block-header-default border-b">
-                                        <h3 class="block-title">Projet d'investissement</h3>
+                                        <h3 class="block-title">Projet d'investissement en cours</h3>
                                         <div class="block-options">
                                             <a type="button" href="Prj_ajouter.php" class="btn btn-outline-success mr-5 mb-5">
                                                 <i class="fa fa-plus mr-5"></i>Ajouter Projet
@@ -1057,7 +1058,7 @@ require_once '../Couche_Service/Service_abht.php';
                             orderable: false}, 
                             {data: function (data,type,row) {
                                 if (data.avis_sepre == null){
-                                    return '<a type="button" href="ajouter_avis_sepre.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                    return '<a type="button" href="Prj_ajouter.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
                                 }else{
                                     return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
                                 }
@@ -1065,7 +1066,7 @@ require_once '../Couche_Service/Service_abht.php';
                             orderable: false}, 
                             {data:function (data,type,row) {
                                 if (data.avis_sqe == null){
-                                    return '<a type="button" href="ajouter_avis_sqe.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                    return '<a type="button" href="Prj_ajouter.php?id='+data.id+'"#btabs-animated-slideup-SQE class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
                                 }else{
                                     return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
                                 }
@@ -1073,7 +1074,7 @@ require_once '../Couche_Service/Service_abht.php';
                             orderable: false}, 
                             {data:function (data,type,row) {
                                 if (data.avis_sgdph == null){
-                                    return '<a type="button" href="ajouter_avis_sgdph.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                    return '<a type="button" href="Prj_ajouter.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
                                 }else{
                                     return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
                                 }
@@ -1081,7 +1082,7 @@ require_once '../Couche_Service/Service_abht.php';
                             orderable: false},
                             {data: function (data,type,row) {
                                 if (data.avis_stah == null){
-                                    return '<a type="button" href="ajouter_avis_stah.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                    return '<a type="button" href="Prj_ajouter.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
                                 }else{
                                     return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
                                 }
@@ -1089,7 +1090,7 @@ require_once '../Couche_Service/Service_abht.php';
                             orderable: false},
                             {data: function (data,type,row) {
                                 if (data.avis_sepre !== null && data.avis_sqe !== null && data.avis_sgdph !== null && data.avis_stah !== null && data.avis_abht == null){
-                                    return '<a type="button" href="ajouter_avis_stah.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
+                                    return '<a type="button" href="Prj_ajouter.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
                                 }else{
                                     return '<a type="button" class="btn btn-sm btn-circle btn-alt-warning mr-5 mb-5" disabled><i class="fa fa-exclamation"></i></a>';
                                 }

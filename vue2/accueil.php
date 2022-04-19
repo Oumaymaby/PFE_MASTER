@@ -48,316 +48,27 @@ require_once '../Couche_Service/Service_Projet.php';
         <!-- Codebase framework -->
         <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
 
-        <!-- leaflet -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin=""/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <link rel="shortcut icon" href="assets/img/favicons/favicon.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicons/favicon-192x192.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
         <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
         <link href='assets/css/map/leaflet.fullscreen.css' rel='stylesheet' />
-        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css'>
         <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
         <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
         
-
-        <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
-        <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/flat.min.css"> -->
-        <!-- END Stylesheets -->
+        
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script type="text/javascript" src="assets/js/map/leaflet.ajax.js"></script>
+        <script type="text/javascript" src="assets/js/map/measure.js"></script>
+        <script src='assets/js/map/Leaflet.fullscreen.min.js'></script>
+        <script src="https://unpkg.com/geojson-vt@3.2.0/geojson-vt.js"></script>
+        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+        <script type="text/javascript" src="assets/js/map/leaflet.browser.print.min.js"></script>
     </head>
     <body>
-        <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
+        <div id="page-container" class="sidebar-mini sidebar-o side-scroll page-header-modern main-content-boxed">
             <!-- Side Overlay-->
-            <aside id="side-overlay">
-                <!-- Side Overlay Scroll Container -->
-                <div id="side-overlay-scroll">
-                    <!-- Side Header -->
-                    <div class="content-header content-header-fullrow">
-                        <div class="content-header-section align-parent">
-                            <!-- Close Side Overlay -->
-                            <!-- Layout API, functionality initialized in Codebase() -> uiApiLayout() -->
-                            <button type="button" class="btn btn-circle btn-dual-secondary align-v-r" data-toggle="layout" data-action="side_overlay_close">
-                                <i class="fa fa-times text-danger"></i>
-                            </button>
-                            <!-- END Close Side Overlay -->
-
-                            <!-- User Info -->
-                            <div class="content-header-item">
-                                <a class="img-link mr-5" href="be_pages_generic_profile.html">
-                                    <img class="img-avatar img-avatar32" src="assets/img/avatars/avatar15.jpg" alt="">
-                                </a>
-                                <a class="align-middle link-effect text-primary-dark font-w600" href="be_pages_generic_profile.html">Oumaima Sabi </a>
-                            </div>
-                            <!-- END User Info -->
-                        </div>
-                    </div>
-                    <!-- END Side Header -->
-
-                    <!-- Side Content -->
-                    <div class="content-side">
-                        <!-- Search -->
-                        <div class="block pull-t pull-r-l">
-                            <div class="block-content block-content-full block-content-sm bg-body-light">
-                                <form action="be_pages_generic_search.html" method="post">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="side-overlay-search" name="side-overlay-search" placeholder="Search..">
-                                        <span class="input-group-btn">
-                                            <button type="submit" class="btn btn-secondary px-10">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- END Search -->
-
-                        <!-- Mini Stats -->
-                        <div class="block pull-r-l">
-                            <div class="block-content block-content-full block-content-sm bg-body-light">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <div class="font-size-sm font-w600 text-uppercase text-muted">Clients</div>
-                                        <div class="font-size-h4">460</div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="font-size-sm font-w600 text-uppercase text-muted">Sales</div>
-                                        <div class="font-size-h4">728</div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="font-size-sm font-w600 text-uppercase text-muted">Earnings</div>
-                                        <div class="font-size-h4">$7,860</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END Mini Stats -->
-
-                        <!-- Friends -->
-                        <div class="block pull-r-l">
-                            <div class="block-header bg-body-light">
-                                <h3 class="block-title"><i class="fa fa-fw fa-users font-size-default mr-5"></i>Friends</h3>
-                                <div class="block-options">
-                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                        <i class="si si-refresh"></i>
-                                    </button>
-                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
-                                </div>
-                            </div>
-                            <div class="block-content">
-                                <ul class="nav-users push">
-                                    <li>
-                                        <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar1.jpg" alt="">
-                                            <i class="fa fa-circle text-success"></i> Lori Moore
-                                            <div class="font-w400 font-size-xs text-muted">Photographer</div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar10.jpg" alt="">
-                                            <i class="fa fa-circle text-success"></i> Jack Estrada
-                                            <div class="font-w400 font-size-xs text-muted">Web Designer</div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar3.jpg" alt="">
-                                            <i class="fa fa-circle text-warning"></i> Betty Kelley
-                                            <div class="font-w400 font-size-xs text-muted">UI Designer</div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="be_pages_generic_profile.html">
-                                            <img class="img-avatar" src="assets/img/avatars/avatar16.jpg" alt="">
-                                            <i class="fa fa-circle text-danger"></i> Jose Mills
-                                            <div class="font-w400 font-size-xs text-muted">Copywriter</div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- END Friends -->
-
-                        <!-- Activity -->
-                        <div class="block pull-r-l">
-                            <div class="block-header bg-body-light">
-                                <h3 class="block-title">
-                                    <i class="fa fa-fw fa-clock-o font-size-default mr-5"></i>Activity
-                                </h3>
-                                <div class="block-options">
-                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                        <i class="si si-refresh"></i>
-                                    </button>
-                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
-                                </div>
-                            </div>
-                            <div class="block-content">
-                                <ul class="list list-activity">
-                                    <li>
-                                        <i class="si si-wallet text-success"></i>
-                                        <div class="font-w600">+$29 New sale</div>
-                                        <div>
-                                            <a href="javascript:void(0)">Admin Template</a>
-                                        </div>
-                                        <div class="font-size-xs text-muted">5 min ago</div>
-                                    </li>
-                                    <li>
-                                        <i class="si si-close text-danger"></i>
-                                        <div class="font-w600">Project removed</div>
-                                        <div>
-                                            <a href="javascript:void(0)">Best Icon Set</a>
-                                        </div>
-                                        <div class="font-size-xs text-muted">26 min ago</div>
-                                    </li>
-                                    <li>
-                                        <i class="si si-pencil text-info"></i>
-                                        <div class="font-w600">You edited the file</div>
-                                        <div>
-                                            <a href="javascript:void(0)">
-                                                <i class="fa fa-file-text-o"></i> Docs.doc
-                                            </a>
-                                        </div>
-                                        <div class="font-size-xs text-muted">3 hours ago</div>
-                                    </li>
-                                    <li>
-                                        <i class="si si-plus text-success"></i>
-                                        <div class="font-w600">New user</div>
-                                        <div>
-                                            <a href="javascript:void(0)">StudioWeb - View Profile</a>
-                                        </div>
-                                        <div class="font-size-xs text-muted">5 hours ago</div>
-                                    </li>
-                                    <li>
-                                        <i class="si si-wrench text-warning"></i>
-                                        <div class="font-w600">App v5.5 is available</div>
-                                        <div>
-                                            <a href="javascript:void(0)">Update now</a>
-                                        </div>
-                                        <div class="font-size-xs text-muted">8 hours ago</div>
-                                    </li>
-                                    <li>
-                                        <i class="si si-user-follow text-pulse"></i>
-                                        <div class="font-w600">+1 Friend Request</div>
-                                        <div>
-                                            <a href="javascript:void(0)">Accept</a>
-                                        </div>
-                                        <div class="font-size-xs text-muted">1 day ago</div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- END Activity -->
-
-                        <!-- Profile -->
-                        <div class="block pull-r-l">
-                            <div class="block-header bg-body-light">
-                                <h3 class="block-title">
-                                    <i class="fa fa-fw fa-pencil font-size-default mr-5"></i>Profile
-                                </h3>
-                                <div class="block-options">
-                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
-                                </div>
-                            </div>
-                            <div class="block-content">
-                                <form action="be_pages_dashboard.html" method="post" onsubmit="return false;">
-                                    <div class="form-group mb-15">
-                                        <label for="side-overlay-profile-name">Name</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="side-overlay-profile-name" name="side-overlay-profile-name" placeholder="Your name.." value="John Smith">
-                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-15">
-                                        <label for="side-overlay-profile-email">Email</label>
-                                        <div class="input-group">
-                                            <input type="email" class="form-control" id="side-overlay-profile-email" name="side-overlay-profile-email" placeholder="Your email.." value="john.smith@example.com">
-                                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-15">
-                                        <label for="side-overlay-profile-password">New Password</label>
-                                        <div class="input-group">
-                                            <input type="password" class="form-control" id="side-overlay-profile-password" name="side-overlay-profile-password" placeholder="New Password..">
-                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-15">
-                                        <label for="side-overlay-profile-password-confirm">Confirm New Password</label>
-                                        <div class="input-group">
-                                            <input type="password" class="form-control" id="side-overlay-profile-password-confirm" name="side-overlay-profile-password-confirm" placeholder="Confirm New Password..">
-                                            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-6">
-                                            <button type="submit" class="btn btn-block btn-alt-primary">
-                                                <i class="fa fa-refresh mr-5"></i> Update
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- END Profile -->
-
-                        <!-- Settings -->
-                        <div class="block pull-r-l">
-                            <div class="block-header bg-body-light">
-                                <h3 class="block-title">
-                                    <i class="fa fa-fw fa-wrench font-size-default mr-5"></i>Settings
-                                </h3>
-                                <div class="block-options">
-                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
-                                </div>
-                            </div>
-                            <div class="block-content">
-                                <div class="row gutters-tiny">
-                                    <div class="col-6">
-                                        <div class="custom-controls-stacked">
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="side-overlay-settings-status" name="side-overlay-settings-status" value="1" checked>
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description">Online Status</span>
-                                            </label>
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="side-overlay-settings-public-profile" name="side-overlay-settings-public-profile" value="1">
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description">Public Profile</span>
-                                            </label>
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="side-overlay-settings-notifications" name="side-overlay-settings-notifications" value="1" checked>
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description">Notifications</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="custom-controls-stacked">
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="side-overlay-settings-updates" name="side-overlay-settings-updates" value="1">
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description">Auto updates</span>
-                                            </label>
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="side-overlay-settings-api-access" name="side-overlay-settings-api-access" value="1" checked>
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description">API Access</span>
-                                            </label>
-                                            <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="side-overlay-settings-limit-requests" name="side-overlay-settings-limit-requests" value="1">
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description">API Requests</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END Settings -->
-                    </div>
-                    <!-- END Side Content -->
-                </div>
-                <!-- END Side Overlay Scroll Container -->
-            </aside>
            
             <nav id="sidebar">
                 <!-- Sidebar Scroll Container -->
@@ -370,7 +81,7 @@ require_once '../Couche_Service/Service_Projet.php';
                             <div class="content-header-section sidebar-mini-visible-b">
                                 <!-- Logo -->
                                 <span class="content-header-item font-w700 font-size-xl float-left animated fadeIn">
-                                    <span class="text-dual-primary-dark">c</span><span class="text-primary">b</span>
+                                    <span class="text-dual-primary-dark">H</span><span class="text-primary">L</span>
                                 </span>
                                 <!-- END Logo -->
                             </div>
@@ -412,7 +123,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                 </a>
                                 <ul class="list-inline mt-10">
                                     <li class="list-inline-item">
-                                        <a class="link-effect text-dual-primary-dark font-size-xs font-w600 text-uppercase" href="be_pages_generic_profile.html">Oumaima Sabi</a>
+                                        <a class="link-effect text-dual-primary-dark font-size-xs font-w600 text-uppercase" href="be_pages_generic_profile.html">Sabi</a>
                                     </li>
                                     <li class="list-inline-item">
                                         <!-- Layout API, functionality initialized in Codebase() -> uiApiLayout() -->
@@ -438,7 +149,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
                                 <li>
-                                    <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Gestion des Avis</span></a>
+                                    <a href="Avis_prj.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Gestion des Avis</span></a>
                                 </li>
                                 <li>
                                     <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
@@ -704,21 +415,29 @@ require_once '../Couche_Service/Service_Projet.php';
                             <div class="block block-rounded block-bordered">
                                 <div class="block-header block-header-default border-b">
                                     <h3 class="block-title">
-                                    Etat du dossier <small>Charte</small>
+                                     <small>Charte d'Etat du dossier</small>
                                     </h3>
                                     <div class="block-options">
                                         <!-- <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
                                             <i class="si si-refresh"></i>
                                         </button> -->
-                                        <button type="button" class="btn-block-option">
-                                            <i class="si si-wrench"></i>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="pinned_toggle">
+                                            <i class="si si-pin"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="close">
+                                            <i class="si si-close"></i>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
-                                    <div class="pull-all pt-50" >
+                                    <div class="pull-all pt-50" style="padding-left:70px;padding-right:70px;" >
                                         <!-- Lines Chart Container -->
-                                        <canvas class="" id="pieChart" style="height:60px;width:60px;"></canvas>
+                                        <canvas class="" id="pieChart" style="margin-right:60px;margin-left:60px"></canvas>
                                     </div>
                                 </div>
                                 <div class="block-content">
@@ -744,14 +463,22 @@ require_once '../Couche_Service/Service_Projet.php';
                             <div class="block block-rounded block-bordered">
                                 <div class="block-header block-header-default border-b">
                                     <h3 class="block-title">
-                                        Nombre des projets selon leur durée <small>Charte</small>
+                                       <small> Chart de Nombre des projets selon leur durée </small>
                                     </h3>
                                     <div class="block-options">
                                         <!-- <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
                                             <i class="si si-refresh"></i>
                                         </button> -->
-                                        <button type="button" class="btn-block-option">
-                                            <i class="si si-wrench"></i>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="pinned_toggle">
+                                            <i class="si si-pin"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="close">
+                                            <i class="si si-close"></i>
                                         </button>
                                         
                                     </div>
@@ -759,7 +486,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                 <div class="block-content block-content-full">
                                     <div class="pull-all pt-50"   >
                                         <!-- Lines Chart Container -->
-                                        <canvas class="" id="piechart2" width="200" height="200"><canvas>
+                                        <canvas class="" id="piechart2"><canvas>
                                     </div>
                                 </div>
                                 <div class="block-content bg-white">
@@ -818,15 +545,23 @@ require_once '../Couche_Service/Service_Projet.php';
                             <div class="block block-rounded block-bordered">
                                 <div class="block-header block-header-default border-b">
                                     <h3 class="block-title">
-                                        Charte<small> état d'avancement des nombres de tout les projets</small>
+                                        <small>Charte d'Etat d'avancement des nombres de tout les projets</small>
                                     </h3>
                                     <div class="block-options">
                                         <!-- <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
                                             <i class="si si-refresh"></i>
                                         </button> -->
-                                        <button type="button" class="btn-block-option">
-                                            <i class="si si-wrench"></i>
-                                        </button> 
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="pinned_toggle">
+                                            <i class="si si-pin"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="close">
+                                            <i class="si si-close"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
@@ -842,125 +577,32 @@ require_once '../Couche_Service/Service_Projet.php';
                             <div class="block block-rounded block-bordered">
                                 <div class="block-header block-header-default border-b">
                                     <h3 class="block-title">
-                                        Charte<small> etat d'avancement des nombres de projets dans cette semaine</small>
+                                        <small> Carte dynamique des Projets d'investissement</small>
                                     </h3>
                                     <div class="block-options">
                                         <!-- <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
                                             <i class="si si-refresh"></i>
                                         </button> -->
-                                        <button type="button" class="btn-block-option">
-                                            <i class="si si-wrench"></i>
-                                        </button> 
+                                       
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="pinned_toggle">
+                                            <i class="si si-pin"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="close">
+                                            <i class="si si-close"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
-                                    <div class="pull-all pt-50">
-                                        <!-- Lines Chart Container -->
-                                        <canvas id="bar1" ></canvas>
-                                    </div>
+                                    <div id="map" style='height:270px'></div>
                                 </div>
                                 
                             </div>
                         </div>
-                        
-                    </div>
-                    <!-- <div class="row invisible" data-toggle="appear">
-                        <div class="col-md-12">
-                            <div class="block block-rounded block-bordered">
-                                <div class="block-header block-header-default border-b">
-                                        <h3 class="block-title">Projet d'investissement</h3>
-                                        <div class="block-options">
-                                            
-                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                                <i class="si si-refresh"></i>
-                                            </button>
-                                            <button type="button" class="btn-block-option">
-                                                <i class="si si-wrench"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                <div class="block-content block-content-full">
-                                
-                                <table class="table table-bordered table-striped table-vcenter" id="example2">
-                                    <thead style="font-size: 10px; color:black">
-                                        <tr>
-                                            <th>Action</th>
-                                            <th>id_projet</th>
-                                            <th>numéro de dossier</th>
-                                            <th>intitule_projet</th>
-                                            <th>la durée en jour</th>
-                                            <th>Etat du dossier </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        </div> -->
-                        <!-- <div class="col-md-12">
-                            <div class="block block-rounded block-bordered">
-                                <div class="block-header block-header-default border-b">
-                                        <h3 class="block-title">Projet delon leur état</h3>
-                                        <div class="block-options">
-                                        <div class="btn-group dropup" role="group">
-                                                    <button type="button" class="btn btn-primary dropdown-toggle" id="btnGroupDrop2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Etat</button>
-                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                                                        <a class="dropdown-item" href="javascript:void(0)">
-                                                            <span class="badge badge-success" id="bon" onclick="showDataSet1()">Bon Etat</span>
-                                                        </a>
-                                                        <a class="dropdown-item" href="javascript:void(0)" id="retard" onclick="showDataSet2()">
-                                                           <span class="badge badge-warning">en retard</span>
-                                                        </a>
-                                                        <a class="dropdown-item" href="javascript:void(0)" id="critique" onclick="showDataSet3()">
-                                                            <span class="badge badge-danger">Critique </span>
-                                                        </a>
-
-                                                        <div class="dropdown-divider"></div> -->
-                                                        <!-- <a class="dropdown-item" href="javascript:void(0)">
-                                                            <i class="fa fa-fw fa-pencil mr-5"></i>Edit Profile
-                                                        </a> -->
-                                                    <!-- </div>
-                                            </div>
-                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                                <i class="si si-refresh"></i>
-                                            </button>
-                                            <button type="button" class="btn-block-option">
-                                                <i class="si si-wrench"></i>
-                                            </button>
-                                        </div>
-                                    </div> -->
-                                <!-- <div class="block-content block-content-full"> -->
-                                <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/be_tables_datatables.js -->
-                                <!-- <table class="table table-bordered table-striped table-vcenter" id="example1">
-                                    <thead>
-                                        <tr>
-                                            <th>action</th>
-                                            <th>id_projet</th>
-                                            <th>numéro de dossier</th>
-                                           <th>commune</th>
-                                            <th>province</th>
-                                            <th>maitre_ouvrage</th> -->
-                                            <!-- <th>intitule_projet</th>
-                                            <th>la durée en jour</th>
-                                            <th>Etat du dossier </th> -->
-                                            <!-- <th class="text-center" style="width: 15%;">Profile</th> 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> --> 
-                        <!-- END Row #3 -->
-                        
-                    <!-- </div> -->
-
-                    <div class="row invisible" data-toggle="appear">
-                        <!-- Row #3 -->
-                        <div class="col-md-12">
+                        <div class="col-lg-12">
                             <div class="block block-rounded block-bordered">
                                 <div class="block-header block-header-default border-b">
                                         <h3 class="block-title">Projet d'investissement</h3>
@@ -968,11 +610,16 @@ require_once '../Couche_Service/Service_Projet.php';
                                             <a type="button" href="Prj_ajouter.php" class="btn btn-outline-success mr-5 mb-5">
                                                 <i class="fa fa-plus mr-5"></i>Ajouter Projet
                                             </a>
+                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="pinned_toggle">
+                                                <i class="si si-pin"></i>
+                                            </button>
                                             <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
                                                 <i class="si si-refresh"></i>
                                             </button>
-                                            <button type="button" class="btn-block-option">
-                                                <i class="si si-wrench"></i>
+                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="close">
+                                                <i class="si si-close"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -981,7 +628,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                 <table class="table table-bordered table-striped table-vcenter" id="tab">
                                     <thead style="font-size: 10px; color:black">
                                         <tr>
-                                            <th width="15%">id_projet</th>
+                                            <th width="5%">id_projet</th>
                                             <th width="15%">numéro de dossier</th>
                                             <!-- <th>commune</th>
                                             <th>province</th>
@@ -999,7 +646,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                 </table>
                             </div>
                         </div>
-                        </div>
+                    </div>
        
                         
                     </div>
@@ -1033,8 +680,6 @@ require_once '../Couche_Service/Service_Projet.php';
         <script src="assets/js/core/jquery.countTo.min.js"></script>
         <script src="assets/js/core/js.cookie.min.js"></script>
         <script src="assets/js/codebase.js"></script>
-        
-        
 
         <!-- Page JS Plugins -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -1049,19 +694,7 @@ require_once '../Couche_Service/Service_Projet.php';
         <!-- Page JS Code -->
         <script src="assets/js/pages/be_tables_datatables.js"></script>
 
-        <!-- leaflet  -->
-        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
-
-
-        <!-- leaflet parametrage -->
-        <script type="text/javascript" src="assets/js/map/measure.js"></script>
-        <script src='assets/js/map/Leaflet.fullscreen.min.js'></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js'></script>
-        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-        <script type="text/javascript" src="assets/js/map/leaflet.browser.print.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
+        
         <script>
             $(document).ready( function() {
                 
@@ -1072,11 +705,11 @@ require_once '../Couche_Service/Service_Projet.php';
                     // dataType:"json",
                     // dataSrc: 'data',
                     success:function(data){
-                        console.log(data);
+                        // console.log(data);
                         var d =JSON.parse(data);
                         var d1= Object.keys(d.data).length;
                         // console.log(d1);
-                        var nb= Object.keys(d.data[0])[0]; // return name of index1
+                        // var nb= Object.keys(d.data[0])[0]; // return name of index1
                         // console.log(d.data[2].nombre);
 
                         var n = [];
@@ -1105,7 +738,8 @@ require_once '../Couche_Service/Service_Projet.php';
 
                         var chart1= new Chart ( ctxt , {
                         type:"doughnut",
-                        data: data2
+                        data: data2,
+                        options: { plugins: {legend: {display:false} }},
                         }
                         );
                     },
@@ -1118,11 +752,11 @@ require_once '../Couche_Service/Service_Projet.php';
                     // dataType:"json",
                     // dataSrc: 'data',
                     success:function(data){
-                        console.log(data);
+                        // console.log(data);
                         var d =JSON.parse(data);
                         var d1= Object.keys(d.data).length;
                         // console.log(d1);
-                        var nb= Object.keys(d.data[0])[0]; // return name of index1
+                        // var nb= Object.keys(d.data[0])[0]; // return name of index1
                         // console.log(d.data[2].nombre);
 
                         var n = [];
@@ -1151,69 +785,12 @@ require_once '../Couche_Service/Service_Projet.php';
 
                         var chart1= new Chart ( ctxt , {
                         type:"bar",
-                        data: data3
+                        data: data3,
+                        options: { plugins: {legend: {display:false} }},
                         }
                         );
                     },
                 });
-
-                // $.ajax({
-                //     url:"http://localhost/projectpfe/data/data_chart_mois.php",
-                //     type:"GET",
-                //         data:'data',
-                //         // dataType:"json",
-                //         // dataSrc: 'data',
-                            
-                //         success:function(data){
-                //             console.log(data);
-                //             var d =JSON.parse(data);
-                //             var d1= Object.keys(d.data).length;
-                //             // console.log(d1);
-                //             var nb= Object.keys(d.data[0])[0]; // return name of index1
-                //             // console.log(d.data[2].nombre);
-
-                //             var n = [];
-                //             var p = [];
-                //             var c=[];
-                //             var e=[];
-                //             var color=[];
-                //             var ma=[];
-                //             for(var count = 0; count <d1; count++){
-                //                 n.push(d.data[count].nombre);
-                //                 p.push(d.data[count].mois);
-                //                 c.push(d.data[count].annee);
-                //                 e.push(d.data[count].etat_dossier);
-                //                 color.push(d.data[count].color);
-                //                 ma.push(d.data[count].mois_annee);
-                //                 }
-                //             // console.log(n);
-                        
-                //             var ctxt=$("#barchart").get(0).getContext('2d');
-                //             var data2={
-                //                 labels :ma,
-                //                 datasets : [
-                //                 {
-                //                     data: n,
-                //                     backgroundColor:color,
-                //                 },
-                //                 ]
-                //             }
-                            
-
-                //         var chart1= new Chart ( ctxt , {
-                //             type:"bar",
-                //             data: data2,
-                //             options: {
-                //             legend: { display: false },
-                //             title: {
-                //                 display: true,
-                //                 // text: 'Nombre des projets chaque année selon leur etat'
-                //             }
-                //             }
-                //         });
-                //     },
-                // });
-
                 
 
             });
@@ -1392,264 +969,7 @@ require_once '../Couche_Service/Service_Projet.php';
                 });
             };
 
-            // $(document).on('click', '#edit', function() {
-            
-            // $(this).parent().siblings('td.data1').each(function() {
-            //     var content = $(this).html();
-            //     $(this).html('<input  width=10 value="' + content + '" />');
-            // });
-            // $(this).parent().siblings('td.data2').each(function() {
-            //     var content = $(this).html();
-            //     $(this).html('<input  width=10 value="' + content + '" />');
-            // });
-            // $(this).parent().siblings('td.data3').each(function() {
-            //     var content = $(this).html();
-            //     $(this).html('<input  width=10 value="' + content + '" />');
-            // });
-            
-            // $(this).siblings('#save').show();
-            // $(this).siblings('#edit').hide();
-            // $(this).hide();
-            // });
-
-            // $(document).on('click', '#save', function() {
-            
-            // $('input').each(function() {
-            //     var content = $(this).val();
-            //     $(this).html(content);
-            //     $(this).contents().unwrap();
-            // });
-            // $(this).siblings('#edit').show();
-            // $(this).hide();
-            
-            // });
-            
-            
-            // if (=='supprimer'){
-            //     Notiflix.Notify.init({
-            //     width: "280px",
-            //     position: "right-bottom",
-            //     distance: "10px",
-            //     });
-
-            //     Notiflix.Notify.success("Ce projet est supprimer");
-                
-            // };
-
-                // $.ajax({
-                //     url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
-                //     type:"GET",
-                //         data:'data',
-                //         // dataType:"json",
-                //         // dataSrc: 'data',
-                            
-                //         success:function(data){
-                //             var d =JSON.parse(data);
-                //             // console.log(d);
-                //             var d1= Object.keys(d.data).length;
-                //             // console.log(d1);
-                //             var nb= Object.keys(d.data[0])[0]; // return name of index1
-                            
-
-                //             var n1 = [];
-                //             var p1 = [];
-                //             var c1=[];
-                //             var e1=[];
-                //             for(var i = 0; i <d1; i++){ 
-                //                 n1.push(d.data[i].nombre);
-                //                 e1.push(d.data[i].jour);
-                //                 p1.push(d.data[i].mois);
-                //                 c1.push(d.data[i].annee);
-                //                 }
-                //             // console.log(n);
-                        
-                //             var canvas = document.getElementById("#bar1");
-                //             var ctx = canvas.getContext("2d");
-                //             console.log(ctx);
-                //             var data2={
-                //                 labels :e1,
-                //                 datasets : [
-                //                 {
-                //                     label : "durée",
-                //                     data: n1,
-                //                     backgroundColor:'#fff',
-                                    
-                //                 },
-                //                 ]
-                //             }
-                            
-
-                //             var chart1= new Chart ( ctx, {
-                //                 type:"bar",
-                //                 data: data2,
-                //                 options: {
-                //                     legend: { display: true },
-                //                     title: {
-                //                         display: true,
-                //                     // text: 'Nombre des projets chaque année selon leur etat'
-                //                     }
-                //                 }
-                //             });
-                //         },
-                // });
-
-                // $.ajax({
-                //     url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
-                //     type:"GET",
-                //     data:'data',
-
-                //     success:function(data){
-
-                //         var d =JSON.parse(data);
-                //         var d1= Object.keys(d.data).length;
-                //         var nb= Object.keys(d.data[0])[0];
-
-                //         var n1 = [];
-                //         var p1 = [];
-                //         var c1=[];
-                //         var e1=[];
-                //         var colo=[];
-                //         for(var i = 0; i <d1; i++){ 
-                //             n1.push(d.data[i].nombre);
-                //             e1.push(d.data[i].jour);
-                //             p1.push(d.data[i].mois);
-                //             c1.push(d.data[i].annee);
-                //             colo.push(d.data[i].color);
-                //         }
-
-                //         var canvas = document.getElementById("bar1");
-                //         var ctx = canvas.getContext("2d");
-
-                //         // Global Options:
-                //         Chart.defaults.global.defaultFontColor = "#2097e1";
-                //         Chart.defaults.global.defaultFontSize = 11;
-
-                //         // Data with datasets options
-                //         var data = {
-                //             labels:e1,
-                //             datasets: [
-                //                 {
-                //                     label: "Worksheets done by you",
-                //                     fill: true,
-                //                     backgroundColor:colo,
-                //                     data: n1,
-                //                 }
-                //             ]
-                //         };
-
-                //         var labelWrap = [
-                //             {
-                //                 beforeInit: function (chart) {
-                //                     chart.data.labels.forEach(function (e, i, a) {
-                //                         if (/\n/.test(e)) {
-                //                             a[i] = e.split(/\n/);
-                //                         }
-                //                     });
-                //                 }
-                //             }
-                //         ];
-
-                //         var chart1= new Chart ( ctx, {
-                //             type:"bar",
-                //             data: data,
-                //             options: {
-                //                 legend: { display: true },
-                //                 title: {
-                //                 display: true,
-                //                 text: 'Nombre des projets chaque année selon leur etat'
-                //                 },
-                //                 scales: {
-                //                     y: {
-                //                         beginAtZero: true
-                //                     }
-                //                 } 
-                //             },
-                //             plugins: labelWrap
-                            
-                //         });
-
-                        
-
-
-
-
-
-                //     }
-
-                // });
-
-            // $.ajax({
-            //     url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
-            //     type:"GET",
-            //     data:'data',
-
-            //     success:function(data){
-            //         var d =JSON.parse(data);
-            //         var d1= Object.keys(d.data).length;
-            //         var nb= Object.keys(d.data[0])[0];
-            //         var canvas = document.getElementById("bar1");
-            //         var ctx = canvas.getContext("2d");
-
-            //         // Global Options:
-            //         Chart.defaults.global.defaultFontColor = "#2097e1";
-            //         Chart.defaults.global.defaultFontSize = 11;
-            //         var n1 = [];
-            //         var e1=[];
-            //         var colo=[];
-            //         for(var i = 0; i <d1; i++){ 
-            //             n1.push(d.data[i].nombre);
-            //             e1.push(d.data[i].jour);;
-            //             colo.push(d.data[i].color);
-            //         }
-
-            //         // Data with datasets options
-            //         var data = {
-            //             labels: e1,
-            //             datasets: [
-            //                 {
-            //                     label: "Worksheets done by you",
-            //                     fill: true,
-            //                     backgroundColor: colo,
-            //                     data: n1
-            //                 },
-                            
-            //             ]
-            //         };
-            //         console.log(data);
-
-            //         // Notice how nested the beginAtZero is
-            //         var options = {
-            //             title: {
-            //                 display: true,
-            //                 text: "Worksheets completed this week",
-            //                 position: "bottom"
-            //             },
-                        
-            //         };
-
-            //         // added custom plugin to wrap label to new line when \n escape sequence appear
-            //         var labelWrap = [
-            //             {
-            //                 beforeInit: function (chart) {
-            //                     chart.data.labels.forEach(function (e, i, a) {
-            //                         if (/\n/.test(e)) {
-            //                             a[i] = e.split(/\n/);
-            //                         }
-            //                     });
-            //                 }
-            //             }
-            //         ];
-
-            //         // Chart declaration:
-            //         var myBarChart = new Chart(ctx, {
-            //             type: "bar",
-            //             data: data,
-            //             options: options,
-            //             plugins: labelWrap
-            //         });
-
-            //     }
-            // });
+           
 
         $.ajax({
             url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
@@ -1659,11 +979,11 @@ require_once '../Couche_Service/Service_Projet.php';
                 // dataSrc: 'data',
 			
             success:function(data){
-                console.log(data);
+                // console.log(data);
                 var d =JSON.parse(data);
                 var d1= Object.keys(d.data).length;
                 // console.log(d1);
-                var nb= Object.keys(d.data[0])[0]; // return name of index1
+                // var nb= Object.keys(d.data[0])[0]; // return name of index1
                 // console.log(d.data[2].nombre);
 
                 var n = [];
@@ -1714,13 +1034,15 @@ require_once '../Couche_Service/Service_Projet.php';
                     type:"line",
                     data: data2,
                     options: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Nombre des projets chaque année selon leur etat'
-                    }
+                        plugins: {legend: {display:false} },
+                        title: {
+                            display: true,
+                            text: 'Nombre des projets chaque année selon leur etat'
+                        }
                     }
                 });
+
+                console.log(chart1);
             },
         });
 
@@ -1732,25 +1054,29 @@ require_once '../Couche_Service/Service_Projet.php';
                 // dataSrc: 'data',
 			
             success:function(data){
-                console.log(data);
+                // console.log(data);
                 var d =JSON.parse(data);
                 var d1= Object.keys(d.data).length;
                 // console.log(d1);
-                var nb= Object.keys(d.data[0])[0]; // return name of index1
+                // var nb= Object.keys(d.data[0])[0]; // return name of index1
                 // console.log(d.data[2].nombre);
-
+                
+                nbTL=d.data[0].nombretotal;
                 var n = [];
                 var p = [];
                 var c= [];
                 var color=[];
                 var date=[];
+                var cuml=[];
                 
                 for(var count = 0; count <d1; count++){
+                    var cumul=(d.data[count].nombre/nbTL)*100
                     n.push(d.data[count].nombre);
                     p.push(d.data[count].mois);
                     c.push(d.data[count].annee);
                     color.push(d.data[count].color);
                     date.push(d.data[count].date);
+                    cuml.push(cumul);
                 }
                 // console.log(n);
                 var ctxt=$("#bar2").get(0).getContext('2d');
@@ -1758,27 +1084,76 @@ require_once '../Couche_Service/Service_Projet.php';
                     labels :date,
                     datasets : [
                     {
-                        data: n,
+                        data: cuml,
                         backgroundColor:color,
                         tension: 0.5
                     },
                     ]
                 }
-            
-
                 var chart1= new Chart ( ctxt , {
                     type:"line",
                     data: data2,
-                    options: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Nombre des projets chaque année selon leur etat'
-                    }
-                    }
+                    options: { plugins: {legend: {display:false} },title: {display: true,text: 'Nombre des projets chaque année selon leur etat'}}
                 });
             },
         }); 
+
+        var map = L.map('map', {fullscreenControl: {pseudoFullscreen: true}, }).setView([31.630000,-8.008889], 11);
+
+            
+
+            /*layer google satellites */
+            var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+                maxZoom: 20,
+                subdomains:['mt0','mt1','mt2','mt3']
+            });
+            googleSat.addTo(map);
+
+           /*layer googleStreets */
+           var googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+            maxZoom: 20,
+            subdomains:['mt0','mt1','mt2','mt3']
+            });
+            googleStreets.addTo(map);
+
+            /*fonction de l'envenement click*/
+            function onMapClick(e) {
+            popup
+            .setLatLng(e.latlng)
+            .setContent('You clicked the map at ' + e.latlng.toString())
+            .openOn(map);
+            };
+
+            // Geosearch
+            L.Control.geocoder().addTo(map);
+
+            //Print
+            L.control.browserPrint().addTo(map);
+
+            //Echelle
+            L.control.scale().addTo(map);
+
+
+            //base layers
+            var baseLayers = {
+            "Satellite":googleSat,
+            "Google Map":googleStreets,
+            
+            };
+
+            
+            //affichage des projests d'inverstissements  
+            var $prj = new L.GeoJSON.AJAX("http://localhost/projectpfe/datageojson/data_prj_gejson.php",{style: {fillColor: "red",color: "green"},onEachFeature: function(feature, layer) {
+                    layer.bindPopup("<p>"+feature.properties.intitule_projet+"</p>");
+            }});
+            
+            
+
+            var overlays = {"projet": $prj};
+            L.control.layers(baseLayers,overlays).addTo(map);
+
+            // --------------------------------------------------
+
         </script>
     </body>
 </html>

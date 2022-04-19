@@ -829,7 +829,7 @@ require_once '../Couche_Service/Service_stah.php';
                                                 <?php $b = new ABHT_Service();
                                                     $id=$_GET['id'];
                                                     $avis = $b->findById($id);
-                                                    echo $avis->getorigine_aep();
+                                                    echo $avis->getvalide_par();
                                                 ?>
                                             </td>
                                             <td class="text-right">

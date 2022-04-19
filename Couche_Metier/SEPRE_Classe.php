@@ -5,14 +5,18 @@
 */
 class SEPRE
 {
-	private $id_pr,$remarques_sup_sepre,$avis_sepre,$date_avis_sepre;
-	function __construct($a,$p,$q,$r)
+	private $id_pr,$remarques_sup_sepre,$avis_sepre,$date_avis_sepre,$remarque_bet_besoin_eau,$origine_eau_pot,$origine_autre,$bes_eau_dom,$bes_eau_irrg;
+	function __construct($a,$b,$c,$d,$e,$f,$g,$i,$j)
 	{
         $this->id_pr = $a;
-        $this->remarques_sup_sepre=$p;
-        $this->avis_sepre=$q;
-        $this->date_avis_sepre=$r;
-		// $this->remarque_bet_protection_inondations=$s;
+		$this->avis_sepre=$b;
+		$this->remarque_bet_besoin_eau=$c;
+        $this->remarques_sup_sepre=$d;
+        $this->date_avis_sepre=$e;
+		$this->origine_eau_pot=$f;
+		$this->origine_autre=$g;
+		$this->bes_eau_dom=$i;
+		$this->bes_eau_irrg=$j;
         // $this->type_cours_eau=$s;
         // $this->nom_cours_eau=$t;
         // $this->crue_100=$u;
@@ -49,12 +53,37 @@ class SEPRE
     function setavis_sepre($a){
 		$this->avis_sepre=$a;
 	}
-	// function getremarque_bet_protection_inondations(){
-	// 	return $this->remarque_bet_protection_inondations;
-	// }
-	// function setremarque_bet_protection_inondations($a){
-	// 	$this->remarque_bet_protection_inondations=$a;
-	// }
+	function getremarque_bet_besoin_eau(){
+		return $this->remarque_bet_besoin_eau;
+	}
+	function setremarque_bet_besoin_eau($a){
+		$this->remarque_bet_besoin_eau=$a;
+	}
+	function getorigine_eau_pot(){
+		return $this->origine_eau_pot;
+	}
+	function setorigine_eau_pot($a){
+		$this->origine_eau_pot=$a;
+	}
+	function getorigine_autre(){
+		return $this->origine_autre;
+	}
+	function setorigine_autre($a){
+		$this->origine_autre=$a;
+	}
+	function getbes_eau_dom(){
+		return $this->bes_eau_dom;
+	}
+	function setbes_eau_dom($a){
+		$this->bes_eau_dom=$a;
+	}
+	function getbes_eau_irrg(){
+		return $this->bes_eau_irrg;
+	}
+	function setbes_eau_irrg($a){
+		$this->bes_eau_irrg=$a;
+	}
+
 	// function settype_cours_eau($a){
 	// 	$this->type_cours_eau=$a;
 	// }

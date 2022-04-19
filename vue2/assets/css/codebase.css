@@ -1564,7 +1564,7 @@ pre code {
 }
 
 .form-control:disabled, .form-control[readonly] {
-  background-color: #e9ecef;
+  background-color: #000000;
   opacity: 1;
 }
 
@@ -10354,7 +10354,7 @@ fieldset[disabled] .form-material.floating > label {
 .form-material .form-control[disabled],
 .form-material .form-control[readonly],
 .form-material fieldset[disabled] .form-control {
-  background-color: #fff;
+  background-color: #555b61;
   border-bottom: 1px dashed #ccc;
   box-shadow: none;
 }

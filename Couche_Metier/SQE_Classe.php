@@ -5,8 +5,8 @@
 */
 class SQE
 {
-	private $id_pr,$remarque_sup_sqe,$avis_sqe,$date_avis_sqe,$valide_par_sqe,$approuve_par_sqe;
-	function __construct($a,$q,$r,$s,$t,$p)
+	private $id_pr,$remarque_sup_sqe,$avis_sqe,$date_avis_sqe,$valide_par_sqe,$approuve_par_sqe,$remarque_bet_assai,$volume_eau_use,$modeassai,$reut_qeu,$niv_trait,$niv_piezo,$date_piezo,$coord_x,$coord_y,$trait_boue;
+	function __construct($a,$q,$r,$s,$t,$p,$v,$c,$d,$e,$f,$g,$h,$i,$j,$k)
 	{
         $this->id_pr = $a;
         $this->avis_sqe=$q;
@@ -14,6 +14,16 @@ class SQE
         $this->valide_par_sqe=$s;
         $this->approuve_par_sqe=$t;
 		$this->remarque_sup_sqe=$p;
+		$this->remarque_bet_assai=$v;
+		$this->volume_eau_use=$c;
+		$this->modeassai=$d;
+		$this->reut_qeu=$e;
+		$this->niv_trait=$f;
+		$this->niv_piezo=$g;
+		$this->date_piezo=$h;
+		$this->coord_x=$i;
+		$this->coord_y=$j;
+		$this->trait_boue=$k;
 	}
     function getid_pr(){
 		return $this->id_pr;
@@ -50,6 +60,66 @@ class SQE
 	}
 	function setapprouve_par_sqe($a){
 		$this->approuve_par_sqe=$a;
+	}
+	function getremarque_bet_assai(){
+		return $this->remarque_bet_assai;
+	}
+	function setremarque_bet_assai($a){
+		$this->remarque_bet_assai=$a;
+	}
+	function getmodeassai(){
+		return $this->modeassai;
+	}
+	function setmodeassai($a){
+		$this->modeassai=$a;
+	}
+	function getvolume_eau_use(){
+		return $this->volume_eau_use;
+	}
+	function setvolume_eau_use($a){
+		$this->volume_eau_use=$a;
+	}
+	function getreut_qeu(){
+		return $this->reut_qeu;
+	}
+	function setreut_qeu($a){
+		$this->reut_qeu=$a;
+	}
+	function setniv_trait($a){
+		$this->niv_trait=$a;
+	}
+	function getniv_trait(){
+		return $this->niv_trait;
+	}
+	function getniv_piezo(){
+		return $this->niv_piezo;
+	}
+	function setniv_piezo($a){
+		$this->niv_piezo=$a;
+	}
+	function getdate_piezo(){
+		return $this->date_piezo;
+	}
+	function setdate_piezo($a){
+		$this->date_piezo=$a;
+	}
+	function getcoord_x(){
+		return $this->coord_x;
+	}
+	function setcoord_x($a){
+		$this->coord_x=$a;
+	}
+	function getcoord_y(){
+		return $this->coord_y;
+	}
+	function setcoord_y($a){
+		$this->coord_y=$a;
+	}
+	function gettrait_boue(){
+		return $this->trait_boue;
+	}
+	function settrait_boue($a){
+		$this->trait_boue=$a;
 	}
 }
 

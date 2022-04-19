@@ -36,7 +36,7 @@ if(isset($_POST['abht'])){
     $avis_ab = new ABHT($id_abht,$avis_abht,$date_abht,$etabli_abht,$valide_abht,$approuve_abht ,$rem_gen,$etatdossier);
     $p= new ABHT_Service();
     if($p->update($avis_ab)){
-        header("Location: ajouter_avis.php?id=".$id_abht); }
+        header("Location: details.php?id=".$id_abht); }
     
 }
 
