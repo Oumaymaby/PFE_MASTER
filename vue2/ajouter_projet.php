@@ -1,18 +1,45 @@
 <?php
 /**
 * OUMAIMA SABI
-* DATE:08/04/2022
+* DATE:20/04/2022
 */
-require_once '../Couche_Service/Service_etat.php';
-require_once '../Couche_Service/Service_Projet.php';
-require_once '../Couche_Service/Service_sepre.php';
-require_once '../Couche_Service/Service_sgdph.php';
-require_once '../Couche_Service/Service_sqe.php';
-require_once '../Couche_Service/Service_stah.php';
-require_once '../Couche_Service/Service_abht.php';
 
+require_once '../Couche_Service/Service_type_projet.php';
+require_once '../Couche_Service/Service_type_dossier.php';
+require_once '../Couche_Service/Service_Commune.php';
+require_once '../Couche_Service/Service_categorie.php';
+require_once '../Couche_Service/Service_province.php';
+require_once '../Couche_Service/Service_type_projet.php';
 
+if(isset($_POST['ajouter'])){
+    
+    extract($_POST);
+    $id= htmlspecialchars($_POST["id_prj"]);
+    $numdoss = htmlspecialchars($_POST["num_doss"]);
+    $numarr = htmlspecialchars($_POST["num_archive"]);
+    $categ = htmlspecialchars($_POST["categorie"]);
+    $type_doss = htmlspecialchars($_POST["type_doss"]);
+    $type_prj = htmlspecialchars($_POST["type_projet"]);
+    $int_prj = htmlspecialchars($_POST["intitule_projet"]);
+    $maitre_ouv = htmlspecialchars($_POST["Maitre_ouvr"]);
+    $douar_localite = htmlspecialchars($_POST["douar_localite"]);
+    $architecte= htmlspecialchars($_POST["architecte"]);
+    $titre_foncier = htmlspecialchars($_POST["titre_foncier"]);
+    $superficie = htmlspecialchars($_POST["superficie"]);
+    $commune = htmlspecialchars($_POST["commune"]);
+    $province = htmlspecialchars($_POST["province"]);
+    $geom = htmlspecialchars($_POST["geometrie"]);
+    $sepre = htmlspecialchars($_POST["sepre"]);
+    $sqe= htmlspecialchars($_POST["sqe"]);
+    $stah = htmlspecialchars($_POST["stah"]);
+    $sgdph = htmlspecialchars($_POST["sgdph"]);
+    $etat_projet = 1;
 
+    $projet = new ProjetInv($id,$numdoss,$numarr,$date_arrivee_abht,$date_arrivee_bet,$commune,$province,$douar_localite,$maitre_ouv,$int_prj,$architecte,$titre_foncier,$superficie,$type_prj,$fond_dossier,$geom,$dates_commissions,$categ,$surface_batie,$type_doss,$etatdossier,$sepre,$sqe,$stah,$sgdph);
+
+    $ss = new Projet_Service();
+    $s=$ss->add($projet);
+}
 ?>
 <!doctype html>
 <!--[if lte IE 9]>     <html lang="en" class="no-focus lt-ie10 lt-ie10-msg"> <![endif]-->
@@ -21,7 +48,7 @@ require_once '../Couche_Service/Service_abht.php';
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
-        <title>avis</title>
+        <title>Codebase - Bootstrap 4 Admin Template &amp; UI Framework</title>
 
         <meta name="description" content="Codebase - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
         <meta name="author" content="pixelcave">
@@ -42,25 +69,33 @@ require_once '../Couche_Service/Service_abht.php';
         <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
         <!-- END Icons -->
 
-         <!-- Page JS Plugins CSS -->
-         <link rel="stylesheet" href="assets/js/plugins/datatables/dataTables.bootstrap4.min.css">
-
         <!-- Stylesheets -->
         <!-- Codebase framework -->
         <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
 
-        <!-- leaflet -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin=""/>
-        <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
-        <link href='assets/css/map/leaflet.fullscreen.css' rel='stylesheet' />
-        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css'>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-        <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
-        
+        <style>
+            fieldset {
+            margin:14px ;
+            border: 1px solid #ccc;
+            padding: 20px 20px;
+            }
+
+            legend {
+            color: gray;
+            /* margin: auto; */
+            font-size:larger;
+            font-weight: bolder;
+            }
+
+            .form-control[readonly]{
+                background-color: gray;
+                border-bottom: 1px dashed #ccc;
+                box-shadow: none;
+            }
+        </style>
     </head>
     <body>
+       
         <div id="page-container" class="sidebar-o side-scroll page-header-modern main-content-boxed">
             <!-- Side Overlay-->
             <aside id="side-overlay">
@@ -431,11 +466,12 @@ require_once '../Couche_Service/Service_abht.php';
                         <!-- Side Navigation -->
                         <div class="content-side content-side-full">
                             <ul class="nav-main">
+                                
                                 <li>
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
                                 <li>
-                                    <a href="Avis_prj.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Gestion des Projets</span></a>
+                                    <a href="Avis_prj.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Gestion des avis</span></a>
                                 </li>
                                 <li>
                                     <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
@@ -632,137 +668,244 @@ require_once '../Couche_Service/Service_abht.php';
             <main id="main-container">
                 <!-- Page Content -->
                 <div class="content">
-                    <div class="row invisible" data-toggle="appear">
-                        <!-- Row #1 -->
-                        <div class="col-4 col-xl-2">
-                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
-                                <div class="block-content block-content-full clearfix">
-                                    <div class="float-right mt-15 d-none d-sm-block">
-                                        <i class="si si-bag fa-2x text-primary-light"></i>
-                                    </div>
-                                    <?php $b = new SEPRE_Service();
-                                        $bb= $b->nombre();
-                                        foreach($bb as $row){
-                                        echo '<div class="font-size-h3 font-w600 text-primary" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
-                                        }
-                                    ?>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis SEPRE</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4 col-xl-2">
-                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
-                                <div class="block-content block-content-full clearfix">
-                                    <div class="float-right mt-15 d-none d-sm-block">
-                                        <i class="si si-wallet fa-2x text-earth-light"></i>
-                                    </div>
-                                    <?php $b = new SGDPH_Service();
-                                        $bb= $b->nombre();
-                                        foreach($bb as $row){
-                                        echo '<div class="font-size-h3 font-w600 text-earth"><span data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</span></div>';
-                                        }
-                                    ?>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis SGDPH</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4 col-xl-2">
-                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
-                                <div class="block-content block-content-full clearfix">
-                                    <div class="float-right mt-15 d-none d-sm-block">
-                                        <i class="si si-envelope-open fa-2x text-elegance-light"></i>
-                                    </div>
-                                    <?php $b = new SQE_Service();
-                                        $bb= $b->nombre();
-                                        foreach($bb as $row){
-                                        echo '<div class="font-size-h3 font-w600 text-elegance" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
-                                        }
-                                    ?>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis SQE</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4 col-xl-2">
-                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
-                                <div class="block-content block-content-full clearfix">
-                                    <div class="float-right mt-15 d-none d-sm-block">
-                                        <i class="si si-envelope-open fa-2x text-elegance-light"></i>
-                                    </div>
-                                    <?php $b = new STAH_Service();
-                                        $bb= $b->nombre();
-                                        foreach($bb as $row){
-                                        echo '<div class="font-size-h3 font-w600 text-elegance" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
-                                        }
-                                    ?>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Avis STAH</div>
-                                </div>
-                            </a>
-                        </div>
-                        
-                        <div class="col-4 col-xl-2">
-                            <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
-                                <div class="block-content block-content-full clearfix">
-                                    <div class="float-right mt-15 d-none d-sm-block">
-                                        <i class="si si-envelope-open fa-2x text-elegance-light"></i>
-                                    </div>
-                                    <?php $b = new Etat_Service();
-                                        $bb= $b->nbclose();
-                                        foreach($bb as $row){
-                                        echo '<div class="font-size-h3 font-w600 text-elegance" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
-                                        }
-                                    ?>
-                                    <div class="font-size-sm font-w600 text-uppercase text-muted">Cloturé</div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="row invisible" data-toggle="appear">
-                        <!-- Row #3 -->
+                    <!-- Material Design -->
+                    <h2 class="content-heading">Nouveau Projet d'investissement</h2>
+                    <div class="row">
                         <div class="col-md-12">
-                            <div class="block block-rounded block-bordered">
-                                <div class="block-header block-header-default border-b">
-                                        <h3 class="block-title">Projet d'investissement en cours</h3>
-                                        <div class="block-options">
-                                            <a type="button" href="ajouter_projet.php" class="btn btn-outline-success mr-5 mb-5">
-                                                <i class="fa fa-plus mr-5"></i>Ajouter Projet
-                                            </a>
-                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                                                <i class="si si-refresh"></i>
-                                            </button>
-                                            <button type="button" class="btn-block-option">
-                                                <i class="si si-wrench"></i>
-                                            </button>
-                                        </div>
+                            <!-- Static Labels -->
+                            <div class="block">
+                                <div class="block-header block-header-default bg-success ">
+                                    <h3 class="block-title">Ajouter un Projet</h3>
+                                    <div class="block-options">
+                                        <button type="button" class="btn-block-option">
+                                            <i class="si si-wrench"></i>
+                                        </button>
                                     </div>
-                                <div class="block-content block-content-full">
-                                <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/be_tables_datatables.js -->
-                                <table class="table table-bordered table-striped table-vcenter" id="tab" style="overflow-x:auto;">
-                                    <thead style="font-size: 10px; color:black">
-                                        <tr>
-                                            <th >id_projet</th>
-                                            <th >numéro de dossier</th>
-                                            <th >intitule_projet</th>
-                                            <th >la durée en jour</th>
-                                            <th >Etat du dossier </th>
-                                            <th width="15%">Action</th>
-                                            <th >Avis Sepre</th>
-                                            <th >Avis Sqe</th>
-                                            <th >Avis Sgdph</th>
-                                            <th >Avis Stah</th>
-                                            <th >Avis Abht</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                </div>
+                                <div class="block-content">
+                                    <form action="ajouter_projet.php" method="post" >
+                                        <fieldset class="inputTextWrap">
+                                            <legend>informations</legend>
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="material-text" name="id_prj" placeholder="Saisir l'identifiant du projet">
+                                                        <label for="material-text">Identifiant</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">    
+                                                <div class="col-md-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="material-password" name="num_doss" placeholder="Saisir le numéro du dossier">
+                                                        <label for="num_doss">Numéro du dossier</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="material-password" name="num_archive" placeholder="Saisir le numéro de l'archive">
+                                                        <label for="num_archive">Numéro de l'archive</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <input type="date" class="form-control" id="material-email" name="date_abht" >
+                                                        <label for="date_abht">Date d'arrivé à l'ABHT</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <div class="form-material form-material-danger">
+                                                        <select class="form-control" id="material-select" name="categorie">
+                                                        <option>...</option>
+                                                            <?php
+                                                                $ss = new Categorie_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo '<option value="'.$row[0].'">'.$row[1].'</option>';}
+                                                            ?>
+                                                        </select>
+                                                        <label for="categorie">Catégorie</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="material-select" name="type_doss">
+                                                            <option>...</option>
+                                                            <?php
+                                                                $ss = new Type_Dossier_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo '<option value="'.$row[0].'">'.$row[1].'</option>';}
+                                                            ?>
+                                                        </select>
+                                                        <label for="type_doss">Type dossier</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-material form-material-primary">
+                                                        <select class="form-control" id="material-select" name="type_projet">
+                                                            <option>...</option>
+                                                            <?php
+                                                                $ss = new Type_projet_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo '<option value="'.$row[0].'">'.$row[1].'</option>';}
+                                                            ?>
+                                                        </select>
+                                                        <label for="type_projet">Type projet</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="inputTextWrap">
+                                            <legend>informations</legend>
+                                            <div class="form-group row">
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <textarea class="form-control" id="material-textarea-small" name="intitule_projet" rows="1" placeholder="Saisir l'intitulé du projet"></textarea>
+                                                        <label for="intitule_projet">Intitulé de projet</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <textarea class="form-control" id="material-textarea-large" name="Maitre_ouvr" rows="1" placeholder="Saisir le maitre d'ouvrage"></textarea>
+                                                        <label for="Maitre_ouvr">Maître d'ouvrage</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-material">
+                                                        <textarea class="form-control" id="material-textarea-large" name="douar_localite" rows="1" placeholder="Saisir Douar localite"></textarea>
+                                                        <label for="douar">Douar localite</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control form-control-sm" id="material-input-size-sm" name="architecte" placeholder="Saisir l'architecte">
+                                                        <label for="architecte">Architecte</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control form-control-sm" id="material-input-size-sm" name="titre_foncier" placeholder="Saisir le titre foncier">
+                                                        <label for="titre_foncier">Titre foncier </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control form-control-sm" id="material-input-size-sm" name="superficie" placeholder="Saisir la superficie">
+                                                        <label for="superficie">Superficie</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="inputTextWrap">
+                                            <legend>informations</legend>
+                                            <div class="form-group row">
+                                                <div class="col-6">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="material-select" name="commune">
+                                                            <option>...</option>
+                                                            <?php
+                                                                $ss = new Commune_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo '<option value="'.$row[0].'">'.$row[2].'</option>';}
+                                                            ?>
+                                                        </select>
+                                                        <label for="commune">Commune</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-material">
+                                                        <select class="form-control" id="material-select" name="province">
+                                                            <option>...</option>
+                                                            <?php
+                                                                $ss = new Province_Service();
+                                                                $tc = $ss->findAll();
+                                                                foreach($tc as $row) {
+                                                                    echo '<option value="'.$row[0].'">'.$row[2].'</option>';}
+                                                            ?>
+                                                        </select>           
+                                                        <label for="province">Province</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-4">
+                                                    <div class="form-material form-material-success">
+                                                        <input type="text" class="form-control" id="material-color-success" name="fond_dossier" placeholder="Saisir le fond dossier">
+                                                        <label for="fond_dossier">Fond dossier</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-material form-material-warning">
+                                                        <input type="date" class="form-control" id="material-color-warning" name="date_comm">
+                                                        <label for="date_comm">Date_commissions</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-material">
+                                                        <input type="text" class="form-control" id="material-valid" name="surface_batie" placeholder="Saisir la surface Batie">
+                                                        <label for="surface_batie">Surface batie</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-9">
+                                                    <div class="form-material form-material-info">
+                                                        <input type="text" class="form-control" id="material-color-info" name="geometrie" placeholder="Saisir la géometrie">
+                                                        <label for="geometrie">Géometrie</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="inputTextWrap">
+                                            <legend>Validations des dossiers</legend>
+                                            <div class="form-group row">
+                                                <div class="col-3">
+                                                    <label class="css-control css-control-success css-checkbox">
+                                                        <input type="checkbox" class="css-control-input">
+                                                        <span class="css-control-indicator"></span> Service SEPRE
+                                                    </label>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label class="css-control css-control-success css-checkbox">
+                                                        <input type="checkbox" class="css-control-input">
+                                                        <span class="css-control-indicator"></span> Service SQE
+                                                    </label>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label class="css-control css-control-success css-checkbox">
+                                                        <input type="checkbox" class="css-control-input">
+                                                        <span class="css-control-indicator"></span> Service SGDPH
+                                                    </label>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label class="css-control css-control-success css-checkbox">
+                                                        <input type="checkbox" class="css-control-input">
+                                                        <span class="css-control-indicator"></span> Service STAH
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </fieldset>
                                         
-                                    </tbody>
-                                </table>
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-md-9">
+                                                <button type="submit" class="btn btn-alt-primary">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
+                            <!-- END Static Labels -->
                         </div>
-                        </div>
-       
-                        
                     </div>
+                    <!-- END Material Design -->
                 </div>
                 <!-- END Page Content -->
             </main>
@@ -771,11 +914,11 @@ require_once '../Couche_Service/Service_abht.php';
             <!-- Footer -->
             <footer id="page-footer" class="opacity-0">
                 <div class="content py-20 font-size-xs clearfix">
-                    <!-- <div class="float-right">
+                    <div class="float-right">
                         Crafted with <i class="fa fa-heart text-pulse"></i> by <a class="font-w600" href="http://goo.gl/vNS3I" target="_blank">pixelcave</a>
-                    </div> -->
+                    </div>
                     <div class="float-left">
-                        <a class="font-w600" href="https://goo.gl/po9Usv" target="_blank">oumaima sabi</a> &copy; <span class="js-year-copy">2022</span>
+                        <a class="font-w600" href="https://goo.gl/po9Usv" target="_blank">Codebase 1.3</a> &copy; <span class="js-year-copy">2017</span>
                     </div>
                 </div>
             </footer>
@@ -793,534 +936,5 @@ require_once '../Couche_Service/Service_abht.php';
         <script src="assets/js/core/jquery.countTo.min.js"></script>
         <script src="assets/js/core/js.cookie.min.js"></script>
         <script src="assets/js/codebase.js"></script>
-        
-        
-
-        <!-- Page JS Plugins -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-        <!-- Page JS Code -->
-        <script src="assets/js/pages/be_pages_dashboard.js"></script>
-
-         <!-- Page JS Plugins -->
-         <script src="assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
-        <script src="assets/js/plugins/datatables/dataTables.bootstrap4.min.js"></script>
-
-        <!-- Page JS Code -->
-        <script src="assets/js/pages/be_tables_datatables.js"></script>
-
-        <!-- leaflet  -->
-        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
-
-
-        <!-- leaflet parametrage -->
-        <script type="text/javascript" src="assets/js/map/measure.js"></script>
-        <script src='assets/js/map/Leaflet.fullscreen.min.js'></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js'></script>
-        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-        <script type="text/javascript" src="assets/js/map/leaflet.browser.print.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
-        <script>
-            $(document).ready( function() {
-                
-                $.ajax({
-                    url:"http://localhost/projectpfe/data/data_chart_etat.php",
-                    type:"GET",
-                    data:'data',
-                    // dataType:"json",
-                    // dataSrc: 'data',
-                    success:function(data){
-                        console.log(data);
-                        var d =JSON.parse(data);
-                        var d1= Object.keys(d.data).length;
-                        // console.log(d1);
-                        var nb= Object.keys(d.data[0])[0]; // return name of index1
-                        // console.log(d.data[2].nombre);
-
-                        var n = [];
-                                var e = [];
-                        var c=[];
-                        for(var count = 0; count <d1; count++)
-                                {
-                                    console.log(n.push(d.data[count].nombre));
-                                    e.push(d.data[count].etat);
-                        c.push(d.data[count].color);
-                                }
-                        // console.log(n);
-                        
-                        var ctxt=$("#pieChart").get(0).getContext('2d');
-                        var data2={
-                        labels : e,
-                        datasets : [
-                            {
-                            label : "etat",
-                            data: n,
-                            backgroundColor:c,
-                            }
-
-                        ]
-                        }
-
-                        var chart1= new Chart ( ctxt , {
-                        type:"doughnut",
-                        data: data2
-                        }
-                        );
-                    },
-                });
-
-                $.ajax({
-                    url:"http://localhost/projectpfe/data/data_chart_number.php",
-                    type:"GET",
-                    data:'data',
-                    // dataType:"json",
-                    // dataSrc: 'data',
-                    success:function(data){
-                        console.log(data);
-                        var d =JSON.parse(data);
-                        var d1= Object.keys(d.data).length;
-                        // console.log(d1);
-                        var nb= Object.keys(d.data[0])[0]; // return name of index1
-                        // console.log(d.data[2].nombre);
-
-                        var n = [];
-                        var e = [];
-                        var c=[];
-                        for(var count = 0; count <d1; count++)
-                                {
-                                    console.log(n.push(d.data[count].nombre));
-                                    e.push(d.data[count].description);
-                                    c.push(d.data[count].color);
-                                }
-                        // console.log(n);
-                        
-                        var ctxt=$("#piechart2").get(0).getContext('2d');
-                        var data3={
-                        labels : e,
-                        datasets : [
-                            {
-                            label : "durée",
-                            data: n,
-                            backgroundColor:c,
-                            }
-
-                        ]
-                        }
-
-                        var chart1= new Chart ( ctxt , {
-                        type:"bar",
-                        data: data3
-                        }
-                        );
-                    },
-                });
-
-                // $.ajax({
-                //     url:"http://localhost/projectpfe/data/data_chart_mois.php",
-                //     type:"GET",
-                //         data:'data',
-                //         // dataType:"json",
-                //         // dataSrc: 'data',
-                            
-                //         success:function(data){
-                //             console.log(data);
-                //             var d =JSON.parse(data);
-                //             var d1= Object.keys(d.data).length;
-                //             // console.log(d1);
-                //             var nb= Object.keys(d.data[0])[0]; // return name of index1
-                //             // console.log(d.data[2].nombre);
-
-                //             var n = [];
-                //             var p = [];
-                //             var c=[];
-                //             var e=[];
-                //             var color=[];
-                //             var ma=[];
-                //             for(var count = 0; count <d1; count++){
-                //                 n.push(d.data[count].nombre);
-                //                 p.push(d.data[count].mois);
-                //                 c.push(d.data[count].annee);
-                //                 e.push(d.data[count].etat_dossier);
-                //                 color.push(d.data[count].color);
-                //                 ma.push(d.data[count].mois_annee);
-                //                 }
-                //             // console.log(n);
-                        
-                //             var ctxt=$("#barchart").get(0).getContext('2d');
-                //             var data2={
-                //                 labels :ma,
-                //                 datasets : [
-                //                 {
-                //                     data: n,
-                //                     backgroundColor:color,
-                //                 },
-                //                 ]
-                //             }
-                            
-
-                //         var chart1= new Chart ( ctxt , {
-                //             type:"bar",
-                //             data: data2,
-                //             options: {
-                //             legend: { display: false },
-                //             title: {
-                //                 display: true,
-                //                 // text: 'Nombre des projets chaque année selon leur etat'
-                //             }
-                //             }
-                //         });
-                //     },
-                // });
-
-                
-
-            });
-            var ajax1={url: "http://localhost/projectpfe/data/data_dure_prj_new.php",type: 'POST',dataSrc: 'data'};
-            var ajax2 ={url: "http://localhost/projectpfe/data/data_dureemoin10.php",type: 'POST',dataSrc: 'data'};
-            var ajax3={url: "http://localhost/projectpfe/data/data_chartentre10et30.php",type: 'POST',dataSrc: 'data'};
-            var ajax4={url: "http://localhost/projectpfe/data/data_dureeplus30.php",type: 'POST',dataSrc: 'data'};
-            var column1=[{data:'id',
-                            render: function (data) {
-                                    return '<a href="http://localhost/projectpfe/vue2/details.php?id='+ data+'"><i class="si si-eye fa-2x"/></a>'
-                                },
-                            orderable: false},
-                            {data:'id'},
-                            { data: 'numero_dossier' },
-                            {data:'intitule_projet'},
-                            {data:'duree'},
-                            {data:'etat_dossier'}
-                        ];
-            var column2=[{
-                            data: 'action',
-                            className: "dt-center editor-edit",
-                            render: function (data) {
-                                    return '<span class="badge badge-success">'+ data+'</span>'},
-                            orderable: false,   
-                            },
-                            { data:'id'},
-                            { data: 'numero_dossier' },
-                            {data:'intitule_projet'},
-                            {data:'duree'},
-                            {data:'etat_dossier'},  
-                        ];
-            var column3= [{
-                            data: 'action',
-                            className: "dt-center editor-edit",
-                            render: function (data) {
-                                    return '<span class="badge badge-warning">'+ data+'</span>'},
-                            orderable: false,   
-                            },
-                            { data:'id'},
-                            { data: 'numero_dossier' },
-                            {data:'intitule_projet'},
-                            {data:'duree'},
-                            {data:'etat_dossier'},
-                            
-                        ];
-            var column4=[{
-                            data: 'action',
-                            className: "dt-center editor-edit",
-                            render: function (data) {
-                                    return '<span class="badge badge-danger">'+ data+'</span>'},
-                            orderable: false,   
-                            },
-                            { data:'id'},
-                            { data: 'numero_dossier' },
-                            {data:'intitule_projet'},
-                            {data:'duree'},
-                            {data:'etat_dossier'},
-                            
-                        ];
-                        var column5=[
-                            { data:'id',className:"data1"},
-                            { data: 'numero_dossier',className:"data2" },
-                            {data:'intitule_projet',className:"data3"},
-                            {data:'duree',
-                            render: function (data) {
-                                if ( data <= 10 ) {
-                                    return '<span class="badge badge-success">'+ data+' jours</span>';
-                                }else if(data > 10 && data <= 30 )
-                                {
-                                    return '<span class="badge badge-warning">'+ data+' jours </span>';
-                                }
-                                else{
-                                    return '<span class="badge badge-danger">'+ data+' jours </span>' 
-                                }
-                            },
-                            orderable: false },
-                            {data:'etat_dossier'},
-                            {data:'id',
-                            render: function (data) {
-                                    return '<a id="edit" href="Prj_modifier.php?id='+data+'" type="button" class="btn btn-sm btn-circle btn-alt-warning mr-5 mb-5"><i class="fa fa-pencil"></i></a><a href="supprimerprojet.php?id='+data+'" onclick = "fun()" type="button" class="btn btn-sm btn-circle btn-alt-danger mr-5 mb-5"><i class="fa fa-times"></i></a><a class="btn btn-sm btn-circle btn-alt-info mr-5 mb-5" href="http://localhost/projectpfe/vue2/details.php?id='+ data+'"><i class="fa fa-info"></i></a>';
-                                },
-                            orderable: false}, 
-                            {data: function (data,type,row) {
-                                if (data.avis_sepre == null){
-                                    return '<a type="button" href="ajouter_avis.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
-                                }else{
-                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
-                                }
-                            },
-                            orderable: false}, 
-                            {data:function (data,type,row) {
-                                if (data.avis_sqe == null){
-                                    return '<a type="button" href="ajouter_avis.php?id='+data.id+'#btabs-animated-slideup-SQE" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
-                                }else{
-                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
-                                }
-                            },
-                            orderable: false}, 
-                            {data:function (data,type,row) {
-                                if (data.avis_sgdph == null){
-                                    return '<a type="button" href="ajouter_avis.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
-                                }else{
-                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
-                                }
-                            },
-                            orderable: false},
-                            {data: function (data,type,row) {
-                                if (data.avis_stah == null){
-                                    return '<a type="button" href="ajouter_avis.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
-                                }else{
-                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-success mr-5 mb-5" disabled><i class="fa fa-check"></i></a>';
-                                }
-                                },
-                            orderable: false},
-                            {data: function (data,type,row) {
-                                if (data.avis_sepre !== null && data.avis_sqe !== null && data.avis_sgdph !== null && data.avis_stah !== null && data.avis_abht == null){
-                                    return '<a type="button" href="ajouter_avis.php?id='+data.id+'" class="btn btn-sm btn-circle btn-alt-primary mr-5 mb-5"><i class="fa fa-plus"></i></a>';
-                                }else{
-                                    return '<a type="button" class="btn btn-sm btn-circle btn-alt-warning mr-5 mb-5" disabled><i class="fa fa-exclamation"></i></a>';
-                                }
-                                
-                            },
-                            orderable: false},
-                        ];
-
-            $('#example2').DataTable({
-                "createdRow": function( row, data ) {
-                        if ( data['duree'] > 30 ) {        
-                            $(row).addClass('table-danger');
-                        }
-                        // else{
-                        //     if ( data['duree'] < 10 )
-                        //     {        
-                        //         $(row).addClass('table-info');
-                        //     }
-                        // }
-                        
-                    },
-                    "paging"   : true,
-                    "lengthChange": true,
-                    "searching "  : true,
-                    "ordering"    : true,
-                    "info  "      : true,
-                    "autoWidth"   : true,
-                    "scrollX": true,
-                    "sScrollX": '100%',
-                    "pageLength": 5,
-                        ajax: ajax1 ,
-                        columns:column1,
-                        select: true,
-                        retrieve: true,
-            });
-
-            $('#tab').DataTable({
-                "paging"   : true,
-                "lengthChange": true,
-                "searching "  : true,
-                "ordering"    : true,
-                "info  "      : true,
-                "autoWidth"   : true,
-                "scrollX": true,
-                "sScrollX": '100%',
-                "pageLength": 5,
-                ajax: ajax1,
-                columns:column5,
-                columnDefs: [
-               { width: 200, targets: 0 }
-               ],
-               fixedColumns: true
-            });
-
-            function showDataSet1(){
-                $('#example1').DataTable({
-                    "paging"   : true,
-                    "lengthChange": true,
-                    "searching "  : true,
-                    "ordering"    : true,
-                    "info  "      : true,
-                    "autoWidth"   : true,
-                    "scrollX": true,
-                    "sScrollX": '100%',
-                    "pageLength": 5,
-                    ajax: ajax3,
-                    columns:column3,
-                });
-            };
-
-            function showDataSet2(){
-                    $('#example1').DataTable({
-                    "paging"   : true,
-                    "lengthChange": true,
-                    "searching "  : true,
-                    "ordering"    : true,
-                    "info  "      : true,
-                    "autoWidth"   : true,
-                    "scrollX": true,
-                    "sScrollX": '100%',
-                    "pageLength": 5,
-                    ajax: ajax3,
-                    columns:column3,
-                });
-            };
-
-            function showDataSet3(){
-                $('#example1').DataTable({
-                    "paging"   : true,
-                    "lengthChange": true,
-                    "searching "  : true,
-                    "ordering"    : true,
-                    "info  "      : true,
-                    "autoWidth"   : true,
-                    "scrollX": true,
-                    "sScrollX": '100%',
-                    "pageLength": 5,
-                    ajax: ajax4,
-                    columns:column4,
-                });
-            };
-
-        $.ajax({
-            url:"http://localhost/projectpfe/data/data_chart_bar_last_week.php",
-            type:"GET",
-             data:'data',
-                // dataType:"json",
-                // dataSrc: 'data',
-			
-            success:function(data){
-                console.log(data);
-                var d =JSON.parse(data);
-                var d1= Object.keys(d.data).length;
-                // console.log(d1);
-                var nb= Object.keys(d.data[0])[0]; // return name of index1
-                // console.log(d.data[2].nombre);
-
-                var n = [];
-                var p = [];
-                var color=[];
-                
-                for(var count = 0; count <d1; count++){
-                    n.push(d.data[count].nombre);
-                    if(d.data[count].jour==="0"){
-                        p.push('Lundi');
-                    }
-                    if(d.data[count].jour==="1"){
-                        p.push('Mardi');
-                    }
-                    if(d.data[count].jour==="2"){
-                        p.push('Mercredi');
-                    }
-                    if(d.data[count].jour==="3"){
-                        p.push('Jeudi');
-                    }
-                    if(d.data[count].jour==="4"){
-                        p.push('Vendredi');
-                    }
-                    if(d.data[count].jour==="5"){
-                        p.push('Samedi');
-                    }
-                    if(d.data[count].jour==="6"){
-                        p.push('Dimanche');
-                    }
-                    color.push(d.data[count].color);
-                }
-                // console.log(n);
-        
-                var ctxt=$("#bar1").get(0).getContext('2d');
-                var data2={
-                    labels :p,
-                    datasets : [
-                    {
-                        data: n,
-                        backgroundColor:color,
-                        tension: 0.5
-                    },
-                    ]
-                }
-            
-
-                var chart1= new Chart ( ctxt , {
-                    type:"line",
-                    data: data2,
-                    options: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Nombre des projets chaque année selon leur etat'
-                    }
-                    }
-                });
-            },
-        });
-
-        $.ajax({
-            url:"http://localhost/projectpfe/data/data_line_mois_anne_new.php",
-            type:"GET",
-             data:'data',
-                // dataType:"json",
-                // dataSrc: 'data',
-			
-            success:function(data){
-                console.log(data);
-                var d =JSON.parse(data);
-                var d1= Object.keys(d.data).length;
-                // console.log(d1);
-                var nb= Object.keys(d.data[0])[0]; // return name of index1
-                // console.log(d.data[2].nombre);
-
-                var n = [];
-                var p = [];
-                var c= [];
-                var color=[];
-                var date=[];
-                
-                for(var count = 0; count <d1; count++){
-                    n.push(d.data[count].nombre);
-                    p.push(d.data[count].mois);
-                    c.push(d.data[count].annee);
-                    color.push(d.data[count].color);
-                    date.push(d.data[count].date);
-                }
-                // console.log(n);
-                var ctxt=$("#bar2").get(0).getContext('2d');
-                var data2={
-                    labels :date,
-                    datasets : [
-                    {
-                        data: n,
-                        backgroundColor:color,
-                        tension: 0.5
-                    },
-                    ]
-                }
-            
-
-                var chart1= new Chart ( ctxt , {
-                    type:"line",
-                    data: data2,
-                    options: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Nombre des projets chaque année selon leur etat'
-                    }
-                    }
-                });
-            },
-        }); 
-        </script>
     </body>
 </html>

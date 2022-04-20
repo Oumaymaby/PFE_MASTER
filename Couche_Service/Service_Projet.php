@@ -17,23 +17,33 @@ class Projet_Service{
  	}
  	function add($prj)
  	{
- 	 	$st =	$this->db->prepare('insert into prj_inv.projets_investissement (gid,numero_dossier,date_arrivee_abht,date_arrivee_bet,commune,province,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,etatdossier,geom) values (?,?,?,?,?,?,?,?,?,?,?,?,?,ST_GeomFromText(?))');
+ 	 	$st =	$this->db->prepare('insert into prj_inv.projets_investissement (gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,geom,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,ST_GeomFromText(?),?,?,?,?,?,?,?)');
  	 	if ($st->execute(array($prj->getid_pr(),
 		  $prj->getnum_oss(),
+		  $prj->getnum_archv(),
 		  $prj->getdate_arr_abht(),
 		  $prj->getdate_arr_bet(),
 		  $prj->getcom(),
 		  $prj->getprovince(),
+		  $prj->getdouar_loc(),
 		  $prj->getmaitre_ouv(),
 		  $prj->getintitule_pr(),
 		  $prj->getarchitecte(),
 		  $prj->gettitre_foncier(),
 		  $prj->getsupf(),
 		  $prj->gettype_projet(),
+		  $prj->getfond_doss(),
+		  $prj->getgeom(),
+		  $prj->getdate_comm(),
+		  $prj->getcatg(),
+		  $prj->getsurf_bat(),
+		  $prj->gettype_doss(),
 		  $prj->getetat_dossier(),
-		  $prj->getgeom()))) 
+		  $prj->getsepre(),
+		  $prj->getsqe(),
+		  $prj->getstah(),
+		  $prj->getsgdph() ))) 
 		{
-			
  	 		return true;
  		}
  		else{
@@ -44,7 +54,7 @@ class Projet_Service{
  	function findAll()
  	{
 
-	 	$st =	$this->db->prepare('select gid,numero_dossier,numero_archive,commune,province,maitre_ouvrage,intitule_projet from prj_inv.projets_investissement');
+	 	$st =	$this->db->prepare('gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,geom,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph');
 	 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -55,14 +65,14 @@ class Projet_Service{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('select inv.gid,inv.numero_dossier,inv.date_arrivee_abht,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,inv.architecte,inv.titre_foncier,inv.superficie,inv.type_projet,inv.etatdossier,inv.geom  from prj_inv.projets_investissement inv where inv.gid=?');
+		$st =$this->db->prepare('select gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,geom,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph from prj_inv.projets_investissement  where inv.gid=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
-				return new ProjetInv($row->gid,$row->numero_dossier,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->etatdossier,$row->geom);	
+				return new ProjetInv($row->gid,$row->numero_dossier,$row->numero_archive,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->douar_localite,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->fond_dossier,$row->geom,$row->dates_commissions,$row->categories,$row->surface_batie,$row->type_dossier,$row->etatdossier,$row->sepre,$row->sqe,$row->stah,$row->sgdph);	
 			}
 			elseif(empty($row)){
-				return new ProjetInv('0','0','0','0','0','0','0','0','0','0','0','0','0','0');
+				return new ProjetInv('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
 			}
 			// return new ProjetInv($row->gid,$row->numero_dossier,$row->numero_archive,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->douar_localite,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->payement,$row->date_payement,$row->montant_payer,$row->remarques_generales_bet,$row->avis_abht,$row->date_avis_abht,$row->etabli_par,$row->valide_par,$row->approuve_par,$row->origine_aep,$row->origine_autre,$row->besoin_eau_domestique,$row->besoin_eau_irrigation,$row->remarque_bet_besoin_eau,$row->remarques_sup_sepre,$row->avis_sepre,$row->date_avis_sepre,$row->type_cours_eau,$row->nom_cours_eau,$row->crue_100,$row->servitude,$row->nature_cours_eau,$row->origine_aep_puits_x,$row->origine_aep_puits_y,$row->autorisation_pf_creusement,$row->autorisation_pf_prelevement,$row->autorisation_deversement,$row->autorisation_occupation_dph,$row->autre_autorisation,$row->remarque_bet_protection_inondations,$row->remarque_sup_sgdph,$row->avis_sgdph,$row->date_avis_sgdph,$row->valide_par_sgdph,$row->approuve_par_sgdph,$row->superficie_bv,$row->amenagement_propose,$row->avis_abht_amenagement,$row->remarque_sup_stah,$row->avis_stah,$row->date_avis_stah,$row->valide_par_stah,$row->approuve_par_stah,$row->volume_eau_usee,$row->mode_assainissement,$row->reutilisation_qeu,$row->reutilisation_niveau_traitement,$row->niveau_piezometrique,$row->date_niveau_piezometrique,$row->piezometre_x,$row->piezometre_y,$row->traitement_boue,$row->remarque_bet_assainissement,$row->remarque_sup_sqe,$row->avis_sqe,$row->date_avis_sqe,$row->valide_par_sqe,$row->approuve_par_sqe,$row->fond_dossier,$row->geom,$row->dates_commissions,$row->categories,$row->surface_batie,$row->autorisation_creusement_date,$row->autorisation_creusement_numero,$row->autorisation_prelevement_date,$row->autorisation_prelevement_numero,$row->autorisation_deversement_date,$row->autorisation_deversement_numero,$row->autorisation_occupation_dph_date,$row->autorisation_occupation_dph_numero,$row->type_dossier,$row->etatdossier);	
 		}
@@ -77,9 +87,8 @@ class Projet_Service{
 	
  	function update($prj)
  	{
-		
- 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set numero_dossier=?,date_arrivee_abht=?,date_arrivee_bet=?,commune=?,province=?,maitre_ouvrage=?,intitule_projet=?,architecte=?,titre_foncier=?,superficie=?,type_projet=?,etatdossier=?,geom=? where gid=?');
-	 	if ($st->execute(array($prj->getnum_oss(),$prj->getdate_arr_abht(),$prj->getdate_arr_bet(),$prj->getcom(),$prj->getprovince(),$prj->getmaitre_ouv(),$prj->getintitule_pr(),$prj->getarchitecte(),$prj->gettitre_foncier(),$prj->getsupf(),$prj->gettype_projet(),$prj->getetat_dossier(),$prj->getgeom(),$prj->getid_pr())))
+ 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set numero_dossier=?,numero_archive=?,date_arrivee_abht=?,date_arrivee_bet=?,commune=?,province=?,douar_localite=?,maitre_ouvrage=?,intitule_projet=?,architecte=?,titre_foncier=?,superficie=?,type_projet=?,fond_dossier=?,geom=?,dates_commissions=?,categories=?,surface_batie=?,type_dossier=?,etatdossier=?,sepre=?,sqe=?,stah=?,sgdph=? where gid=?');
+	 	if ($st->execute(array($prj->getnum_oss(),$prj->getnum_archv(),$prj->getdate_arr_abht(),$prj->getdate_arr_bet(),$prj->getcom(),$prj->getprovince(),$prj->getdouar_loc(),$prj->getmaitre_ouv(),$prj->getintitule_pr(),$prj->getarchitecte(),$prj->gettitre_foncier(),$prj->getsupf(),$prj->gettype_projet(),$prj->getfond_doss(),$prj->getgeom(),$prj->getdate_comm(),$prj->getcatg(),$prj->getsurf_bat(),$prj->gettype_doss(),$prj->getetat_dossier(),$prj->getsepre(),$prj->getsqe(),$prj->getstah(),$prj->getsgdph(),$prj->getid_pr())))
 		{
 	 	 	return true;
 	 	}
@@ -303,17 +312,17 @@ class Projet_Service{
 	}
 
 	//selection de la [duree] d'un projet avec son [gid]
-	function dureeprj($id){
-		$st =	$this->db->prepare("select gid,numero_dossier,date_arrivee_abht,DATE_PART('day', Now() - date_arrivee_bet) AS duree,commune,province,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,payement,ST_AsGeoJSON(geom) as geojson  from prj_inv.projets_investissement where gid=?");
-		if ($st->execute(array($id))) {
-			$row = $st->fetch(PDO::FETCH_OBJ);
-			return new ProjetInv($row->gid,$row->numero_dossier,$row->date_arrivee_abht,$row->duree,$row->commune,$row->province,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->payement,$row->geojson);
-		}
-		else{
-			echo "Problème ";
-			return null;
-		}
-	}
+	// function dureeprj($id){
+	// 	$st =	$this->db->prepare("select gid,numero_dossier,date_arrivee_abht,DATE_PART('day', Now() - date_arrivee_bet) AS duree,commune,province,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,payement,ST_AsGeoJSON(geom) as geojson  from prj_inv.projets_investissement where gid=?");
+	// 	if ($st->execute(array($id))) {
+	// 		$row = $st->fetch(PDO::FETCH_OBJ);
+	// 		return new ProjetInv($row->gid,$row->numero_dossier,$row->date_arrivee_abht,$row->duree,$row->commune,$row->province,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->payement,$row->geojson);
+	// 	}
+	// 	else{
+	// 		echo "Problème ";
+	// 		return null;
+	// 	}
+	// }
 
 	//selection des nombre de projet avec leur jour et leur moi et annee de la dernière semaine 
 	function number_lastweek(){

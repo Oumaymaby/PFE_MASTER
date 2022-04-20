@@ -680,7 +680,7 @@ if(isset($_POST['stah'])){
                                     <a href="accueil.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">tableau de bord</span></a>
                                 </li>
                                 <li>
-                                    <a href="Prj_ajouter.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Nouveau Projet</span></a>
+                                    <a href="Avis_prj.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Gestion des avis</span></a>
                                 </li>
                                 <li>
                                     <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
@@ -918,15 +918,13 @@ if(isset($_POST['stah'])){
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <div class="col-12">
+                                                <div class="col-6">
                                                     <div class="form-material">
-                                                        <textarea class="form-control" id="contact2-msg" name="rem_gen" rows="4"  <?php if($rem_gen1!=="0"){echo "readonly";} ?> > <?php if($rem_gen1!=="0") {echo $rem_gen1;} ?></textarea>
+                                                        <textarea class="form-control" id="contact2-msg" name="rem_gen" rows="1"  <?php if($rem_gen1!=="0"){echo "readonly";} ?> > <?php if($rem_gen1!=="0") {echo $rem_gen1;} ?></textarea>
                                                         <label for="contact2-msg">Remarque</label>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-12">
+                                                <div class="col-6">
                                                     <div class="form-material">
                                                         <select class="form-control" id="contact2-subject" name="avis_abht" size="1">
                                                             
@@ -954,7 +952,7 @@ if(isset($_POST['stah'])){
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <div class="col-12">
+                                                <div class="col-4">
                                                     <div class="form-material">
                                                         <select class="form-control" id="contact2-subject" name="etabli_abht" size="1">
                                                             <?php
@@ -979,9 +977,7 @@ if(isset($_POST['stah'])){
                                                         <label for="contact2-subject">établi par</label>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-12">
+                                                <div class="col-4">
                                                     <div class="form-material">
                                                         <select class="form-control" id="contact2-subject" name="valide_abht" size="1">
                                                             <?php
@@ -1006,9 +1002,7 @@ if(isset($_POST['stah'])){
                                                         <label for="contact2-subject">Validé par</label>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-12">
+                                                <div class="col-4">
                                                     <div class="form-material">
                                                         <select class="form-control" id="contact2-subject" name="approuve_abht" size="1">
                                                             <?php
@@ -1175,10 +1169,41 @@ if(isset($_POST['stah'])){
                                         <div class="block-content">
                                             <form action="Prj_ajouter.php" method="post" >
                                                 <div class="form-group row">
-                                                    <div class="col-12">
+                                                    <div class="col-4">
                                                         <div class="form-material">
                                                             <input type="text" class="form-control" id="register2-username" name="id_stah" value="<?php if(isset($id1)){echo $id1;} ?>" readonly>
                                                             <label for="register2-username">Identifiant du projet</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <input type="text" class="form-control" id="register2-username" name="super_bv" value="<?php if($superfi_bv1!==NULL){echo $superfi_bv1;} ?>" <?php if($superfi_bv1!==NULL) {echo "readonly";} ?> >
+                                                            <label for="register2-username">Superficie Bv</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-material">
+                                                            <select class="form-control" id="contact2-subject" name="avis_amng" size="1">
+                                                                <?php
+                                                                    $ss = new Avis_Service();
+                                                                    $tc = $ss->findAll();
+                                                                    if($avis_abht_amen1!==NULL){
+                                                                        foreach($tc as $row) {
+                                                                            if($avis_abht_amen1== $row[0]){
+                                                                                echo "<option value=".$row[0]." selected>".$row[1]."</option>" ;
+                                                                            }else{
+                                                                                echo "<option value=".$row[0]." hidden>".$row[1]."</option>" ;
+                                                                            }
+                                                                        }
+                                                                    }else{
+                                                                        echo "<option></option>";
+                                                                        foreach($tc as $row) {
+                                                                            echo "<option value=".$row[0]." >".$row[1]."</option>";
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                            <label for="contact2-subject">Avis de l'ABHT Amenagement</label>
                                                         </div>
                                                     </div>
                                                 </div>

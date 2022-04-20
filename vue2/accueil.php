@@ -607,7 +607,7 @@ require_once '../Couche_Service/Service_Projet.php';
                                 <div class="block-header block-header-default border-b">
                                         <h3 class="block-title">Projet d'investissement</h3>
                                         <div class="block-options">
-                                            <a type="button" href="Prj_ajouter.php" class="btn btn-outline-success mr-5 mb-5">
+                                            <a type="button" href="ajouter_projet.php" class="btn btn-outline-success mr-5 mb-5">
                                                 <i class="fa fa-plus mr-5"></i>Ajouter Projet
                                             </a>
                                             <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>

@@ -62,14 +62,14 @@ $geom1="MULTIPOLYGON(((".$str7.")))";
 // echo $geom1;
 
 
-$projet = new ProjetInv($id,$numdoss,$datebet,$dateabht,$province,$commune,$intprojet,$maitreouvrage,$architecte,$tittrefoncier,$superficie,$type_projet,$etat_projet,$geom1);
+// $projet = new ProjetInv($id,$numdoss,$datebet,$dateabht,$province,$commune,$intprojet,$maitreouvrage,$architecte,$tittrefoncier,$superficie,$type_projet,$etat_projet,$geom1);
 
-$ss = new Projet_Service();
-$s=$ss->add($projet);
-// var_dump($s);
-// $message= "Le projet a été ajouté  avec succès";
-// echo $geom1;
-// exit; 
+// $ss = new Projet_Service();
+// $s=$ss->add($projet);
+// // var_dump($s);
+// // $message= "Le projet a été ajouté  avec succès";
+// // echo $geom1;
+// // exit; 
 }
 ?>
 <!DOCTYPE html>
@@ -223,9 +223,7 @@ $s=$ss->add($projet);
                                           <i class="si si-clock fa-4x text-corporate"></i>
                                       </p>
                                   </div>
-                              </a>
-                              
-                        
+                              </a> 
                 </div>
                 
             </div>
