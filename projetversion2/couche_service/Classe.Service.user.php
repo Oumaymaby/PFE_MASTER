@@ -1,0 +1,98 @@
+<?php
+/**
+* OUMAIMA SABI
+* DATE:06/04/2022
+*/
+
+require_once 'Classe.Service.connexion.php';
+require_once '../couche_metier/Classe.user.php';
+
+class User_Service{
+
+	function __construct()
+ 	{
+ 		$c = new Connexion();
+ 		$this->db = $c->getdb();
+ 	}
+ 	function add($user)
+ 	{
+ 	 	$st =	$this->db->prepare('insert into gen.phpgen_users (user_id,user_name,user_password,nom,prenom,division,service) values (?,?,?,?,?,?,?)');
+ 	 	if ($st->execute(array($user->getid_users(),$user->getusn(),$user->getpassword(),$user->getnom(),$user->getprenom(),$user->getdivision(),$user->getservice()))) 
+		{
+ 	 	echo"entré";
+ 		}
+ 		else{
+ 	 		return false;
+ 		}
+ 	}
+
+ 	function findAll()
+ 	{
+
+	 	$st =	$this->db->prepare('SELECT * FROM gen.phpgen_users');
+	 	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+ 	} 
+	
+ 	function findById($id)
+ 	{
+		$st =$this->db->prepare('select * FROM gen.phpgen_users where user_id=?');
+		if ($st->execute(array($id))) {
+			$row = $st->fetch(PDO::FETCH_OBJ);
+			// var_dump($row);
+			
+			if(!empty($row)){
+				return new User($row->user_id,$row->user_name,$row->user_password,$row->nom,$row->prenom,$row->division,$row->service);
+			}
+			elseif(empty($row)){
+				return new User('0','aucune personne','0','0','0','0','0');
+			}
+
+		}
+		else{
+			echo "Problème ";
+			return null;
+		}
+ 	} 
+ 	function update($user)
+ 	{
+ 	 	$st =$this->db->prepare('update gen.phpgen_users set user_name=?,user_password=?,nom=?,prenom=?,division=?,service=? where user_id=?');
+	 	if ($st->execute(array($user->getid_users(),$user->getusn(),$user->getpassword(),$user->getnom(),$user->getprenom(),$user->getdivision(),$user->getservice())))
+		{
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+ 	 
+ 	}
+
+
+ 	function supprimer($user)
+ 	{
+
+	 	$st =	$this->db->prepare('delete from gen.phpgen_users where user_id=?');
+	 	if ($st->execute(array($user->getid_users()))) {
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+ 	}
+
+	function nombre(){
+		$st =	$this->db->prepare('SELECT count(*) FROM gen.phpgen_users');
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+
+}
