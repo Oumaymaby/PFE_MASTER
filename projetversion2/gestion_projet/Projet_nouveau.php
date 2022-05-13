@@ -29,33 +29,33 @@
         $surface_batie=htmlspecialchars($_POST["surface_batie"]);
         $type_doss = htmlspecialchars($_POST["type_doss"]);
         $etatdossier = 1;
-        if(isset($_POST["sepre"])){
-            var_dump($_POST["sepre"]);
+        if(isset($_POST["sepre1"])){
+            var_dump($_POST["sepre1"]);
         }else{
-            $_POST["sepre"]="0";
-            var_dump($_POST["sepre"]);
+            $_POST["sepre1"]="0";
+            var_dump($_POST["sepre1"]);
         }
     
-        if(isset($_POST["sqe"])){
-            var_dump($_POST["sqe"]);
+        if(isset($_POST["sqe1"])){
+            var_dump($_POST["sqe1"]);
         }else{
-            $_POST["sqe"]="0";
-            var_dump($_POST["sqe"]);
+            $_POST["sqe1"]="0";
+            var_dump($_POST["sqe1"]);
         }
         if(isset($_POST["stah"])){
             var_dump($_POST["stah"]);
         }else{
-            $_POST["stah"]="0";
-            var_dump($_POST["stah"]);
+            $_POST["stah1"]="0";
+            var_dump($_POST["stah1"]);
         }
-        if(isset($_POST["sgdph"])){
-            var_dump($_POST["sgdph"]);
+        if(isset($_POST["sgdph1"])){
+            var_dump($_POST["sgdph1"]);
         }else{
-            $_POST["sgdph"]="0";
-            var_dump($_POST["sgdph"]);
+            $_POST["sgdph1"]="0";
+            var_dump($_POST["sgdph1"]);
         }
         $geom1="MULTIPOLYGON(((".$geom.")))";
-        $projet = new ProjetInv($id,$numero_dossier,$numero_archive,$date_arrivee_abht,$date_arrivee_bet,$commune,$province,$douar_localite,$maitre_ouv,$intitule_projet,$architecte,$titre_foncier,$superficie,$type_prj,$fond_dossier,$geom1,$dates_commissions,$categ,$surface_batie,$type_doss,$etatdossier,$_POST["sepre"],$_POST["sqe"],$_POST["stah"],$_POST["sgdph"],NULL,NULL,NULL);
+        $projet = new ProjetInv($id,$numero_dossier,$numero_archive,$date_arrivee_abht,$date_arrivee_bet,$commune,$province,$douar_localite,$maitre_ouv,$intitule_projet,$architecte,$titre_foncier,$superficie,$type_prj,$fond_dossier,$geom1,$dates_commissions,$categ,$surface_batie,$type_doss,$etatdossier,$_POST["sepre1"],$_POST["sqe1"],$_POST["stah1"],$_POST["sgdph1"],NULL,NULL,NULL);
         // var_dump($projet );
         $ss = new Projet_Service();
         $s=$ss->add($projet);
@@ -263,25 +263,25 @@
                                             <div class="form-group row">
                                                 <div class="col-3">
                                                     <label class="css-control css-control-success css-checkbox">
-                                                        <input type="checkbox" class="css-control-input" name="sepre" value=<?php echo true; ?>>
+                                                        <input type="checkbox" class="css-control-input" name="sepre1" value=<?php echo true; ?>>
                                                         <span class="css-control-indicator"></span> Service SEPRE
                                                     </label>
                                                 </div>
                                                 <div class="col-3">
                                                     <label class="css-control css-control-success css-checkbox">
-                                                        <input type="checkbox" class="css-control-input" name="sqe" value=<?php echo true; ?>>
+                                                        <input type="checkbox" class="css-control-input" name="sqe1" value=<?php echo true; ?>>
                                                         <span class="css-control-indicator"></span> Service SQE
                                                     </label>
                                                 </div>
                                                 <div class="col-3">
                                                     <label class="css-control css-control-success css-checkbox">
-                                                        <input type="checkbox" class="css-control-input" name="sgdph" value=<?php echo true; ?>>
+                                                        <input type="checkbox" class="css-control-input" name="sgdph1" value=<?php echo true; ?>>
                                                         <span class="css-control-indicator"></span> Service SGDPH
                                                     </label>
                                                 </div>
                                                 <div class="col-3">
                                                     <label class="css-control css-control-success css-checkbox">
-                                                        <input type="checkbox" class="css-control-input" name="stah" value=<?php echo true; ?>>
+                                                        <input type="checkbox" class="css-control-input" name="stah1" value=<?php echo true; ?>>
                                                         <span class="css-control-indicator"></span> Service STAH
                                                     </label>
                                                 </div>

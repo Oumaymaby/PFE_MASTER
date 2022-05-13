@@ -1,11 +1,12 @@
-<?php 
-/**
-* OUMAIMA SABI
-* DATE:07/03/2022
-*/
-?>
-
-</main>
+<?php
+    /**
+    * OUMAIMA SABI
+    * DATE:04/05/2022
+    */
+    require_once 'Map.home.php';
+?>        
+    <div id="map" style='height: 100vh'></div>
+    </main>
             <footer id="page-footer" class="opacity-0">
                 <div class="content py-20 font-size-xs clearfix">
                     <div class="float-left">
@@ -292,3 +293,6 @@
 
 </script>
     
+
+    </body>
+</html>

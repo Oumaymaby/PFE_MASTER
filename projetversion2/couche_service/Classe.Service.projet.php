@@ -76,7 +76,7 @@ class Projet_Service{
 				return new ProjetInv($row->gid,$row->numero_dossier,$row->numero_archive,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->douar_localite,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->fond_dossier,$row->geom,$row->dates_commissions,$row->categories,$row->surface_batie,$row->type_dossier,$row->etatdossier,$row->sepre,$row->sqe,$row->stah,$row->sgdph,$row->payement,$row->date_payement,$row->montant_payer);	
 			}
 			elseif(empty($row)){
-				return new ProjetInv('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
+				return new ProjetInv('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
 			}
 			// return new ProjetInv($row->gid,$row->numero_dossier,$row->numero_archive,$row->date_arrivee_abht,$row->date_arrivee_bet,$row->commune,$row->province,$row->douar_localite,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->payement,$row->date_payement,$row->montant_payer,$row->remarques_generales_bet,$row->avis_abht,$row->date_avis_abht,$row->etabli_par,$row->valide_par,$row->approuve_par,$row->origine_aep,$row->origine_autre,$row->besoin_eau_domestique,$row->besoin_eau_irrigation,$row->remarque_bet_besoin_eau,$row->remarques_sup_sepre,$row->avis_sepre,$row->date_avis_sepre,$row->type_cours_eau,$row->nom_cours_eau,$row->crue_100,$row->servitude,$row->nature_cours_eau,$row->origine_aep_puits_x,$row->origine_aep_puits_y,$row->autorisation_pf_creusement,$row->autorisation_pf_prelevement,$row->autorisation_deversement,$row->autorisation_occupation_dph,$row->autre_autorisation,$row->remarque_bet_protection_inondations,$row->remarque_sup_sgdph,$row->avis_sgdph,$row->date_avis_sgdph,$row->valide_par_sgdph,$row->approuve_par_sgdph,$row->superficie_bv,$row->amenagement_propose,$row->avis_abht_amenagement,$row->remarque_sup_stah,$row->avis_stah,$row->date_avis_stah,$row->valide_par_stah,$row->approuve_par_stah,$row->volume_eau_usee,$row->mode_assainissement,$row->reutilisation_qeu,$row->reutilisation_niveau_traitement,$row->niveau_piezometrique,$row->date_niveau_piezometrique,$row->piezometre_x,$row->piezometre_y,$row->traitement_boue,$row->remarque_bet_assainissement,$row->remarque_sup_sqe,$row->avis_sqe,$row->date_avis_sqe,$row->valide_par_sqe,$row->approuve_par_sqe,$row->fond_dossier,$row->geom,$row->dates_commissions,$row->categories,$row->surface_batie,$row->autorisation_creusement_date,$row->autorisation_creusement_numero,$row->autorisation_prelevement_date,$row->autorisation_prelevement_numero,$row->autorisation_deversement_date,$row->autorisation_deversement_numero,$row->autorisation_occupation_dph_date,$row->autorisation_occupation_dph_numero,$row->type_dossier,$row->etatdossier);	
 		}
@@ -306,7 +306,7 @@ class Projet_Service{
 
 	//selection des projets sur l'espace 
     function geoprojet(){
-		$st =	$this->db->prepare("select gid,numero_dossier,date_arrivee_abht,date_arrivee_bet,commune,province,maitre_ouvrage,architecte,intitule_projet,superficie,ST_AsGeoJSON(geom) as geojson from prj_inv.prj_invest");
+		$st =	$this->db->prepare("select gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,payement,date_payement,montant_payer,fond_dossier,ST_AsGeoJSON(geom) as geojson,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,stah,sqe,sgdph from prj_inv.prj_invest");
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -315,18 +315,7 @@ class Projet_Service{
 	 	 	}
 	}
 
-	//selection de la [duree] d'un projet avec son [gid]
-	// function dureeprj($id){
-	// 	$st =	$this->db->prepare("select gid,numero_dossier,date_arrivee_abht,DATE_PART('day', Now() - date_arrivee_bet) AS duree,commune,province,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,payement,ST_AsGeoJSON(geom) as geojson  from prj_inv.projets_investissement where gid=?");
-	// 	if ($st->execute(array($id))) {
-	// 		$row = $st->fetch(PDO::FETCH_OBJ);
-	// 		return new ProjetInv($row->gid,$row->numero_dossier,$row->date_arrivee_abht,$row->duree,$row->commune,$row->province,$row->maitre_ouvrage,$row->intitule_projet,$row->architecte,$row->titre_foncier,$row->superficie,$row->type_projet,$row->payement,$row->geojson);
-	// 	}
-	// 	else{
-	// 		echo "Problème ";
-	// 		return null;
-	// 	}
-	// }
+	
 
 	//selection des nombre de projet avec leur jour et leur moi et annee de la dernière semaine 
 	function number_lastweek(){
@@ -429,7 +418,72 @@ class Projet_Service{
 	 	 	}
 	}
 
-	
+
+	//selection de la [duree] d'un projet avec son [gid]
+	function dureeprj($id){
+		$st =	$this->db->prepare("select gid,DATE_PART('day', Now() - date_arrivee_bet) AS duree from prj_inv.prj_invest where gid=?");
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row ;
+		}
+		else{
+			echo "Problème ";
+			return null;
+		}
+	}
+
+	//selection des nombre de sepre by gid
+
+	function nombre_sepre($id){
+		$st =	$this->db->prepare('select count(sepre.id_sepre),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_sepre sepre on prj.gid=sepre.id_prj where prj.gid=? group by prj.gid');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row ;
+		}
+			else{
+				return null;
+			}
+	}
+
+	//selection des nombre de sepre by gid
+
+	function nombre_stah($id){
+		$st =	$this->db->prepare('select count(stah.id_stah),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_stah stah  on prj.gid=stah.id_prj where prj.gid=? group by prj.gid');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row ;
+		}
+			else{
+				return null;
+			}
+	}
+
+	//selection des nombre de sgdph by gid
+
+	function nombre_sgdph($id){
+		$st =	$this->db->prepare('select count(sgdph.id_sgdph),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_sgdph sgdph on prj.gid=sgdph.id_prj where prj.gid=? group by prj.gid');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row ;
+		}
+			else{
+				return null;
+			}
+	}
+
+	//selection des nombre de sepre by gid
+
+	function nombre_sqe($id){
+		$st =	$this->db->prepare('select count(sqe.id_sqe),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_sqe sqe on prj.gid=sqe.id_prj where prj.gid=? group by prj.gid');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row ;
+		}
+			else{
+				return null;
+			}
+	}
+
 
 
 

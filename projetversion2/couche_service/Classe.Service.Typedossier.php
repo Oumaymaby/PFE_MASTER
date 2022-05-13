@@ -43,7 +43,7 @@ class Type_Dossier_Service{
 		$st =$this->db->prepare('SELECT * FROM prj_inv.ls_prj_type_dossier where id=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
-			return new Typedossier($row->id,$row->type_projet);
+			return new Typedossier($row->id,$row->type_dossier);
 		}
 		else{
 			echo "Problème ";

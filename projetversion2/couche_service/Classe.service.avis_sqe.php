@@ -45,16 +45,16 @@ class SQE_Service{
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
-				return new SQE($row->gid,$row->avis_sqe,$row->date_avis_sqe,$row->valide_par_sqe,$row->approuve_par_sqe,$row->remarque_sup_sqe,$row->remarque_bet_assainissement,$row->volume_eau_usee,$row->mode_assainissement,$row->reutilisation_qeu,$row->reutilisation_niveau_traitement,$row->niveau_piezometrique,$row->date_niveau_piezometrique,$row->piezometre_x,$row->piezometre_y,$row->traitement_boue);
+				return new SQE($row->gid,$row->avis_sqe,$row->date_avis_sqe,$row->date_avis_sqe_bet,$row->valide_par_sqe,$row->approuve_par_sqe,$row->remarque_sup_sqe,$row->remarque_bet_assainissement,$row->volume_eau_usee,$row->mode_assainissement,$row->reutilisation_qeu,$row->reutilisation_niveau_traitement,$row->niveau_piezometrique,$row->date_niveau_piezometrique,$row->piezometre_x,$row->piezometre_y,$row->traitement_boue);
 			}
 			elseif(empty($row)){
-				return new SQE('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
+				return new SQE('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
 			}
 					
 		}
 		else{
 			echo "Problème ";
-			return new SQE('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
+			return new SQE('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
 		}
  	}
 

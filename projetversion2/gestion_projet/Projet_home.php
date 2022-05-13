@@ -110,7 +110,7 @@ if(isset($_POST['modifier'])){
         $surface_batie=htmlspecialchars($_POST["surface_batie"]);
         $type_doss = htmlspecialchars($_POST["type_doss"]);
         $etatdossier = 1;
-        if(isset($_POST["sepre"])){
+        if(isset($_POST["sepre1"])){
         }else{
             $_POST["sepre"]="0";
             
@@ -160,7 +160,7 @@ if(isset($_POST['sepre'])){
     var_dump($id_prj);
     $p= new SEPRE_Service();
     if($p->add($avis_st)){
-        header("Location: details.php?id=".$id_prj); }
+        header("Location: Projet_details.php?id=".$id_prj); }
     
 }
 
@@ -180,7 +180,7 @@ if(isset($_POST['stah'])){
     $avis_st = new STAH($avis_stah,$avis_amng,$date_stah,$valide_stah,$approuve_stah,$rem_stah,$rem_bet,$super_bv,$date_avis_bet_stah,$id_prj);
     $p= new STAH_Service();
     if($p->add($avis_st)){
-        header("Location: details.php?id=".$id_stah); }
+        header("Location:Projet_details.php?id=".$id_prj); }
     
 }
 
@@ -209,7 +209,7 @@ if(isset($_POST['sqe'])){
     // var_dump($avis_sq);
     $p= new SQE_Service();
     if($p->add($avis_sq)){
-        header("Location: details.php?id=".$id_sqe); }
+        header("Location:Projet_details.php?id=".$id_prj); }
     
 }
 
@@ -263,7 +263,7 @@ if(isset($_POST['sgdph'])){
     var_dump($avis_sdh);
     $p= new SGDPH_Service();
     if($p->add($avis_sdh)){
-        header("Location: details.php?id=".$id_sgdph); }  
+        header("Location:Projet_details.php?id=".$id_prj); }  
 }
 
 ?>
@@ -297,9 +297,11 @@ if(isset($_POST['sgdph'])){
         <link href='assets/css/map/leaflet.fullscreen.css' rel='stylesheet' />
         <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
         <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css" />
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <script type="text/javascript" src="assets/js/map/leaflet.ajax.js"></script>
         <script type="text/javascript" src="assets/js/map/measure.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src='assets/js/map/Leaflet.fullscreen.min.js'></script>
         <script src="https://unpkg.com/geojson-vt@3.2.0/geojson-vt.js"></script>
         <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
@@ -323,6 +325,55 @@ if(isset($_POST['sgdph'])){
                 border-bottom: 1px dashed #ccc;
                 box-shadow: none;
             }
+
+            .leaflet-control-layers-toggle {
+                width: 20px;
+                height: 36px;
+                background-color: black;
+                border-radius: 15px;
+                color:white;
+            }
+            .description {
+                width: 250px;
+                font-size: 16px;
+                color: #333;
+                padding: 10px 14px;
+                background-color: hsla(0, 0%, 100%, 0.8);
+                box-shadow: 0 0 15px rgb(0 0 0 / 20%);
+                border-radius: 5px;
+                line-height: 120%;
+                border: 1px solid grey;
+                }
+
+                .info {
+                    padding: 16px 10px;
+                    font: 14px/16px Arial, Helvetica, sans-serif;
+                    background: white;
+                    background: rgba(255,255,255,0.8);
+                    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+                    border-radius: 5px;
+		        }
+		.info h4 {
+			margin: 0 0 5px;
+			color: 'white';
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+		.button1 {
+            position:absolute;
+            top:410px;
+		}
         </style>
     </head>
     <body>
@@ -346,8 +397,11 @@ if(isset($_POST['sgdph'])){
                                     </a>
                                 </div>
                             </div>
+                            
                         </div>
+                        
                         <div class="content-side content-side-full content-side-user px-10 align-parent">
+                        
                             <div class="sidebar-mini-visible-b align-v animated fadeIn">
                                 <img class="img-avatar img-avatar32" src="assets/img/avatars/avatar15.jpg" alt="">
                             </div>
@@ -373,16 +427,27 @@ if(isset($_POST['sgdph'])){
                             </div>
                         </div>
                         <div class="content-side content-side-full">
+                            
                             <ul class="nav-main">
                                 <li>
-                                    <a href="Projet_tableau_bord.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Tableau de bord</span></a>
+                                    <a href="Projet_tableau_bord.php"><i class="fa fa-dashboard"></i><span class="sidebar-mini-hide">Tableau de bord</span></a>
                                 </li>
                                 <li>
-                                    <a href="Avis_prj.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Gestion des Avis</span></a>
+                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="fa fa-gears"></i><span class="sidebar-mini-hide">Paramètrage</span></a>
+                                    <ul>
+                                        <li>
+                                            <a href="be_pages_forum_categories.html">Categories</a>
+                                        </li>
+                                        <li>
+                                            <a href="be_pages_forum_topics.html">Type projet</a>
+                                        </li>
+                                        <li>
+                                            <a href="be_pages_forum_discussion.html">Avis</a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    <a href="fullmap2.php"><i class="si si-compass"></i><span class="sidebar-mini-hide">Carte</span></a>
-                                </li>
+                                
+
                             </ul>
                         </div>
                     </div>

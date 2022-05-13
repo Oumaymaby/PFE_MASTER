@@ -41,14 +41,14 @@ class SEPRE_Service{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('select gid,avis_sepre,remarque_bet_besoin_eau,remarques_sup_sepre,date_avis_sepre,origine_aep,origine_autre,besoin_eau_domestique,besoin_eau_irrigation from prj_inv.projets_investissement where gid=?');
+		$st =$this->db->prepare('select gid,avis_sepre,remarque_bet_besoin_eau,remarques_sup_sepre,date_avis_bet_sepre,date_avis_sepre,origine_aep,origine_autre,besoin_eau_domestique,besoin_eau_irrigation from prj_inv.projets_investissement where gid=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
-				return new SEPRE($row->gid,$row->avis_sepre,$row->remarque_bet_besoin_eau,$row->remarques_sup_sepre,$row->date_avis_sepre,$row->origine_aep,$row->origine_autre,$row->besoin_eau_domestique,$row->besoin_eau_irrigation );
+				return new SEPRE($row->gid,$row->avis_sepre,$row->remarque_bet_besoin_eau,$row->remarques_sup_sepre,$row->date_avis_bet_sepre,$row->date_avis_sepre,$row->origine_aep,$row->origine_autre,$row->besoin_eau_domestique,$row->besoin_eau_irrigation );
 			}
 			elseif(empty($row)){
-				return new SEPRE('0','0','0','0','0','0','0','0','0');
+				return new SEPRE('0','0','0','0','0','0','0','0','0','0');
 			}		
 		}
 		else{
@@ -96,7 +96,7 @@ class SEPRE_Service{
 
 	function findByIdprj($id)
  	{
-		$st =$this->db->prepare('select * from prj_inv.avis_sepre where id_prj=?');
+		$st =$this->db->prepare("select DATE_PART('day', Now() - date_avis_sepre) AS duree_avis , DATE_PART('day', Now() - date_avis_bet_sepre)AS duree_avis_sepre ,id_sepre , origine_aep, origine_autre, besoin_eau_domestique,besoin_eau_irrigation,remarque_bet_besoin_eau,remarques_sup_sepre,avis_sepre , date_avis_sepre, date_avis_bet_sepre  from prj_inv.avis_sepre where id_prj=?");
 		if ($st->execute(array($id))) {
 			$row = $st->fetchAll();
 			return $row;

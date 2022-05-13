@@ -161,7 +161,7 @@ class Etat_Service{
  	
 	//selection pour la charte les nombres de projets selon leur etat
 	function chartsetat(){
-		$st =	$this->db->prepare('select count(*),v.etatdossier from prj_inv.projets_investissement inv , prj_inv.ls_etat_dossier v where v.id=inv.etatdossier group by v.etatdossier');
+		$st =	$this->db->prepare('select count(*),v.etatdossier from prj_inv.prj_invest inv , prj_inv.ls_etat_dossier v where v.id=inv.etatdossier group by v.etatdossier');
 		if ($st->execute()) {
 			return $st->fetchAll();
 	   }

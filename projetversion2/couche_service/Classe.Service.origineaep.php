@@ -228,6 +228,18 @@ class OrigineAep_Service{
 	 	 		return null;
 	 	 	}
 	}
+
+	//selection des projets sur l'espace 
+    function geoprojet(){
+		$st =	$this->db->prepare("select gid,numero_dossier,date_arrivee_abht,date_arrivee_bet,commune,province,maitre_ouvrage,architecte,intitule_projet,superficie,ST_AsGeoJSON(geom) as geojson from prj_inv.projets_investissement");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
  	
 
 }

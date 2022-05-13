@@ -43,7 +43,7 @@ class Commune_Service{
 		$st =$this->db->prepare('select * from gen.ls_commune where id=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
-			return new TypeCEau($row->id,$row->geom,$row->commune,$row->codecommune,$row->commune_ar,$row->codeprovince,$row->zonel);
+			return new Commune($row->id,$row->geom,$row->Commune,$row->CodeCommune,$row->Commune_ar,$row->CodeProvince,$row->ZoneL);
 		}
 		else{
 			echo "Problème ";

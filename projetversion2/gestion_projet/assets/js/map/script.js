@@ -1,74 +1,65 @@
-/* eslint-disable no-undef */
-/**
- * sidebar
- */
 
-// config map
 let config = {
     minZoom: 7,
     maxZoom: 18,
-  };
-  // magnification with which the map will start
-  const zoom = 11;
-  // co-ordinates
-  const lat = 31.630000;
-  const lng = -8.008889;
+};
+
+
   
-  // calling map
-    const map = L.map("map",{fullscreenControl: {pseudoFullscreen: true}, measureControl: true }).setView([lat, lng], zoom);
-    /*layer google satellites */
-    var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-        maxZoom: 20,
-        subdomains:['mt0','mt1','mt2','mt3']
-    });
-    googleSat.addTo(map);
-  // Used to load and display tile layers on the map
-  // Most tile servers require attribution, which you can set under `Layer`
-    var carte= L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+const zoom = 11; 
+const lat = 31.630000;
+const lng = -8.008889;
+  
+
+const map = L.map("map",{fullscreenControl: {pseudoFullscreen: true}, measureControl: true }).setView([lat, lng], zoom);
+
+var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+  maxZoom: 20,
+  subdomains:['mt0','mt1','mt2','mt3']
+});
+
+googleSat.addTo(map);
+var carte= L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
 
-  /*fonction de l'envenement click*/
-  function onMapClick(e) {
+
+function onMapClick(e) {
     popup
     .setLatLng(e.latlng)
     .setContent('You clicked the map at ' + e.latlng.toString())
     .openOn(map);
-    };
+};
 
-    
-  // --------------------------------------------------
-  // sidebar
+//-------------------------------------------------------
+//sidebar------------------------------------------------
+
+const menuItems = document.querySelectorAll(".menu-item");
+const sidebar = document.querySelector(".sidebar");
+const buttonClose = document.querySelector(".close-button");
   
-  const menuItems = document.querySelectorAll(".menu-item");
-  const sidebar = document.querySelector(".sidebar");
-  const buttonClose = document.querySelector(".close-button");
+menuItems.forEach((item) => {
+  item.addEventListener("click", (e) => {
+  const target = e.target;
   
-  menuItems.forEach((item) => {
-    item.addEventListener("click", (e) => {
-      const target = e.target;
-  
-      if (
+    if (
         target.classList.contains("active-item") ||
         !document.querySelector(".active-sidebar")
       ) {
         document.body.classList.toggle("active-sidebar");
       }
   
-      // show content
       showContent(target.dataset.item);
-      // add active class to menu item
       addRemoveActiveItem(target, "active-item");
     });
   });
-  
-  // close sidebar when click on close button
+
   buttonClose.addEventListener("click", () => {
     closeSidebar();
   });
   
-  // remove active class from menu item and content
+  
   function addRemoveActiveItem(target, className) {
     const element = document.querySelector(`.${className}`);
     target.classList.add(className);
@@ -76,29 +67,25 @@ let config = {
     element.classList.remove(className);
   }
   
-  // show specific content
+  
   function showContent(dataContent) {
     const idItem = document.querySelector(`#${dataContent}`);
     addRemoveActiveItem(idItem, "active-content");
   }
   
-  // --------------------------------------------------
-  // close when click esc
+  
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
       closeSidebar();
     }
   });
   
-  // close sidebar when click outside
+  
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".sidebar")) {
       closeSidebar();
     }
   });
-  
-  // --------------------------------------------------
-  // close sidebar
   
   function closeSidebar() {
     document.body.classList.remove("active-sidebar");
@@ -110,29 +97,21 @@ let config = {
   }
 
 
-  // --------------------------------------------------
-// Nofiflix options
 
-Notiflix.Notify.init({
-    width: "280px",
-    position: "right-bottom",
-    distance: "10px",
-  });
+  Notiflix.Notify.init({
+      width: "280px",
+      position: "right-bottom",
+      distance: "10px",
+    });
   
-  // --------------------------------------------------
-  // add buttons to map
-
-  // Geosearch
+  
   L.Control.geocoder().addTo(map);
   
-  
   const customControl = L.Control.extend({
-    // button position
     options: {
       position: "topright",
     },
   
-    // method
     onAdd: function () {
       const array = [
         {
@@ -171,7 +150,6 @@ Notiflix.Notify.init({
         button.innerHTML = item.html;
         button.className += item.className;
   
-        // add buttons to container;
         container.appendChild(button);
       });
   
@@ -179,10 +157,9 @@ Notiflix.Notify.init({
     },
   });
   map.addControl(new customControl());
-  
-  // Drow polygon, circle, rectangle, polyline
-  // --------------------------------------------------
-  
+
+  //drawitem---------------------------------------------------------------
+
   let drawnItems = L.featureGroup().addTo(map);
   
   map.addControl(
@@ -351,9 +328,13 @@ Notiflix.Notify.init({
     };
     reader.readAsText(input.files[0]);
   }
+
+
+  // --------------------------------------------------
+  // Mesure
   
   
-  L.Measure = {
+    L.Measure = {
     linearMeasurement: "Distance measurement",
     areaMeasurement: "Area measurement",
     start: "1",
@@ -379,8 +360,8 @@ Notiflix.Notify.init({
     
     };
     
-    //affichage des projests d'inverstissements  
-    var $prj = new L.GeoJSON.AJAX("http://localhost/projectpfe/datageojson/data_prj_gejson.php",{onEachFeature: function(feature, layer) {
+    //affichage des projets d'investissement
+    var $prj = new L.GeoJSON.AJAX("http://localhost/projectpfe/projetversion2/data_json/data.projet.fetchallgeojson.php",{onEachFeature: function(feature, layer) {
             layer.bindPopup("<p>"+feature.properties.intitule_projet+"</p>");
     }});
     
@@ -397,6 +378,4 @@ Notiflix.Notify.init({
     var overlays = {"projet": $prj};
     L.control.layers(baseLayers,overlays).addTo(map);
   
-    // --------------------------------------------------
-  
-  
+    
