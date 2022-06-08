@@ -5,10 +5,10 @@
 */
 class SQE
 {
-	private $remarque_sup_sqe,$avis_sqe,$date_avis_sqe,$valide_par_sqe,$approuve_par_sqe,$remarque_bet_assai,$volume_eau_use,$modeassai,$reut_qeu,$niv_trait,$niv_piezo,$date_piezo,$coord_x,$coord_y,$trait_boue,$date_avis_bet_sqe,$id_prj;
-	function __construct($q,$r,$s,$t,$p,$v,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m)
+	private $id_pr,$remarque_sup_sqe,$avis_sqe,$date_avis_sqe,$valide_par_sqe,$approuve_par_sqe,$remarque_bet_assai,$volume_eau_use,$modeassai,$reut_qeu,$niv_trait,$niv_piezo,$date_piezo,$coord_x,$coord_y,$trait_boue,$date_avis_bet_sqe,$id_prj;
+	function __construct($a,$q,$r,$s,$t,$p,$v,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m)
 	{
-        // $this->id_pr = $a;
+        $this->id_pr = $a;
         $this->avis_sqe=$q;
         $this->date_avis_sqe=$r;
         $this->valide_par_sqe=$s;
@@ -27,12 +27,12 @@ class SQE
         $this->date_avis_bet_sqe=$l;
         $this->id_prj=$m; 
 	}
-    // function getid_pr(){
-	// 	return $this->id_pr;
-	// }
-    // function setid_pr($a){
-	// 	$this->id_pr=$a;
-	// }
+    function getid_pr(){
+		return $this->id_pr;
+	}
+    function setid_pr($a){
+		$this->id_pr=$a;
+	}
     function getremarque_sup_sqe(){
 		return $this->remarque_sup_sqe;
 	}

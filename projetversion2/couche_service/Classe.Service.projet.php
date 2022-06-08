@@ -18,7 +18,7 @@ class Projet_Service{
  	function add($prj)
  	{
  	 	$st =	$this->db->prepare('insert into prj_inv.prj_invest (gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,geom,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph,payement,date_payement,montant_payer) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,ST_GeomFromText(?),?,?,?,?,?,?,?,?,?,?,?,?)');
- 	 	if ($st->execute(array($prj->getid_pr(),
+ 	 	if($st->execute(array($prj->getid_pr(),
 		  $prj->getnum_oss(),
 		  $prj->getnum_archv(),
 		  $prj->getdate_arr_abht(),
@@ -69,7 +69,7 @@ class Projet_Service{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('select gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,geom,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph,payement,date_payement,montant_payer from prj_inv.prj_invest where gid=?');
+		$st =$this->db->prepare('select gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,st_astext(geom) as geom,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph,payement,date_payement,montant_payer from prj_inv.prj_invest where gid=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
@@ -306,7 +306,13 @@ class Projet_Service{
 
 	//selection des projets sur l'espace 
     function geoprojet(){
-		$st =	$this->db->prepare("select gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,payement,date_payement,montant_payer,fond_dossier,ST_AsGeoJSON(geom) as geojson,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,stah,sqe,sgdph from prj_inv.prj_invest");
+		$st =	$this->db->prepare("
+		SELECT prj.gid, prj.numero_dossier, prj.numero_archive, prj.date_arrivee_abht, prj.date_arrivee_bet, prj.commune, prj.province, prj.douar_localite, prj.maitre_ouvrage, prj.intitule_projet, prj.architecte, prj.titre_foncier, prj.superficie, typeprj.type_projet, prj.payement, prj.date_payement, prj.montant_payer, prj.fond_dossier, ST_AsGeoJSON(prj.geom) as geojson, prj.dates_commissions, cat.categorie, prj.surface_batie, typedoss.type_dossier, etat.etatdossier, prj.sepre, prj.stah, prj.sqe, prj.sgdph
+			FROM prj_inv.prj_invest prj
+				inner join prj_inv.ls_etat_dossier etat on etat.id=prj.etatdossier
+				inner join prj_inv.ls_prj_categorie cat on cat.id=prj.categories
+				inner join prj_inv.ls_prj_type typeprj on typeprj.id=prj.type_projet
+				inner join prj_inv.ls_prj_type_dossier typedoss on typedoss.id=prj.type_dossier");
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -314,7 +320,7 @@ class Projet_Service{
 	 	 		return null;
 	 	 	}
 	}
-
+	// ST_AsGeoJSON(geom) as geojson
 	
 
 	//selection des nombre de projet avec leur jour et leur moi et annee de la dernière semaine 
@@ -445,11 +451,39 @@ class Projet_Service{
 			}
 	}
 
+
+	//selection des nombre de sepre 
+
+	function nombre_sepreall(){
+		$st =	$this->db->prepare('select count(sepre.id_sepre),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_sepre sepre on prj.gid=sepre.id_prj  group by prj.gid');
+		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row ;
+		}
+			else{
+				return null;
+			}
+	}
+
 	//selection des nombre de sepre by gid
 
 	function nombre_stah($id){
 		$st =	$this->db->prepare('select count(stah.id_stah),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_stah stah  on prj.gid=stah.id_prj where prj.gid=? group by prj.gid');
 		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row ;
+		}
+			else{
+				return null;
+			}
+	}
+	
+    
+    //selection des nombre de stah 
+
+	function nombre_stahall(){
+		$st =	$this->db->prepare('select count(stah.id_stah),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_stah stah on prj.gid=stah.id_prj group by prj.gid');
+		if ($st->execute()) {
 			$row = $st->fetchAll();
 			return $row ;
 		}
@@ -471,7 +505,21 @@ class Projet_Service{
 			}
 	}
 
-	//selection des nombre de sepre by gid
+	//selection des nombre de sgdph 
+
+	function nombre_sgdphall(){
+		$st =	$this->db->prepare('select count(sgdph.id_sgdph),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_sgdph sgdph on prj.gid=sgdph.id_prj group by prj.gid ');
+		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row ;
+		}
+			else{
+				return null;
+			}
+	}
+
+
+	//selection des nombre de seq by gid
 
 	function nombre_sqe($id){
 		$st =	$this->db->prepare('select count(sqe.id_sqe),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_sqe sqe on prj.gid=sqe.id_prj where prj.gid=? group by prj.gid');
@@ -483,6 +531,25 @@ class Projet_Service{
 				return null;
 			}
 	}
+
+	//selection des nombre de sqe
+
+	function nombre_sqeall(){
+		$st =	$this->db->prepare('select count(sqe.id_sqe),prj.* from prj_inv.prj_invest prj inner join prj_inv.avis_sqe sqe on prj.gid=sqe.id_prj group by prj.gid');
+		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row ;
+		}
+			else{
+				return null;
+			}
+	}
+
+
+	
+
+	
+
 
 
 

@@ -5,9 +5,9 @@
 */
 
 require_once 'Classe.Service.connexion.php';
-require_once '../couche_metier/Classe.avis_sepre.php';
+require_once '../couche_metier/Classe.sepre.info.php';
 
-class SEPRE_Service{
+class SEPRE_S_INFO{
 
 	function __construct()
  	{
@@ -17,8 +17,8 @@ class SEPRE_Service{
     // pas besoin d'une fonction ajouter car on peux ajouter avec une modification 
  	function add($avis)
  	{
- 	 	$st =	$this->db->prepare('INSERT INTO prj_inv.avis_sepre(avis_sepre, remarque_bet_besoin_eau, remarques_sup_sepre,  date_avis_sepre, origine_aep, origine_autre, besoin_eau_domestique, besoin_eau_irrigation,date_avis_bet_sepre, id_prj) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
- 	 	if ($st->execute(array($avis->getavis_sepre(),$avis->getremarque_bet_besoin_eau(),$avis->getremarques_sup_sepre(),$avis->getdate_avis_sepre(),$avis->getorigine_eau_pot(),$avis->getorigine_autre(),$avis->getbes_eau_dom(),$avis->getbes_eau_irrg(),$avis->getdate_avis_bet_sepre(),$avis->getid_prj()))) 
+ 	 	$st =	$this->db->prepare('INSERT INTO prj_inv.sepre_info(origine_aep, origine_autre, besoin_eau_domestique, besoin_eau_irrigation, date_info, id_user,id_prj) VALUES (? ,?, ?, ?, ?, ?, ?)');
+ 	 	if ($st->execute(array($avis->getorigine_eau_pot(),$avis->getorigine_autre(),$avis->getbes_eau_dom(),$avis->getbes_eau_irrg(),$avis->getdate_info(),$avis->getid_user(),$avis->getid_prj()))) 
 		{
  	 	 return true;
  		}
@@ -29,8 +29,7 @@ class SEPRE_Service{
 
  	function findAll()
  	{
-
-	 	$st =	$this->db->prepare('select gid,avis_sepre,remarque_bet_besoin_eau,remarques_sup_sepre,date_avis_sepre,origine_aep,origine_autre,besoin_eau_domestique,besoin_eau_irrigation from prj_inv.projets_investissement');
+	 	$st =	$this->db->prepare('SELECT id_sepre_info, origine_aep, origine_autre, besoin_eau_domestique, besoin_eau_irrigation, date_info, id_user FROM prj_inv.sepre_info');
 	 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -41,14 +40,14 @@ class SEPRE_Service{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('select gid,avis_sepre,remarque_bet_besoin_eau,remarques_sup_sepre,date_avis_bet_sepre,date_avis_sepre,origine_aep,origine_autre,besoin_eau_domestique,besoin_eau_irrigation from prj_inv.projets_investissement where gid=?');
+		$st =$this->db->prepare("select  id_sepre_info, origine_aep, origine_autre, besoin_eau_domestique, besoin_eau_irrigation, date_info, id_user from prj_inv.sepre_info where id_sepre_info=? ");
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
-				return new SEPRE($row->gid,$row->avis_sepre,$row->remarque_bet_besoin_eau,$row->remarques_sup_sepre,$row->date_avis_bet_sepre,$row->date_avis_sepre,$row->origine_aep,$row->origine_autre,$row->besoin_eau_domestique,$row->besoin_eau_irrigation );
+				return new SEPRE_INFO($row->id_sepre_info,$row->origine_aep,$row->origine_autre,$row->besoin_eau_domestique,$row->besoin_eau_irrigation,$row->date_info,$row->id_user );
 			}
 			elseif(empty($row)){
-				return new SEPRE('0','0','0','0','0','0','0','0','0','0');
+				return new SEPRE_INFO('0','0','0','0','0','0','0');
 			}		
 		}
 		else{
@@ -60,9 +59,9 @@ class SEPRE_Service{
     
  	function update($avis)
  	{
- 	 	$st =$this->db->prepare('update prj_inv.projets_investissement set remarques_sup_sepre=?,avis_sepre=?,date_avis_sepre=?,remarque_bet_besoin_eau=?,origine_aep=?,origine_autre=?,besoin_eau_domestique=?,besoin_eau_irrigation=? where gid=?');
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.sepre_info SET origine_aep=?, origine_autre=?, besoin_eau_domestique=?, besoin_eau_irrigation=?, date_info=?, id_user=? WHERE id_sepre_info=?');
 
-	 	if ($st->execute(array($avis->getremarques_sup_sepre(),$avis->getavis_sepre(),$avis->getdate_avis_sepre(),$avis->getremarque_bet_besoin_eau(),$avis->getorigine_eau_pot(),$avis->getorigine_autre(),$avis->getbes_eau_dom(),$avis->getbes_eau_irrg(),$avis->getid_pr())))
+	 	if ($st->execute(array($avis->getorigine_eau_pot(),$avis->getorigine_autre(),$avis->getbes_eau_dom(),$avis->getbes_eau_irrg(),$avis->getid_user(),$avis->getid_sepre_info())))
 		{
 	 	 	return true;
 	 	}
@@ -75,8 +74,8 @@ class SEPRE_Service{
  	function supprimer($cat)
  	{
 
-	 	$st =	$this->db->prepare('delete from prj_inv.projets_investissement where gid=?');
-	 	if ($st->execute(array($cat->getid_etat()))) {
+	 	$st =	$this->db->prepare('DELETE FROM prj_inv.sepre_info WHERE id_sepre_info=?');
+	 	if ($st->execute(array($cat->getid_sepre_info()))) {
 	 	 	return true;
 	 	}
 	 	else{
@@ -124,18 +123,34 @@ class SEPRE_Service{
 	}
 
 	//selection des projet affecter à SEPRE
-	function find_prj_sepre()
+	function find_prj_sepre($id)
  	{
-	 	$st =	$this->db->prepare(" select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph 
-		 from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
-		 where inv.etatdossier=v.id and inv.sepre=true ");
-	 	 	if ($st->execute()) {
+	 	$st =	$this->db->prepare("select id_prj,avi.id_sepre,avi.remarque_bet_besoin_eau,avi.remarques_sup_sepre,avis.avis,avi.date_avis_sepre,avi.date_avis_bet_sepre, DATE_PART('day', Now() - avi.date_avis_sepre) AS duree_avis , DATE_PART('day', Now() - avi.date_avis_bet_sepre)AS duree_avis_sepre  
+		 from prj_inv.t_avis_sepre avi inner join 
+		 prj_inv.ls_prj_avis avis on avi.avis_sepre=avis.id
+		 where avi.id_prj=? ");
+	 	 	if ($st->execute(array($id))) {
 	 	 		return $st->fetchAll();
 	 		}
 	 	 	else{
 	 	 		return null;
 	 	 	}
  	} 
+
+	function findsepre($id)
+ 	{
+	 	$st =	$this->db->prepare('SELECT se.id_sepre_info, orr.origine_aep, se.origine_autre, se.besoin_eau_domestique, se.besoin_eau_irrigation, se.date_info, use.user_name, se.id_prj
+		 FROM prj_inv.sepre_info se ,gen.phpgen_users use,prj_inv.ls_prj_origine_aep orr 
+		 where se.id_user= use.user_id and orr.id=se.origine_aep and se.id_prj=? ');
+	 	 	if ($st->execute(array($id))) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+ 	} 
+
+	
 
 
 

@@ -50,7 +50,6 @@
                                 {
                                     n.push(d.data[count].nombre);
                                     e.push(d.data[count].etat);
-                                    c.push(d.data[count].color);
                                 }
                         
                         var ctxt=$("#pieChart").get(0).getContext('2d');
@@ -60,7 +59,7 @@
                             {
                             label : "etat",
                             data: n,
-                            backgroundColor:c,
+                            backgroundColor:['#5eb349','#c92b28']
                             }
 
                         ]
@@ -100,14 +99,14 @@
                             {
                             label : "durée",
                             data: n,
-                            backgroundColor:c,
+                            backgroundColor:['#5eb349','#bda344','#c92b28'],
                             }
 
                         ]
                         }
 
                         var chart1= new Chart ( ctxt , {
-                        type:"bar",
+                        type:"pie",
                         data: data3,
                         options: { plugins: {legend: {display:false} }},
                         }

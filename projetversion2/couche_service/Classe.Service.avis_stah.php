@@ -122,6 +122,20 @@ class STAH_Service{
 	 	}
 	}
 
+	//selection des projet affecter à STAH
+	function find_prj_stah()
+ 	{
+	 	$st =	$this->db->prepare(" select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph 
+		 from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
+		 where inv.etatdossier=v.id and inv.stah=true ");
+	 	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+ 	} 
+
     
 
 }

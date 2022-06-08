@@ -10354,7 +10354,7 @@ fieldset[disabled] .form-material.floating > label {
 .form-material .form-control[disabled],
 .form-material .form-control[readonly],
 .form-material fieldset[disabled] .form-control {
-  background-color: #555b61;
+  background-color: #f5f6f7;
   border-bottom: 1px dashed #ccc;
   box-shadow: none;
 }

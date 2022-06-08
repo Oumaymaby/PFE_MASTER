@@ -95,4 +95,50 @@ class User_Service{
 	}
 
 
+	public function login($user)
+    {
+       try
+       {
+       	
+          $stmt = $this->db->prepare("SELECT * FROM gen.phpgen_users WHERE user_name=? ");
+          $stmt->execute(array($user));
+          $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+          if(isset($userRow))
+          {
+			    $_SESSION['user_id']=$userRow['user_id'];
+                $_SESSION['user_name']=$userRow['user_name'];
+				$_SESSION['nom']=$userRow['nom'];
+				$_SESSION['division']=$userRow['division'];
+				$_SESSION['service']=$userRow['service'];
+				$_SESSION['user_id']=$userRow['user_id'];
+
+				echo $userRow['service'];;
+				
+                return true;
+				
+          }
+       }
+       catch(PDOException $e)
+       {
+           echo $e->getMessage();
+       }
+   }
+
+    public function logout()
+    {
+
+		unset($_SESSION);
+		if (ini_get("session.use_cookies")) {
+			$params = session_get_cookie_params();
+			setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"],$params["httponly"]);
+		}
+		
+		if (session_destroy())
+		{
+			header('location:authen.php');
+		}
+       
+    }
+
+
 }

@@ -90,6 +90,23 @@
                                     </a>
                                     </div>';
                             }
+
+                            echo '<div class="col-6 col-xl-3">
+                                    <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
+                                    <div class="block-content block-content-full clearfix">
+                                    <div class="float-right mt-15 d-none d-sm-block">
+                                        <i class="si si-envelope-open fa-2x text-elegance-light"></i>
+                                    </div>';
+
+                                        $c= new ABHT_Service();
+                                        $cc=$c->nombre_prj($_GET['id']);
+                                        foreach($cc as $row){
+                                            echo '<div class="font-size-h3 font-w600 text-primary" data-toggle="countTo" data-speed="1000" data-to="'.$row[0].'">0</div>';
+                                        }
+                                    echo '<div class="font-size-sm font-w600 text-uppercase text-muted">Service ABHT</div>
+                                    </div>
+                                    </a>
+                                    </div>';
                         ?>
                         <!-- <div class="col-6 col-xl-3">
                             <a class="block block-rounded block-bordered block-link-shadow" href="javascript:void(0)">
@@ -1114,6 +1131,196 @@
                                 </div>
                             </div>';
                     }
+                    ?>
+
+                    <?php 
+                        $a= new Projet_Service();
+                        $aa= $a->findById($_GET['id']);
+                            echo '<div class="block block-rounded block-bordered">
+                                <div class="block-header block-header-default border-b">
+                                    <h3 class="block-title"><small>Details des remarques du Service ABHT</small> </h3>
+                                    <div class="block-options">
+                                        <a type="button" href="Projet_ABHT.php?id='.$_GET['id'].'" class="btn btn-outline-success mr-5 mb-5">
+                                            <i class="fa fa-plus mr-5"></i>ABHT
+                                        </a>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="pinned_toggle">
+                                            <i class="si si-pin"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                                            <i class="si si-refresh"></i>
+                                        </button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
+                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="close">
+                                            <i class="si si-close"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="block-content block-content-full">
+                               
+                                    <table class="js-table-sections table table-hover">
+                                        <thead>
+                                        
+                                            <tr>
+                                                <th style="width: 30px;"></th>
+                                                <th>Service </th>
+                                                <th style="width: 30%;">Information</th>
+                                                <th class="d-none d-sm-table-cell" style="width: 20%;">La durée</th>
+                                            </tr>
+                                        </thead>';
+                                            $c= new ABHT_Service();
+                                            $cc=$c->findByIdprj($_GET['id']);
+                                            foreach($cc as $row)
+                                            {
+                                            
+                                                $a = new Avis_Service();
+                                                $aa=$a->findById($row['avis_abht']); 
+                                                if ($row['avis_abht']===1){
+                                                    echo '<tbody class="js-table-sections-header table-active">
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-angle-right"></i>
+                                                            </td>
+                                                            <td class="font-w600">'.$row['id_abht'].' - Service ABHT</td>
+                                                            <td>
+                                                                <span class="badge badge-secondary">'.$aa->getavis().'</span>
+                                                            </td>
+                                                            <td class="d-none d-sm-table-cell">
+                                                                <em class="text-muted">'.$row['date_avis_abht'].'</em>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>';
+                                                }
+                                                elseif ($row['avis_abht']===2){
+                                                    echo '<tbody class="js-table-sections-header table-active">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <i class="fa fa-angle-right"></i>
+                                                        </td>
+                                                        <td class="font-w600">'.$row['id_abht'].' - Service ABHT</td>
+                                                        <td>
+                                                            <span class="badge badge-success">'.$aa->getavis().'</span>
+                                                        </td>
+                                                        <td class="d-none d-sm-table-cell">
+                                                            <em class="text-muted">'.$row['date_avis_abht'].'</em>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>';
+                                                }
+
+                                                elseif ($row['avis_abht']===3){
+                                                    echo '<tbody class="js-table-sections-header table-active">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <i class="fa fa-angle-right"></i>
+                                                        </td>
+                                                        <td class="font-w600">'.$row['id_abht'].' - Service ABHT</td>
+                                                        <td>
+                                                            <span class="badge badge-warning">'.$aa->getavis().'</span>
+                                                        </td>
+                                                        <td class="d-none d-sm-table-cell">
+                                                            <em class="text-muted">'.$row['date_avis_abht'].'</em>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>';
+                                                }
+                                                elseif ($row['avis_abht']===4){
+                                                    echo '<tbody class="js-table-sections-header table-active">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <i class="fa fa-angle-right"></i>
+                                                        </td>
+                                                        <td class="font-w600">'.$row['id_abht'].' - Service ABHT</td>
+                                                        <td>
+                                                            <span class="badge badge-danger">'.$aa->getavis().'</span>
+                                                        </td>
+                                                        <td class="d-none d-sm-table-cell">
+                                                            <em class="text-muted">'.$row['date_avis_abht'].'</em>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>';
+                                                }
+                                                elseif ($row['avis_abht']===5){
+                                                    echo '<tbody class="js-table-sections-header table-active">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <i class="fa fa-angle-right"></i>
+                                                        </td>
+                                                        <td class="font-w600">'.$row['id_abht'].' - Service ABHT</td>
+                                                        <td>
+                                                            <span class="badge badge-info">'.$aa->getavis().'</span>
+                                                        </td>
+                                                        <td class="d-none d-sm-table-cell">
+                                                            <em class="text-muted">'.$row['date_avis_abht'].'</em>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>';
+                                                }
+                                                elseif ($row['avis_abht']===6){
+                                                    echo '<tbody class="js-table-sections-header table-active">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <i class="fa fa-angle-right"></i>
+                                                        </td>
+                                                        <td class="font-w600">'.$row['id_abht'].' - Service ABHT</td>
+                                                        <td>
+                                                            <span class="badge badge-primary">'.$aa->getavis().'</span>
+                                                        </td>
+                                                        <td class="d-none d-sm-table-cell">
+                                                            <em class="text-muted">'.$row['date_avis_abht'].'</em>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>';
+                                                }
+
+                                                
+
+                                                    echo '<tbody>
+                                                        <tr>
+                                                            <td class="text-center"></td>
+                                                            <td class="font-w600 ">Remarque du BET</td>
+                                                            <td class="font-size-sm">'.$row['remarques_generales_bet'].'</td>
+                                                            <td class="d-none d-sm-table-cell">
+                                                                <span class="font-size-sm text-muted"></span>
+                                                            </td>
+                                                        </tr>';
+
+                                                        $u = new User_Service();
+                                                        $user=$u->findById($row['etabli_par']);
+                                                        $user1=$u->findById($row['valide_par']);
+                                                        $user2=$u->findById($row['approuve_par']);
+                                                        echo '<tr>
+                                                            <td class="text-center"></td>
+                                                            <td class="font-w600 ">Etabli par</td>
+                                                            <td class="font-size-sm">'.$user->getusn().'</td>
+                                                            <td class="d-none d-sm-table-cell">
+                                                                <span class="font-size-sm text-muted"></span>
+                                                            </td>
+                                                        </tr>';
+
+                                                        echo '<tr>
+                                                            <td class="text-center"></td>
+                                                            <td class="font-w600 ">Approuvé par</td>
+                                                            <td class="font-size-sm">'.$user2->getusn().'</td>
+                                                            <td class="d-none d-sm-table-cell">
+                                                                <span class="font-size-sm text-muted"></span>
+                                                            </td>
+                                                        </tr>';
+                                                        
+                                                        echo '<tr>
+                                                            <td class="text-center"></td>
+                                                            <td class="font-w600 ">Validée par</td>
+                                                            <td class="font-size-sm">'.$user1->getusn().'</td>
+                                                            <td class="d-none d-sm-table-cell">
+                                                                <span class="font-size-sm text-muted"></span>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                    </tbody>';
+                                            }
+                                    echo '</table>
+                                </div>
+                            </div> ';
                     ?>
                         
                     </div>

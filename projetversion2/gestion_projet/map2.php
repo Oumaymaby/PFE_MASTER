@@ -25,8 +25,8 @@
 
         <!-- Stylesheets -->
         <!-- Codebase framework -->
+		<!-- <link rel="stylesheet" href="assets/css/map/stylemap.css"/> -->
         <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
-
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
         <link rel="shortcut icon" href="assets/img/favicons/favicon.png">
         <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicons/favicon-192x192.png">
@@ -43,28 +43,24 @@
         <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/flat.min.css"> -->
         <!-- END Stylesheets -->
 		<title>Leaflet Layers Control Example</title>
-		<script src="http://www.chartjs.org/assets/Chart.js"></script>
-		
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <script type="text/javascript" src="assets/js/map/leaflet.ajax.js"></script>
-        <script type="text/javascript" src="assets/js/map/measure.js"></script>
-		<script src='assets/js/map/Leaflet.fullscreen.min.js'></script>
-        <script src="https://unpkg.com/geojson-vt@3.2.0/geojson-vt.js"></script>
 		<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+        <script type="text/javascript" src="assets/js/map/measure.js"></script>
+        <script src="https://unpkg.com/geojson-vt@3.2.0/geojson-vt.js"></script>
         <script type="text/javascript" src="assets/js/map/leaflet.browser.print.min.js"></script>
 		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    	<script type="text/javascript" src="http://www.chartjs.org/assets/Chart.js"> </script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 	<style>
 		#map {
 			width: 100%;
-			height: 760px;
+			height: 100vh;
 			align: center;
 		}
 
 		.info {
-			padding: 16px 10px;
+			padding: 30px 30px;
 			font: 14px/16px Arial, Helvetica, sans-serif;
 			/* background: white; */
 			background: #f4f1f1;
@@ -100,17 +96,53 @@
 			opacity: 0.7;
 		}
 		button {
-  	position:absolute;
-  	top:410px;
+			position:absolute;
+			top:410px;
 		}
+
+		.legend {
+		padding: 6px 8px;
+		font: 14px Arial, Helvetica, sans-serif;
+		background: white;
+		background: rgba(255, 255, 255, 0.8);
+		/*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
+		/*border-radius: 5px;*/
+		line-height: 24px;
+		color: #555;
+		}
+		.legend h4 {
+		text-align: center;
+		font-size: 16px;
+		margin: 2px 12px 8px;
+		color: #777;
+		}
+
+		.legend span {
+		position: relative;
+		bottom: 3px;
+		}
+
+		.legend i {
+		width: 18px;
+		height: 18px;
+		float: left;
+		margin: 0 8px 0 0;
+		opacity: 0.7;
+		}
+
+		.legend i.icon {
+		background-size: 18px;
+		background-color: rgba(255, 255, 255, 1);
+		}
+
 
 	</style>
 </head>
 <body>
-	<div id="map"></div>
-
 	
-	<!-- <script src="assets/js/core/jquery.min.js"></script> -->
+	<div id="map"></div>
+	
+		<script src="assets/js/core/jquery.min.js"></script>
         <script src="assets/js/core/popper.min.js"></script>
         <script src="assets/js/core/bootstrap.min.js"></script>
         <script src="assets/js/core/jquery.slimscroll.min.js"></script>
@@ -119,47 +151,88 @@
         <script src="assets/js/core/jquery.countTo.min.js"></script>
         <script src="assets/js/core/js.cookie.min.js"></script>
         <script src="assets/js/codebase.js"></script>
+		
 	<script type="text/javascript">
     
-    var newChart = function(labels, data) {
-        var dataLength = labels ? labels.length : 0;
-        console.log
-        console.log('we\'re in newChart', labels, data);
-        var backgroundColors = ['rgba(235,127,134, 0.9)',
-                                'rgba(206,102,147, 0.9)',
-                                'rgba(129,55,83, 0.9)',
-                                'rgba(211,156,131, 0.9)',
-                                'rgba(153, 102, 255, 0.9)',
-                                'rgba(255, 159, 64, 0.9)'];
-        var colors = [];
-        for (var i = 0; i < dataLength; i++) {
-            colors.push(backgroundColors[i]);
-        };
-        console.log('newChart colors', colors);
-        var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Services',
-                        data: data,
-                        backgroundColor: colors,
-                        borderColor: colors,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:true
+    // var newChart = function(labels, data) {
+    //     var dataLength = labels ? labels.length : 0;
+    //     console.log
+    //     console.log('we\'re in newChart', labels, data);
+    //     var backgroundColors = ['rgba(235,127,134, 0.9)',
+    //                             'rgba(206,102,147, 0.9)',
+    //                             'rgba(129,55,83, 0.9)',
+    //                             'rgba(211,156,131, 0.9)',
+    //                             'rgba(153, 102, 255, 0.9)',
+    //                             'rgba(255, 159, 64, 0.9)'];
+    //     var colors = [];
+    //     for (var i = 0; i < dataLength; i++) {
+    //         colors.push(backgroundColors[i]);
+    //     };
+    //     console.log('newChart colors', colors);
+    //     var ctx = document.getElementById("myChart");
+    //     var myChart = new Chart(ctx, {
+    //             type: 'bar',
+    //             data: {
+    //                 labels: labels,
+    //                 datasets: [{
+    //                     label: 'Services',
+    //                     data: data,
+    //                     backgroundColor: colors,
+    //                     borderColor: colors,
+    //                     borderWidth: 1
+    //                 }]
+    //             },
+    //             options: {
+    //                 scales: {
+    //                     yAxes: [{
+    //                         ticks: {
+    //                             beginAtZero:true
+    //                         }
+    //                     }]
+    //                 }
+    //             }
+    //         });
+    // };
+
+	$.ajax({
+                    url:"http://localhost/projectpfe/projetversion2/data_json/data.chartetat.php",
+                    type:"GET",
+                    data:'data',
+                    success:function(data){
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+
+                        var n = [];
+                                var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    n.push(d.data[count].nombre);
+                                    e.push(d.data[count].etat);
+                                    c.push(d.data[count].color);
+                                }
+                        
+                        var ctxt=$("#pieChart").get(0).getContext('2d');
+                        var data2={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "etat",
+                            data: n,
+                            backgroundColor:c,
                             }
-                        }]
-                    }
-                }
-            });
-    };
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"doughnut",
+                        data: data2,
+                        options: { plugins: {legend: {display:false} }},
+                        }
+                        );
+                    },
+                });
 
     var map = L.map('map', {fullscreenControl: {pseudoFullscreen: true}, }).setView([31.630000,-8.008889], 11);
 
@@ -178,17 +251,15 @@
         googleStreets.addTo(map);
 
 
-		 // Geosearch
-		
+	// Geosearch
+	L.Control.geocoder().addTo(map);
 
 	//Print
 	L.control.browserPrint().addTo(map);
+	
 
 	//Echelle
 	L.control.scale().addTo(map);
-
-	L.Control.geocoder().addTo(map);
-
 
 	//base layers
 	var baseLayers = {
@@ -269,9 +340,8 @@
                     var labels = ['sepre', 'stah','sgdph','sqe'];
                     var data = [props.sepre, props.stah,props.sgdph,props.sqe];
                     console.log('labels', labels, 'data', data);
-					var dems ='<div class="block"><div class="block-header block-header-default"><h3 class="block-title">Statitistique de chaque projet d\'investisement</h3><div class="block-options"><a type="button" href="http://localhost/projectpfe/projetversion2/gestion_projet/Projet_details.php?id='+props.gid+'" class="btn btn-rounded btn-noborder btn-primary min-width-125 mb-10">More info</a><button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button><button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button></div><div class="block-options"><div class="block-options-item"></div></div></div><div class="block-content"><table class="table table-sm table-vcenter"><thead><tr><th >'+props.intitule_projet+'</th><th class="d-none d-sm-table-cell" style="width: 60%;">Information </th></tr></thead><tbody><tr><td>Identifiant du projet </td><td class="d-none d-sm-table-cell"><span class="badge badge-danger">'+props.gid+'</span></td></tr><tr><td>Numéro du dossier </td><td class="d-none d-sm-table-cell"><span class="badge badge-primary">'+props.numero_dossier+'</span></td></tr><tr><td>Numero d\'archive</td><td class="d-none d-sm-table-cell"><span class="badge badge-info">'+props.numero_archive+'</span></td></td></tr><tr><td>Numéro du dossier </td><td class="d-none d-sm-table-cell"><span class="badge badge-primary">'+props.numero_dossier+'</span></td></tr><tr><td>Type du dossier</td><td class="d-none d-sm-table-cell"><span class="badge badge-info">'+props.type_dossier+'</span></td></td></tr><tr><td>Etat du dossier</td><td class="d-none d-sm-table-cell"><span class="badge badge-info">'+props.etatdossier+'</span></td></td></tr></tbody></table></div></div>';
-                    
-                    dems += '<canvas id="myChart" width="10" height="10"></canvas>';
+					var dems ='<div class="block"><div class="block-header block-header-default"><h3 class="block-title">Statitistique de chaque projet d\'investisement</h3><div class="block-options"><a type="button" href="http://localhost/projectpfe/projetversion2/gestion_projet/Projet_details.php?id='+props.gid+'" class="btn btn-sm btn-circle btn-alt-info mr-5 mb-5"><i class="fa fa-info"></i></a><button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button><button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button></div><div class="block-options"><div class="block-options-item"></div></div></div><div class="block-content"><table class="table table-borderless table-vcenter"><thead><tr><th >'+props.intitule_projet+'</th><th class="d-none d-sm-table-cell" style="width: 60%;">Information </th></tr></thead><tbody><tr><td>Identifiant du projet </td><td class="d-none d-sm-table-cell"><span class="badge badge-danger">'+props.gid+'</span></td></tr><tr><td>Date de dépôt du dossier</td><td class="d-none d-sm-table-cell"><span class="badge badge-info">'+props.date_arrivee_abht+'</span></td></td></tr><tr><td>Numéro du dossier </td><td class="d-none d-sm-table-cell"><span class="badge badge-primary">'+props.numero_dossier+'</span></td></tr><tr><td>Numero d\'archive</td><td class="d-none d-sm-table-cell"><span class="badge badge-info">'+props.numero_archive+'</span></td></td><tr><td>Type du dossier</td><td class="d-none d-sm-table-cell"><span class="badge badge-info">'+props.type_dossier+'</span></td></td></tr><tr><td>Etat du dossier</td><td class="d-none d-sm-table-cell"><span class="badge badge-info">'+props.etatdossier+'</span></td></td></tr></tbody></table></div></div>';
+                    // dems += '<canvas id="myChart" width="10" height="10"></canvas>';
                     this._div.innerHTML = dems;
                     newChart(labels, data);
             }
@@ -341,6 +411,90 @@
 				onEachFeature: onEachFeature
 			}).addTo(map);
 		});
+
+
+		var legend = L.control({ position: "bottomleft" });
+
+		legend.onAdd = function(map) {
+		var div = L.DomUtil.create("div", "legend");
+		div.innerHTML += "<h4>Statistique de l'état du projet</h4>";
+		div.innerHTML += '<canvas id="pieChart" width="10" height="10"></canvas>';
+		
+		
+
+		return div;
+		};
+
+        legend.addTo(map);
+
+
+		//-------------------------------------------------------
+//sidebar------------------------------------------------
+
+const menuItems = document.querySelectorAll(".menu-item");
+const sidebar = document.querySelector(".sidebar");
+const buttonClose = document.querySelector(".close-button");
+  
+menuItems.forEach((item) => {
+  item.addEventListener("click", (e) => {
+  const target = e.target;
+  
+    if (
+        target.classList.contains("active-item") ||
+        !document.querySelector(".active-sidebar")
+      ) {
+        document.body.classList.toggle("active-sidebar");
+      }
+  
+      showContent(target.dataset.item);
+      addRemoveActiveItem(target, "active-item");
+    });
+  });
+
+  buttonClose.addEventListener("click", () => {
+    closeSidebar();
+  });
+  
+  
+  function addRemoveActiveItem(target, className) {
+    const element = document.querySelector(`.${className}`);
+    target.classList.add(className);
+    if (!element) return;
+    element.classList.remove(className);
+  }
+  
+  
+  function showContent(dataContent) {
+    const idItem = document.querySelector(`#${dataContent}`);
+    addRemoveActiveItem(idItem, "active-content");
+  }
+  
+  
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeSidebar();
+    }
+  });
+  
+  
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".sidebar")) {
+      closeSidebar();
+    }
+  });
+  
+  function closeSidebar() {
+    document.body.classList.remove("active-sidebar");
+    const element = document.querySelector(".active-item");
+    const activeContent = document.querySelector(".active-content");
+    if (!element) return;
+    element.classList.remove("active-item");
+    activeContent.classList.remove("active-content");
+  }
+
+
+
+
 		
 	</script>
 </body>

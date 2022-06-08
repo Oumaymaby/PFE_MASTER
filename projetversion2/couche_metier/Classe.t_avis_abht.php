@@ -5,7 +5,7 @@
 */
 class ABHT
 {
-	private $id_user,$rem_general,$avis_abht,$date_abht_bet,$date_avis_abht,$etabli_par,$valide_par,$approuve_par,$id_prj;
+	private $rem_general,$avis_abht,$date_abht_bet,$date_avis_abht,$etabli_par,$valide_par,$approuve_par,$id_prj,$id_user;
 	function __construct($b,$c,$d,$e,$f,$g,$a,$h,$k)
 	{
         $this->avis_abht=$b;
@@ -18,12 +18,12 @@ class ABHT
 		$this->id_prj=$h;
 		$this->id_user=$k;
 	}
-    // function getid_pr(){
-	// 	return $this->id_pr;
-	// }
-    // function setid_pr($a){
-	// 	$this->id_pr=$a;
-	// }
+    function getid_user(){
+		return $this->id_user;
+	}
+    function setid_user($a){
+		$this->id_user=$a;
+	}
 	function getavis_abht(){
 		return $this->avis_abht;
 	}
@@ -71,12 +71,6 @@ class ABHT
 	}
 	function setid_prj($a){
 		$this->id_prj=$a;
-	}
-	function getid_user(){
-		return $this->id_user;
-	}
-	function setid_user($a){
-		$this->id_user=$a;
 	}
 }
 
