@@ -32,10 +32,7 @@
             jQuery(function () {
             Codebase.helpers('table-tools');
             });
-
-            
-
-              $.ajax({
+                $.ajax({
                     url:"http://localhost/projectpfe/projetversion2/data_json/data.chartetat.php",
                     type:"GET",
                     data:'data',
@@ -59,7 +56,159 @@
                             {
                             label : "etat",
                             data: n,
-                            backgroundColor:['#5eb349','#c92b28']
+                            backgroundColor:['#c92b28','#5eb349']
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"doughnut",
+                        data: data2,
+                        options: { plugins: {legend: {display:false} }},
+                        }
+                        );
+                    },
+                });
+                $.ajax({
+                    url:"http://localhost/projectpfe/projetversion2/data_json/data.chartetat.sepre.php",
+                    type:"GET",
+                    data:'data',
+                    success:function(data){
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+
+                        var n = [];
+                                var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    n.push(d.data[count].nombre);
+                                    e.push(d.data[count].etat);
+                                }
+                        
+                        var ctxt=$("#pieChartsepre").get(0).getContext('2d');
+                        var data2={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "etat",
+                            data: n,
+                            backgroundColor:['#c92b28','#5eb349']
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"doughnut",
+                        data: data2,
+                        options: { plugins: {legend: {display:false} }},
+                        }
+                        );
+                    },
+                });
+                $.ajax({
+                    url:"http://localhost/projectpfe/projetversion2/data_json/data.chartetat.stah.php",
+                    type:"GET",
+                    data:'data',
+                    success:function(data){
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+
+                        var n = [];
+                                var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    n.push(d.data[count].nombre);
+                                    e.push(d.data[count].etat);
+                                }
+                        
+                        var ctxt=$("#pieChartstah").get(0).getContext('2d');
+                        var data2={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "etat",
+                            data: n,
+                            backgroundColor:['#c92b28','#5eb349']
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"doughnut",
+                        data: data2,
+                        options: { plugins: {legend: {display:false} }},
+                        }
+                        );
+                    },
+                });
+                $.ajax({
+                    url:"http://localhost/projectpfe/projetversion2/data_json/data.chartetat.sqe.php",
+                    type:"GET",
+                    data:'data',
+                    success:function(data){
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+
+                        var n = [];
+                                var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    n.push(d.data[count].nombre);
+                                    e.push(d.data[count].etat);
+                                }
+                        
+                        var ctxt=$("#pieChartsqe").get(0).getContext('2d');
+                        var data2={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "etat",
+                            data: n,
+                            backgroundColor:['#c92b28','#5eb349']
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"doughnut",
+                        data: data2,
+                        options: { plugins: {legend: {display:false} }},
+                        }
+                        );
+                    },
+                });
+                $.ajax({
+                    url:"http://localhost/projectpfe/projetversion2/data_json/data.chartetat.sgdph.php",
+                    type:"GET",
+                    data:'data',
+                    success:function(data){
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+
+                        var n = [];
+                                var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    n.push(d.data[count].nombre);
+                                    e.push(d.data[count].etat);
+                                }
+                        
+                        var ctxt=$("#pieChartsgdph").get(0).getContext('2d');
+                        var data2={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "etat",
+                            data: n,
+                            backgroundColor:['#c92b28','#5eb349']
                             }
 
                         ]
@@ -93,6 +242,162 @@
                                 }
                         
                         var ctxt=$("#piechart2").get(0).getContext('2d');
+                        var data3={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "durée",
+                            data: n,
+                            backgroundColor:['#5eb349','#bda344','#c92b28'],
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"pie",
+                        data: data3,
+                        options: { plugins: {legend: {display:false} }},
+                        }
+                        );
+                    },
+                });
+                $.ajax({
+                    url:"http://localhost/projectpfe/projetversion2/data_json/data.chart.number.sepre.php",
+                    type:"GET",
+                    data:'data',
+                    success:function(data){
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+
+                        var n = [];
+                        var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    console.log(n.push(d.data[count].nombre));
+                                    e.push(d.data[count].description);
+                                    c.push(d.data[count].color);
+                                }
+                        
+                        var ctxt=$("#piechart2sepre").get(0).getContext('2d');
+                        var data3={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "durée",
+                            data: n,
+                            backgroundColor:['#5eb349','#bda344','#c92b28'],
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"pie",
+                        data: data3,
+                        options: { plugins: {legend: {display:false} }},
+                        }
+                        );
+                    },
+                });
+                $.ajax({
+                    url:"http://localhost/projectpfe/projetversion2/data_json/data.chart.number.stah.php",
+                    type:"GET",
+                    data:'data',
+                    success:function(data){
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+
+                        var n = [];
+                        var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    console.log(n.push(d.data[count].nombre));
+                                    e.push(d.data[count].description);
+                                    c.push(d.data[count].color);
+                                }
+                        
+                        var ctxt=$("#piechart2stah").get(0).getContext('2d');
+                        var data3={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "durée",
+                            data: n,
+                            backgroundColor:['#5eb349','#bda344','#c92b28'],
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"pie",
+                        data: data3,
+                        options: { plugins: {legend: {display:false} }},
+                        }
+                        );
+                    },
+                });
+                $.ajax({
+                    url:"http://localhost/projectpfe/projetversion2/data_json/data.chart.number.sgdph.php",
+                    type:"GET",
+                    data:'data',
+                    success:function(data){
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+
+                        var n = [];
+                        var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    console.log(n.push(d.data[count].nombre));
+                                    e.push(d.data[count].description);
+                                    c.push(d.data[count].color);
+                                }
+                        
+                        var ctxt=$("#piechart2sgdph").get(0).getContext('2d');
+                        var data3={
+                        labels : e,
+                        datasets : [
+                            {
+                            label : "durée",
+                            data: n,
+                            backgroundColor:c,
+                            }
+
+                        ]
+                        }
+
+                        var chart1= new Chart ( ctxt , {
+                        type:"pie",
+                        data: data3,
+                        options: { plugins: {legend: {display:false} }},
+                        }
+                        );
+                    },
+                });
+                $.ajax({
+                    url:"http://localhost/projectpfe/projetversion2/data_json/data.chart.number.sqe.php",
+                    type:"GET",
+                    data:'data',
+                    success:function(data){
+                        var d =JSON.parse(data);
+                        var d1= Object.keys(d.data).length;
+
+                        var n = [];
+                        var e = [];
+                        var c=[];
+                        for(var count = 0; count <d1; count++)
+                                {
+                                    console.log(n.push(d.data[count].nombre));
+                                    e.push(d.data[count].description);
+                                    c.push(d.data[count].color);
+                                }
+                        
+                        var ctxt=$("#piechart2sqe").get(0).getContext('2d');
                         var data3={
                         labels : e,
                         datasets : [

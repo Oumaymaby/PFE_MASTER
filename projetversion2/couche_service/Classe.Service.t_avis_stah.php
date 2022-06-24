@@ -126,7 +126,7 @@ class STAH_Service{
 	//selection des projet affecter à STAH
 	function find_prj_stah()
  	{
-	 	$st =	$this->db->prepare(" select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph 
+	 	$st =	$this->db->prepare(" select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph 
 		 from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
 		 where inv.etatdossier=v.id and inv.stah=true ");
 	 	 	if ($st->execute()) {
@@ -150,6 +150,53 @@ class STAH_Service{
 			return false;
 		}
 	 
+	}
+
+	function update_approuvee_stah($a,$b)
+	{
+		$st =$this->db->prepare('UPDATE prj_inv.t_avis_stah SET approuve_par_stah=:approuve_par_stah WHERE id_stah=:id_stah');
+		if ($st->execute(array(':approuve_par_stah' => $a,':id_stah' => $b)))
+		{
+			return true;
+		}
+		else{
+			return false;
+		} 
+	}
+
+	function stah_maxdate($id){
+		$st =$this->db->prepare('SELECT DISTINCT ON (id_prj)
+		id_stah, amenagement_propose, avis_abht_amenagement, remarque_sup_stah, avis_stah, date_avis_stah,
+		date_avis_bet_stah, valide_par_stah, approuve_par_stah, id_stah_info, id_prj, id_user
+		FROM prj_inv.t_avis_stah
+		where date_avis_stah is not null and id_prj=?
+		ORDER BY id_prj,date_avis_stah DESC');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function stah_maxdate_date(){
+		$st =$this->db->prepare('SELECT DISTINCT ON (stah.id_prj)
+		stah.id_stah, stah.amenagement_propose, stah.avis_abht_amenagement, stah.remarque_sup_stah, stah.avis_stah, 
+		stah.date_avis_stah,stah.date_avis_bet_stah, stah.valide_par_stah, stah.approuve_par_stah, stah.id_stah_info,
+		stah.id_prj, stah.id_user
+		FROM prj_inv.t_avis_stah stah,prj_inv.prj_invest inv
+		where stah.id_prj=inv.gid
+		ORDER BY stah.id_prj,stah.date_avis_bet_stah DESC');
+		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
 	}
 
     

@@ -223,8 +223,66 @@ class Layer_Service{
 	}
 
 
+	function distance_reseau($a,$b){
+		
+		$st =	$this->db->prepare('select gid, numero_dossier, numero_archive, date_arrivee_abht, date_arrivee_bet, commune, province, 
+		douar_localite, maitre_ouvrage, intitule_projet, architecte, titre_foncier, superficie, type_projet, payement, date_payement,
+		 montant_payer, fond_dossier,ST_AsGeoJSON(geom) as geojson1, dates_commissions, categories, surface_batie, type_dossier, 
+		etatdossier, sepre, stah, sqe, sgdph,ST_AsGeoJSON(res.wkb_geometry) as geojson,res.name from gen.reseau_hydrographique res 
+		inner join prj_inv.prj_invest prj on ST_Distance(res.wkb_geometry,prj.geom)<? where gid=?');
+		if ($st->execute(array($a,$b))){
+			$row = $st->fetchAll();
+			return $row ;
+		}
+		else{
+			return null;
+		}
+
+	}
+
+	function distance_reseau1($a,$b){
+		
+		$st =	$this->db->prepare('select res.ogc_fid,ST_AsGeoJSON(res.wkb_geometry) as geojson,
+		res.name from gen.reseau_hydrographique res 
+		inner join prj_inv.prj_invest prj on ST_Distance(res.wkb_geometry,prj.geom)<? where gid=?');
+		if ($st->execute(array($a,$b))){
+			$row = $st->fetchAll();
+			return $row ;
+		}
+		else{
+			return null;
+		}
+
+	}
+
+	function distance_reseau2($a,$b){
+		
+		$st =	$this->db->prepare('select gid, numero_dossier, numero_archive, date_arrivee_abht, date_arrivee_bet, commune, province, 
+		douar_localite, maitre_ouvrage, intitule_projet, architecte, titre_foncier, superficie, type_projet, 
+		payement, date_payement, montant_payer, fond_dossier,ST_AsGeoJSON(geom) as geojson, dates_commissions, 
+		categories, surface_batie, type_dossier, etatdossier, sepre, stah, sqe, sgdph,
+		res.name,res.ogc_fid from gen.reseau_hydrographique res 
+		inner join prj_inv.prj_invest prj on ST_Distance(res.wkb_geometry,prj.geom)<? where gid=?');
+		if ($st->execute(array($a,$b))){
+			$row = $st->fetchAll();
+			return $row ;
+		}
+		else{
+			return null;
+		}
+
+	}
+
+
 
 
     
 
 }
+
+// $b = new Layer_Service();
+// $a= $b->distance_reseau(0.0003,3645);
+// foreach($a as $row){
+// 	echo $row['gid'];
+//  }
+

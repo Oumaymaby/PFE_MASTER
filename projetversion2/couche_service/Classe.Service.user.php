@@ -111,6 +111,7 @@ class User_Service{
 				$_SESSION['division']=$userRow['division'];
 				$_SESSION['service']=$userRow['service'];
 				$_SESSION['user_id']=$userRow['user_id'];
+				$_SESSION['id_profession']=$userRow['id_profession'];
 
 				echo $userRow['service'];;
 				
@@ -139,6 +140,8 @@ class User_Service{
 		}
        
     }
+
+	
 
 
 }

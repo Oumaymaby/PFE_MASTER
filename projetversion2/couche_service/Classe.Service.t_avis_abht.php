@@ -43,7 +43,14 @@ class ABHT_Service{
  	{
 		$st =$this->db->prepare('SELECT id_abht, remarques_generales_bet, avis_abht, date_avis_abht, date_avis_bet_abht, etabli_par, valide_par, approuve_par, id_prj, id_user FROM prj_inv.t_avis_abht where id_abht=? ');
 		if ($st->execute(array($id))) {
-			return $st->fetchAll();	
+			$row = $st->fetch(PDO::FETCH_OBJ);
+			if(!empty($row)){
+				return new ABHT($row->remarques_generales_bet,$row->avis_abht,$row->date_avis_abht,$row->date_avis_bet_abht,$row->etabli_par,$row->valide_par,$row->approuve_par,$row->id_prj,$row->id_user);		
+			}
+			elseif(empty($row)){
+				return new ABHT('0','0','0','0','0','0','0','0','0');
+			}
+			
 		}
 		else{
 			echo "Problème ";
@@ -167,6 +174,79 @@ class ABHT_Service{
 	 	}
  	 
  	}
+
+	function update_etatdossier($a)
+ 	{
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.prj_invest SET etatdossier=3  WHERE gid=:id_prj');
+        // var_dump($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c)));
+	 	if ($st->execute(array(':id_prj' => $a)))
+		{
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+ 	 
+ 	}
+
+	function update_abht($a,$b,$c,$d){
+		$st =$this->db->prepare('UPDATE prj_inv.t_avis_abht SET  avis_abht=:avis_abht, date_avis_abht=:date_avis_abht,etabli_par=:etabli_par WHERE id_abht=:id_abht ');
+        // var_dump($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c)));
+	 	if ($st->execute(array(':avis_abht' => $a,':date_avis_abht' => $b,':etabli_par' => $c,':id_abht'=>$d)))
+		{
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+	}
+
+	
+	function update_approuvee_abht($a,$b){
+		$st =$this->db->prepare('UPDATE prj_inv.t_avis_abht SET  approuve_par=:approuve_par WHERE id_abht=:id_abht ');
+        // var_dump($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c)));
+	 	if ($st->execute(array(':approuve_par' => $a,':id_abht'=>$b)))
+		{
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+	}
+
+	function abht_maxdate($id){
+		$st =$this->db->prepare('SELECT DISTINCT ON (id_prj)
+		id_abht, remarques_generales_bet, avis_abht, date_avis_abht, date_avis_bet_abht, etabli_par,
+		valide_par, approuve_par, id_prj, id_user
+		FROM prj_inv.t_avis_abht
+		where date_avis_abht is not null and id_prj=?
+		ORDER BY id_prj,date_avis_abht DESC');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function abht_maxdate_date(){
+		$st =$this->db->prepare('SELECT DISTINCT ON (abht.id_prj)
+		abht.id_abht, abht.remarques_generales_bet, abht.avis_abht, abht.date_avis_abht, abht.date_avis_bet_abht, 
+		abht.etabli_par,abht.valide_par,abht.approuve_par, abht.id_prj, abht.id_user
+		FROM prj_inv.t_avis_abht abht, prj_inv.prj_invest inv
+		where abht.id_prj=inv.gid
+		ORDER BY abht.id_prj,abht.date_avis_bet_abht DESC');
+		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
 
 
 

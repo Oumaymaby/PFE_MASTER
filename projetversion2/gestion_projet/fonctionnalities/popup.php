@@ -1094,23 +1094,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <div class="col-6">
-                                                        <div class="form-material">
-                                                            <select class="form-control" id="contact2-subject" name="avis_abht" size="1" disabled>
-                                                                <option></option>
-                                                                <?php
-                                                                    $ss = new Avis_Service();
-                                                                    $tc = $ss->findAll();
-                                                                    foreach($tc as $row) {
-                                                                        echo "<option value=".$row[0]." >".$row[1]."</option>" ;
-                                                                    }
-                                                                ?>
-                                                            </select>
-                                                            <label for="contact2-subject">Avis ABHT</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
                                                     <div class="col-12">
                                                         <button type="submit" class="btn btn-alt-success" name="add_avis_abht">
                                                             <i class="fa fa-plus mr-5"></i>Enregistrer
@@ -1207,6 +1190,73 @@
                                                 <div class="form-group row">
                                                     <div class="col-12">
                                                         <button type="submit" class="btn btn-alt-success" name="add_sepre">
+                                                            <i class="fa fa-plus mr-5"></i>Enregistrer
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                    
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>                
+                    </div>
+                    <div class="modal fade" id="avis_abht_sepre" tabindex="-1" role="dialog" aria-labelledby="modal-terms" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-slidedown" role="document">
+                            <div class="modal-content">
+                                <div class="block block-themed block-transparent mb-0">
+                                    <div class="block-header bg-success">
+                                        <h3 class="block-title">Ajouter un avis abht</h3>
+                                        <div class="block-options">
+                                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                                <i class="si si-close"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="block-content" data-toggle="slimscroll" data-height="440px" data-color="#9ccc65" data-opacity="1" data-always-visible="true" style="padding:50px !important;">
+                                        <form action="Projet_details1.php" method="post">
+                                                <div class="form-group row">
+                                                    <div class="col-6">
+                                                        <div class="form-material" style="display:none">
+                                                            <?php 
+                                                                if(isset($_GET['id']))
+                                                                {
+                                                                    $id = htmlspecialchars($_GET['id']);
+                                                                    $ss = new Projet_Service();
+                                                                    $tc = $ss->findById($id);
+                                                                    $id1=$tc->getid_pr(); 
+                                                                }
+                                                            ?>
+                                                            <input  type="text" class="form-control" id="id_abht_sepre" name="id_abht_sepre" value="" readonly>
+                                                            <input  type="text" class="form-control" id="register2-username" name="id_prj" value="<?php if(isset($id1)) {echo $id1;} ?>" readonly>
+                                                            <label for="register2-username">Identifiant du projet</label>
+                                                        </div>  
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-6">
+                                                        <div class="form-material">
+                                                       
+                                                            <select class="form-control" id="contact2-subject" name="avis_abht" size="1">
+                                                                <option></option>
+                                                                <?php
+                                                                    $ss = new Avis_Service();
+                                                                    $tc = $ss->findAll();
+                                                                    foreach($tc as $row) {
+                                                                        echo "<option value=".$row[0]." >".$row[1]."</option>" ;
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                            <label for="contact2-subject">Avis ABHT</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-alt-success" name="add_avis_abht_sepre">
                                                             <i class="fa fa-plus mr-5"></i>Enregistrer
                                                         </button>
                                                     </div>
@@ -1606,6 +1656,11 @@
                         $('#avis_abht').modal('show');
                         // here is the id of that element where do you want to display / have the passed value
                         // in my case i am taking in a hidden input which id is = bookID , i am using a form in my modal that why  
+                    }
+
+                    function avisabht_sepre(id){
+                        $("#id_abht_sepre").val(id);
+                        $('#avis_abht_sepre').modal('show');
                     }
 
                     function showModall(id){

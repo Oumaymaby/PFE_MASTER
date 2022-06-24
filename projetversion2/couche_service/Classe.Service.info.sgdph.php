@@ -160,4 +160,18 @@ class SGDPH_S_INFO{
 	 	 		return null;
 	 	 	}
  	}
+    
+
+	function nombre_sgdph(){
+		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.prj_invest where sgdph=true');
+	 	if ($st->execute()) {
+	 	 	return $st->fetchAll();
+	 	}
+	 	else{
+	 	 	return null;
+	 	}
+	}
+
+
+
 }

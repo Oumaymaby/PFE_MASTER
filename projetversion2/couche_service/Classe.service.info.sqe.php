@@ -143,6 +143,16 @@ class SQE_S_INFO{
 	 	 	}
  	}
 
+	function nombre_sqe(){
+		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.prj_invest where sqe=true');
+	 	if ($st->execute()) {
+	 	 	return $st->fetchAll();
+	 	}
+	 	else{
+	 	 	return null;
+	 	}
+	}
+
 
     
 

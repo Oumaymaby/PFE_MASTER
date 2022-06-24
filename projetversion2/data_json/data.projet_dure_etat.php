@@ -19,6 +19,7 @@ foreach ($bb1 as $row) {
     $data1[] = array(
         "action"=>'bon état',
         "id"=>$row['gid'],
+        "date_bet"=>$row['date_arrivee_bet'],
         "numero_dossier"=>$row['numero_dossier'],
         "commune"=>$row['commune'],
         "province"=>$row['province'],
@@ -37,6 +38,8 @@ foreach ($bb2 as $row) {
     $data2[] = array(
         "action"=>'En retard',
         "id"=>$row['gid'],
+        "date_bet"=>$row['date_arrivee_bet'],
+        "date_bet"=>$row['date_arrivee_bet'],
         "numero_dossier"=>$row['numero_dossier'],
         "commune"=>$row['commune'],
         "province"=>$row['province'],
@@ -56,6 +59,7 @@ foreach ($bb3 as $row) {
     $data3[] = array(
         "action"=>'Etat critique',
         "id"=>$row['gid'],
+        "date_bet"=>$row['date_arrivee_bet'],
         "numero_dossier"=>$row['numero_dossier'],
         "commune"=>$row['commune'],
         "province"=>$row['province'],

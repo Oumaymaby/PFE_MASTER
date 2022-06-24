@@ -148,7 +148,20 @@ class SEPRE_S_INFO{
 	 	 	else{
 	 	 		return null;
 	 	 	}
- 	} 
+ 	}
+	
+	function nombre_sepre(){
+		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.prj_invest where sepre=true');
+	 	if ($st->execute()) {
+	 	 	return $st->fetchAll();
+	 	}
+	 	else{
+	 	 	return null;
+	 	}
+	}
+
+
+
 
 	
 

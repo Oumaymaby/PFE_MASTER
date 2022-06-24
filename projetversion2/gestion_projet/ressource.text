@@ -410,3 +410,251 @@
                         </div>
                     
                     </div>
+
+
+
+---------------------------------------------------------------------------------------------------------------
+ <?php 
+                                var_dump($id);
+                                ?>
+                                        <!-- <form  action="" method="GET">
+                                            <input  type="text" class="form-control" id="id_prj" name="id_prj" value="" readonly>
+                                        </form> -->
+                                        <p id="id_prj"></p>
+                                <table class="table table-striped table-borderless ">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">La durée</span>&nbsp
+                                                    <?php 
+                                                        $b = new Projet_Service();
+                                                        $e= new Etat_Service();
+                                                        $bb = $b->findById($id);
+                                                        $ee=$e->findById($bb->getetat_dossier());
+                                                        $bb1= $b->dureeprj($id);
+                                                        foreach($bb1 as $row){
+                                                            echo '<span class="badge badge-success">'.$row[1].' jours </span>';
+                                                        }
+                                                    ?> 
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Etat du Projet</span>&nbsp
+                                                    <?php 
+                                                        $b = new Projet_Service();
+                                                        $e= new Etat_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        $ee=$e->findById($bb->getetat_dossier());
+                                                        $bb1= $b->dureeprj($id);
+                                                        echo '<span class="badge badge-warning">'.$ee->getetat_dossier().'</span>';
+                                                    ?>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Intitulé Projet</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getintitule_pr().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Numéro du dossier</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getnum_oss().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Numéro d'archive</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getnum_archv().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Date d'arrivée à l'ABHT</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getdate_arr_abht().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Date d'arrivée au BET</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getdate_arr_bet().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Maitre d'Ouvrage</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getmaitre_ouv().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Architecte</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getarchitecte().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Titre foncier</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->gettitre_foncier().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Douar Localite</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getdouar_loc().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Fond du dossier</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getfond_doss().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Surface Batie</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getsurf_bat().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Commune</span>
+                                                    <?php
+                                                        $b = new Projet_Service();
+                                                        $e=new Commune_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        $ee=$e->findById($bb->getcom());
+                                                        echo '<div style="width:50%">'. $ee->getcommune().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Province</span>
+                                                    <?php
+                                                        $b = new Projet_Service();
+                                                        $e=new Province_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        $ee=$e->findById($bb->getprovince());
+                                                        echo '<div style="width:50%">'. $ee->getprovince_a().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Categorie</span>
+                                                    <?php
+                                                        $b = new Projet_Service();
+                                                        $e=new Categorie_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        $ee=$e->findById($bb->getcatg());
+                                                        echo '<div style="width:50%">'. $ee->getcategorie().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Type de projet</span>
+                                                    
+                                                    <?php
+                                                        $b = new Projet_Service();
+                                                        $e=new Type_projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        $ee=$e->findById($bb->gettype_projet());
+                                                        echo '<div style="width:50%">'. $ee->gettype_projet().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Type de dossier</span>
+                                                    
+                                                    <?php
+                                                        $b = new Projet_Service();
+                                                        $e=new Type_Dossier_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        $ee=$e->findById($bb->gettype_doss());
+                                                        echo '<div style="width:50%">'. $ee->gettype_d().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+
+                                            
+
+                                            <tr>
+                                                <td>
+                                                    <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Date de commissions</span>
+                                                    <?php $b = new Projet_Service();
+                                                        $id=$_GET['id'];
+                                                        $bb = $b->findById($id);
+                                                        echo '<div style="width:50%">'. $bb->getdate_comm().'</div>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            

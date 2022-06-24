@@ -40,7 +40,7 @@ class SQE_SERVICE{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('SELECT id_sqe, remarque_bet_assainissement, remarque_sup_sqe, avis_sqe, date_avis_sqe, date_avis_bet_sqe, valide_sqe, approuvee_sqe, id_sqe_info, id_prj FROM prj_inv.t_avis_sqe where id_sqe=?');
+		$st =$this->db->prepare('SELECT id_sqe, remarque_bet_assainissement, remarque_sup_sqe, avis_sqe, date_avis_sqe, date_avis_bet_sqe, valide_sqe, approuvee_sqe, id_sqe_info, id_prj ,id_user FROM prj_inv.t_avis_sqe where id_sqe=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
@@ -138,6 +138,52 @@ class SQE_SERVICE{
 			 return false;
 		}
 	  
+	}
+
+	function update_approuvee_sqe($a,$b)
+	{
+		$st =$this->db->prepare('UPDATE prj_inv.t_avis_sqe SET approuvee_sqe=:approuvee_sqe WHERE id_sqe=:id_sqe');
+		if ($st->execute(array(':approuvee_sqe' => $a,':id_sqe' => $b)))
+		{
+			return true;
+		}
+		else{
+			return false;
+		} 
+	}
+
+	function sqe_maxdate($id){
+		$st =$this->db->prepare('SELECT DISTINCT ON (id_prj)
+		id_sqe, remarque_bet_assainissement, remarque_sup_sqe, avis_sqe, date_avis_sqe, date_avis_bet_sqe, 
+		valide_sqe, approuvee_sqe, id_sqe_info, id_prj, id_user
+		FROM prj_inv.t_avis_sqe
+		where date_avis_sqe is not null and id_prj=?
+		ORDER BY id_prj,date_avis_sqe DESC');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function sqe_maxdate_date(){
+		$st =$this->db->prepare('SELECT DISTINCT ON (sqe.id_prj)
+		sqe.id_sqe, sqe.remarque_bet_assainissement, sqe.remarque_sup_sqe, sqe.avis_sqe, sqe.date_avis_sqe, 
+		sqe.date_avis_bet_sqe,sqe.valide_sqe, sqe.approuvee_sqe, sqe.id_sqe_info, sqe.id_prj, sqe.id_user,inv.*
+		FROM prj_inv.t_avis_sqe sqe,prj_inv.prj_invest inv
+		where sqe.id_prj=inv.gid
+		ORDER BY sqe.id_prj,sqe.date_avis_bet_sqe DESC');
+		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
 	}
   
 

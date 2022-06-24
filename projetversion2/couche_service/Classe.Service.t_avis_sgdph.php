@@ -41,7 +41,7 @@ class SGDPH_Service{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('id_sgdph, remarque_bet_protection_inondations, remarque_sup_sgdph, avis_sgdph, date_avis_sgdph, date_avis_bet_sgdph, valide_par_sgdph, approuve_par_sgdph, id_sgdph_info, id_prj FROM prj_inv.t_avis_sgdph where id_sgdph=?');
+		$st =$this->db->prepare('select id_sgdph, remarque_bet_protection_inondations, remarque_sup_sgdph, avis_sgdph, date_avis_sgdph, date_avis_bet_sgdph, valide_par_sgdph, approuve_par_sgdph, id_sgdph_info, id_prj ,id_user FROM prj_inv.t_avis_sgdph where id_sgdph=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){
@@ -149,6 +149,54 @@ class SGDPH_Service{
 		else{
 			return false;
 		} 
+	}
+
+
+	function update_approuvee_sgdph($a,$b)
+	{
+		$st =$this->db->prepare('UPDATE prj_inv.t_avis_sgdph SET approuve_par_sgdph=:approuve_par_sgdph WHERE id_sgdph=:id_sgdph');
+		if ($st->execute(array(':approuve_par_sgdph' => $a,':id_sgdph' => $b)))
+		{
+			return true;
+		}
+		else{
+			return false;
+		} 
+	}
+
+	function sgdph_maxdate($id){
+		$st =$this->db->prepare('SELECT DISTINCT ON (id_prj)
+		id_sgdph, remarque_bet_protection_inondations, remarque_sup_sgdph, avis_sgdph, date_avis_sgdph,
+		date_avis_bet_sgdph, valide_par_sgdph, approuve_par_sgdph, id_sgdph_info, id_prj, id_user
+		FROM prj_inv.t_avis_sgdph
+		where date_avis_sgdph is not null and id_prj=?
+		ORDER  BY id_prj,date_avis_sgdph DESC');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function sgdph_maxdate_date(){
+		$st =$this->db->prepare('SELECT DISTINCT ON (id_prj)
+		sgdph.id_sgdph, sgdph.remarque_bet_protection_inondations, sgdph.remarque_sup_sgdph, sgdph.avis_sgdph, 
+		sgdph.date_avis_sgdph,sgdph.date_avis_bet_sgdph, sgdph.valide_par_sgdph, sgdph.approuve_par_sgdph,
+		sgdph.id_sgdph_info,sgdph.id_prj, sgdph.id_user,inv.*
+		FROM prj_inv.t_avis_sgdph sgdph,prj_inv.prj_invest inv
+		where sgdph.id_prj=inv.gid
+		ORDER  BY sgdph.id_prj,sgdph.date_avis_bet_sgdph DESC');
+		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
 	}
   
 

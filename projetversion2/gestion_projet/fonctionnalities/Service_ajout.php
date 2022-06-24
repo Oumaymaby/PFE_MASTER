@@ -21,8 +21,10 @@ if (isset($_SESSION['user_name'])){
         
         // var_dump($sepre);
         // var_dump($avis);
+        $p=new Projet_Service();
         $avis_ser_sepre=new SEPRE_S_INFO();
         if($avis_ser_sepre->add($sepre)){
+            $p->updatesepre($id_prj);
             header("Location:Projet_details1.php?id=".$id_prj); 
         }   
     }
@@ -86,7 +88,9 @@ if (isset($_SESSION['user_name'])){
         $id_prj=htmlspecialchars($_POST["id_prj"]);
         $sqe = new SQE_INFO($volum,$mode_assai,$reutil,$niv_trat,$niveau_piezo,$datenivea,$coord_x,$coord_y,$trat_boue,$date_info,$id_user,$id_prj);
         $info_sqe= new SQE_S_INFO();
+        $p=new Projet_Service();
         if($info_sqe->add($sqe)){
+            $p->updatesqe($id_prj);
             header("Location:Projet_details1.php?id=".$id_prj); }   
     }
     if(isset($_POST['add_avis_sqe'])){
@@ -164,9 +168,11 @@ if (isset($_SESSION['user_name'])){
         $date_info=date("Y-m-d");
         $user=$_SESSION['user_id'];
         $id_prj=htmlspecialchars($_POST["id_prj"]);
+        $p=new Projet_Service();
         $sgdph = new SGDPH_INFO($type_cours,$nom_cours,$debit_cours,$nature_cours,$servitude,$origine_eaux,$origine_eauy,$_POST["aut1"],$_POST["aut_prele"],$_POST["aut_dev"],$_POST["aut_occ"],$date_aut_creus,$date_aut_prelev ,$date_aut_dev ,$date_aut_occ,$num_aut_creus,$num_aut_prelev,$num_aut_dev,$num_aut_occ,$autre_autorisation,$date_info,$user,$id_prj);
         $info_sgdph= new SGDPH_S_INFO();
         if($info_sgdph->add($sgdph)){
+            $p->updatesgdph($id_prj);
             header("Location:Projet_details1.php?id=".$id_prj); } 
     }
 
@@ -211,6 +217,8 @@ if (isset($_SESSION['user_name'])){
         $stah = new STAH_INFO($superficie,$date_info,$id_user,$id_prj);
         $info_stah= new STAH_S_INFO();
         $info_stah->add($stah);
+        $p=new Projet_Service();
+        $p->updatestah($id_prj);
         header("Location:Projet_details1.php?id=".$id_prj);
     }
 
@@ -252,11 +260,23 @@ if (isset($_SESSION['user_name'])){
         $avis_abht=1;
         $date_avis_bet_abht=date("Y-m-d");
         $user=$_SESSION['user_id'];
-        $avisabht= new ABHT($avis_abht,$date_avis_bet_abht,NULL,19,19,19,$rem_abht_bet,$id_prj,$user);
+        $avisabht= new ABHT(NULL,$date_avis_bet_abht,NULL,19,19,19,$rem_abht_bet,$id_prj,$user);
         $add= new ABHT_Service();
         $add->add($avisabht);
         header("Location:Projet_details1.php?id=".$id_prj);
     }
+
+    if(isset($_POST['add_avis_abht_sepre'])){
+        $id_prj=htmlspecialchars($_POST["id_prj"]);
+        $avis_abht=htmlspecialchars($_POST["avis_abht"]);
+        $date_avis_abht=date("Y-m-d");
+        $user=$_SESSION['user_id'];
+        $add= new ABHT_Service();
+        $add->update_abht($avis_abht,$date_avis_abht,$user,$id_prj);
+        header("Location:Projet_details1.php?id=".$id_prj);
+    }
+
+    
 
 }else{
     header('location:authen.php');

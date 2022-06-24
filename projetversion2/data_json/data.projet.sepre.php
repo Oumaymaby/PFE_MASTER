@@ -14,6 +14,7 @@ $data1 = array();
 foreach ($bb1 as $row) {
     $data1[] = array(
         "action"=>'bon état',
+        "date_bet"=>$row['date_arrivee_bet'],
         "id"=>$row['gid'],
         "numero_dossier"=>$row['numero_dossier'],
         "commune"=>$row['commune'],

@@ -6,6 +6,7 @@
     require_once 'fonctionnalities/Session.php';
     require_once 'fonctionnalities/Service_ajout.php';
     require_once 'fonctionnalities/Home.php';
+
 ?>
         <div class="content">
             <div class="row invisible" data-toggle="appear">
@@ -72,14 +73,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="block-content ">
-                                                    <table class="js-table-sections table table-borderless table-sm table-striped">
+                                                    <table class="js-table-sections table table-sm ">
                                                         <thead>
                                                             <tr>
                                                                 <th style="width: 10%;"></th>
-                                                                <th style="width: 50%;">Remarque</th>
-                                                                <th style="width: 20%;"></th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 30%;">Delais</th>
-                                                                <th style="width: 10%;">Action</th>
+                                                                <th style="width: 50%;">Avis</th>
+                                                                <th style="width: 20%;">Information</th>
+                                                                <th class="d-none d-sm-table-cell"></th>
                                                             </tr>
                                                         </thead>';
                                                         $a= new SEPRE_S_INFO();
@@ -87,58 +87,109 @@
                                                         $oum="kjsdfh";
                                                         if($aa){
                                                             foreach($aa as $row){
-                                                            echo    '<tbody class="js-table-sections-header">
+                                                            echo    '<tbody class="js-table-sections-header bg-gray-lighter">
                                                                         <tr>
                                                                             <td class="text-center">
-                                                                                <i class="fa fa-angle-right"></i>
+                                                                                <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                            </td>';
+                                                                            if($row['avis']==='Favorable'){
+                                                                                echo '<td><span class="badge badge-pill badge-success">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Favorable avec réserve'){
+                                                                                echo '<td><span class="badge badge-pill badge-warning">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Défavorable'){
+                                                                                echo '<td><span class="badge badge-pill badge-danger">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Archiver'){
+                                                                                echo '<td><span class="badge badge-pill badge-info">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Ajourné'){
+                                                                                echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Aucun Avis'){
+                                                                                echo '<td>'.$row['avis'].'</td>';
+                                                                            }
+                                                                            echo '<td class="font-w600"></td>
+                                                                           
+                                                                            <td class="font-w600">
                                                                             </td>
-                                                                            <td class="font-w600">'.$row['id_sepre'].'</td>
-                                                                            <td>
-                                                                                <span class="badge badge-warning">'.$row['avis'].'</span>
-                                                                            </td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <em class="text-muted">'.$row['date_avis_sepre'].'</em>
-                                                                            </td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <em class="text-muted"></em>
-                                                                                
+                                                                            <td class="font-w600">
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600 ">Remarque Besoin de l\'eau</td>
                                                                         <td class="font-size-sm">'.$row['remarque_bet_besoin_eau'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_bet_sepre'].'</span>
-                                                                        </td>
-                                                                        <td class="font-size-sm">
-                                                                            <a type="button" style="color:white !important" class="badge badge-success" mr-5 mb-5" id="'.$row['id_sepre'].'" onclick="showModal('.$row['id_sepre'].')" data-remarque='.$row['remarque_bet_besoin_eau'].' >
-                                                                                
-                                                                            </a>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600">Avis du service</td>
                                                                         <td class="font-size-sm">'.$row['avis'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_sepre'].'</span>
-                                                                        </td>
-                                                                        <td class="font-size-sm">
-                                                                        
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600 ">Remarque Supplémentaire</td>
                                                                         <td class="font-size-sm">'.$row['remarques_sup_sepre'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_sepre'].'</span>
                                                                         </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Durée de la remarque du BET</td>';
+
+                                                                        if( $row['duree_avis_sepre'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_sepre'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sepre'] > 10 && $row['duree_avis_sepre'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_sepre'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sepre'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_sepre'].' jours</span></td>';
+                                                                        }
+                                                                       
+                                                                        echo '<td class="d-none d-sm-table-cell">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Durée de la remarque du SEPRE</td>';
+                                                                        if( $row['duree_avis_sepre'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sepre'] > 10 && $row['duree_avis_sepre'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sepre'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }
+                                                                        
+                                                                        echo '<td class="d-none d-sm-table-cell">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Date d\'avis SEPRE</td>
+                                                                        <td class="font-size-sm">'.$row['date_avis_sepre'].'</td>
                                                                         <td class="font-size-sm">
-                                                                            
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Date de remarque BET</td>
+                                                                        <td class="font-size-sm">'.$row['date_avis_bet_sepre'].'</td>
+                                                                        <td class="font-size-sm">
                                                                         </td>
                                                                     </tr>
                                                                 </tbody> ';
@@ -225,9 +276,8 @@
                                                 </div>
                                             </div>';
                                         }
-                                echo '</div>
-                            </div>
-                       
+                                    echo '</div>
+                                </div>
                                 <div class="tab-pane" id="sqe" role="tabpanel">
                                     <div class="row">
                                         <div class="col-lg-8">
@@ -243,14 +293,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="block-content ">
-                                                    <table class="js-table-sections table table-borderless table-sm table-striped">
+                                                    <table class="js-table-sections table table-sm">
                                                         <thead>
                                                             <tr>
-                                                                <th style="width: 10%;"></th>
-                                                                <th style="width: 30%;">Remarque</th>
-                                                                <th style="width: 50%;"></th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 30%;">Delais</th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 30%;">Action</th>
+                                                                <th></th>
+                                                                <th>Avis</th>
+                                                                <th>Information</th>
+                                                                <th class="d-none d-sm-table-cell" ></th>
+                                                                
                                                             </tr>
                                                         </thead>';
                                                             $a= new SQE_S_INFO();
@@ -258,83 +308,114 @@
                                                             $oum="kjsdfh";
                                                             if($aa){
                                                                 foreach($aa as $row){
-                                                        echo '<tbody class="js-table-sections-header">
+                                                        echo '<tbody class="js-table-sections-header bg-gray-lighter">
                                                                     <tr>
                                                                         <td class="text-center">
-                                                                            <i class="fa fa-angle-right"></i>
-                                                                        </td>
-                                                                        <td class="font-w600">'.$row['id_sqe'].'</td>
-                                                                        <td>
-                                                                            <span class="badge badge-warning">'.$row['avis'].'</span>
-                                                                        </td>
-                                                                        <td class="d-none d-sm-table-cell">
-                                                                            <em class="text-muted">'.$row['date_avis_sqe'].'</em>
-                                                                        </td>
-                                                                        <td class="d-none d-sm-table-cell">
-                                                                        </td>
+                                                                            <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                        </td>';
+                                                                        if($row['avis']==='Favorable'){
+                                                                            echo '<td><span class="badge badge-pill badge-success">'.$row['avis'].'</span></td>';
+                                                                        }elseif($row['avis']==='Favorable avec réserve'){
+                                                                            echo '<td><span class="badge badge-pill badge-warning">'.$row['avis'].'</span></td>';
+                                                                        }elseif($row['avis']==='Défavorable'){
+                                                                            echo '<td><span class="badge badge-pill badge-danger">'.$row['avis'].'</span></td>';
+                                                                        }elseif($row['avis']==='Archiver'){
+                                                                            echo '<td><span class="badge badge-pill badge-info">'.$row['avis'].'</span></td>';
+                                                                        }elseif($row['avis']==='Ajourné'){
+                                                                            echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
+                                                                        }elseif($row['avis']==='Aucun Avis'){
+                                                                            echo '<td>'.$row['avis'].'</td>';
+                                                                        }
+                                                                        echo '<td class="font-w600"></td>
+                                                                        <td class="d-none d-sm-table-cell"></td>
                                                                     </tr>
                                                                 </tbody>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600 ">Remarque d\'assainissement</td>
                                                                         <td class="font-size-sm">'.$row['remarque_bet_assainissement'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_bet_sqe'].'</span>
-                                                                        </td>
-                                                                        <td class="d-none d-sm-table-cell">
-                                                                            <a type="button" style="color:white !important" class="badge badge-success" mr-5 mb-5" id="oum11" onclick="showModall('.$row['id_sqe'].')" data-remarque='.$row['remarque_bet_assainissement'].' >
-                                                                            </a>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600">Remarque Supplémentaire</td>
                                                                         <td class="font-size-sm">'.$row['remarque_sup_sqe'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
-                                                                        </td>
-                                                                        <td class="d-none d-sm-table-cell">
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600 ">Avis</td>
-                                                                        <td class="font-size-sm"></td>
-                                                                        <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
-                                                                        </td>
+                                                                        <td class="font-size-sm">'.$row['avis'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
-                                                                        <td class="font-w600 ">Valide par</td>
-                                                                        <td class="font-size-sm"></td>
-                                                                        <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
                                                                         </td>
+                                                                        <td class="font-w600 ">La date de la remarque du SEPRE</td>
+                                                                        <td class="font-size-sm">'.$row['date_avis_sqe'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
+                                                                          
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">La date de la remarque du BET</td>
+                                                                        <td class="font-size-sm">'.$row['date_avis_bet_sqe'].'</td>
+                                                                        <td class="d-none d-sm-table-cell">
+                                                                          
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Durée de la remarque du BET</td>';
+                                                                        if( $row['duree_avis'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis'] > 10 && $row['duree_avis'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }
+                                                                        echo '<td class="d-none d-sm-table-cell"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Durée de la remarque du SQE</td>';
+                                                                        if( $row['duree_avis_sqe'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_sqe'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sqe'] > 10 && $row['duree_avis_sqe'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_sqe'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sqe'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_sqe'].' jours</span></td>';
+                                                                        }
+                                                                        echo '<td class="d-none d-sm-table-cell">
+                                                                          
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600 ">Approuvée par</td>
                                                                         <td class="font-size-sm">'.$row['approuvee'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
-                                                                        </td>
-                                                                        <td class="d-none d-sm-table-cell">
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="text-center"></td>
-                                                                        <td class="font-w600 ">Etabli par</td>
-                                                                        <td class="font-size-sm">'.$row['validee'].'</td>
-                                                                        <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
-                                                                        </td>
-                                                                        <td class="d-none d-sm-table-cell">
+                                                                            <span class="font-size-sm text-muted"></span>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>';
@@ -458,12 +539,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="block-content ">
-                                                    <table class="js-table-sections table table-borderless table-sm table-striped">
+                                                    <table class="js-table-sections table table-sm ">
                                                         <thead>
                                                             <tr>
                                                                 <th style="width: 10%;"></th>
-                                                                <th style="width: 30%;">Remarque</th>
-                                                                <th style="width: 50%;"></th>
+                                                                <th style="width: 30%;">Avis</th>
+                                                                <th style="width: 50%;">Information</th>
                                                                 <th class="d-none d-sm-table-cell" style="width: 20%;">Delais</th>
                                                             </tr>
                                                         </thead>';
@@ -472,69 +553,141 @@
                                                             $oum="kjsdfh";
                                                             if($aa){
                                                             foreach($aa as $row){
-                                                         echo '<tbody class="js-table-sections-header">
+                                                         echo '<tbody class="js-table-sections-header bg-gray-lighter">
                                                             <tr>
                                                                 <td class="text-center">
-                                                                    <i class="fa fa-angle-right"></i>
-                                                                </td>
-                                                                <td class="font-w600">'.$row['id_sgdph'].'</td>
-                                                                <td>
-                                                                    <span class="badge badge-warning">'.$row['avis'].'</span>
-                                                                </td>
+                                                                    <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                </td>';
+
+                                                                if($row['avis']==='Favorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-success">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Favorable avec réserve'){
+                                                                    echo '<td><span class="badge badge-pill badge-warning">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Défavorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-danger">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Archiver'){
+                                                                    echo '<td><span class="badge badge-pill badge-info">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Ajourné'){
+                                                                    echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Aucun Avis'){
+                                                                    echo '<td>'.$row['avis'].'</td>';
+                                                                }
+                                                                echo '<td class="font-w600"></td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <em class="text-muted">'.$row['date_avis_sgdph'].'</em>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                         <tbody>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Remarque BET protection d\'inondation</td>
                                                                 <td class="font-size-sm">'.$row['remarque_bet_protection_inondations'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_bet_sgdph'].'</span>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Remarque Supplémentaire</td>
                                                                 <td class="font-size-sm">'.$row['remarque_sup_sgdph'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_sgdph'].'</span>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600">Avis du service</td>
                                                                 <td class="font-size-sm">'.$row['avis'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_sgdph'].'</span>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
+                                                                <td class="font-w600 ">Durée de la remarque du BET</td>';
+                                                                if( $row['duree_avis_sgdph'] < 11 ){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_sgdph'].' jours</span></td>';
+                                                                }elseif($row['duree_avis_sgdph'] > 10 && $row['duree_avis_sgdph'] < 30 ){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_sgdph'].' jours</span></td>';
+                                                                }elseif($row['duree_avis_sgdph'] > 29){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_sgdph'].' jours</span></td>';
+                                                                }
+
+                                                                echo '<td class="d-none d-sm-table-cell">
+                                                                 
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
+                                                                <td class="font-w600 ">Durée de la remarque du SGDPH</td>';
+                                                                if( $row['duree_avis'] < 11 ){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                                }elseif($row['duree_avis'] > 10 && $row['duree_avis'] < 30 ){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                                }elseif($row['duree_avis'] > 29){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                                }
+                                                                echo '<td class="d-none d-sm-table-cell">
+                                                                 
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
+                                                                <td class="font-w600 ">Date de la remarque du BET</td>
+                                                                <td class="font-size-sm">'.$row['date_avis_bet_sgdph'].'</td>
+                                                                <td class="d-none d-sm-table-cell">
+                                                                 
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
+                                                                <td class="font-w600 ">La date de la remarque du SGDPH</td>
+                                                                <td class="font-size-sm">'.$row['date_avis_sgdph'].'</td>
+                                                                <td class="d-none d-sm-table-cell">
+                                                                 
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Valide par</td>
                                                                 <td class="font-size-sm">'.$row['validee'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_sgdph'].'</span>
+                                                                   
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Approuvée par</td>
                                                                 <td class="font-size-sm">'.$row['approuvee'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_sgdph'].'</span>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Utilisateur BET</td>
                                                                 <td class="font-size-sm">'.$row['user_name'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_bet_sgdph'].'</span>
+                                                                 
                                                                 </td>
                                                             </tr>
+                                                            
                                                         </tbody>   ';
                                                     }}    
                                               echo '</table>
@@ -668,9 +821,14 @@
                                                                                 <span class="font-size-h9 font-w600" href="be_pages_forum_topics.html">Utilisateur</span><br>'.$row['user_name'].'
                                                                             </td>
                                                                         </tr>
-                                                                    </tbody>';}
-                                                                echo '</table></div></div></div>';}else{
-                                                                    echo '<div class="col-lg-4 ml-auto">
+                                                                    </tbody>';
+                                                                }
+                                                                echo '</table>
+                                                                </div>
+                                                            </div>
+                                                        </div>';}else{
+                                                                    echo '
+                                                                <div class="col-lg-4 ml-auto">
                                                                     <div class="block block-borderless ">
                                                                         <div class="block-header block-header-default">
                                                                             <h3 class="block-title">Information </h3>
@@ -683,15 +841,15 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="block-content" data-toggle="slimscroll" data-height="400px" data-color="#9ccc65" data-opacity="1" data-always-visible="true">
-                                                                            <table class="table table-borderless table-sm table-striped ">
-                                                                            </tabel>
+                                                                            
                                                                         </div>
                                                                     </div>
-                                                                    </div>';
+                                                                </div>';
                                                                 }
                                                                 echo '</div></div>';
 
-                                echo '<div class="tab-pane" id="stah" role="tabpanel">
+                                echo '
+                                <div class="tab-pane" id="stah" role="tabpanel">
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <div class="block block-borderless">
@@ -704,13 +862,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="block-content ">
-                                                    <table class="js-table-sections table table-borderless table-sm table-striped">
+                                                    <table class="js-table-sections table table-sm">
                                                         <thead>
                                                             <tr>
-                                                                <th style="width: 10%;"></th>
-                                                                <th style="width: 30%;">Remarque</th>
-                                                                <th style="width: 50%;"></th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 20%;">Delais</th>
+                                                                <th></th>
+                                                                <th>Avis</th>
+                                                                <th>Information</th>
+                                                                <th class="d-none d-sm-table-cell" ></th>
                                                             </tr>
                                                         </thead>';
                                                         $a= new STAH_S_INFO();
@@ -719,67 +877,136 @@
                                                         $oum="kjsdfh";
                                                         if($aa){
                                                             foreach($aa as $row){
-                                                      echo '<tbody class="js-table-sections-header">
+                                                        echo '<tbody class="js-table-sections-header bg-gray-lighter">
                                                                 <tr>
                                                                     <td class="text-center">
-                                                                        <i class="fa fa-angle-right"></i>
-                                                                    </td>
-                                                                    <td class="font-w600">'.$row['id_stah'].'</td>
-                                                                    <td>
-                                                                        <span class="badge badge-warning">'.$row['avis_stah'].'</span>
+                                                                        <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                    </td>';
+                                                                    if($row['avis_stah']==='Favorable'){
+                                                                        echo '<td><span class="badge badge-pill badge-success">'.$row['avis_stah'].'</span></td>';
+                                                                    }elseif($row['avis_stah']==='Favorable avec réserve'){
+                                                                        echo '<td><span class="badge badge-pill badge-warning">'.$row['avis_stah'].'</span></td>';
+                                                                    }elseif($row['avis_stah']==='Défavorable'){
+                                                                        echo '<td><span class="badge badge-pill badge-danger">'.$row['avis_stah'].'</span></td>';
+                                                                    }elseif($row['avis_stah']==='Archiver'){
+                                                                        echo '<td><span class="badge badge-pill badge-info">'.$row['avis_stah'].'</span></td>';
+                                                                    }elseif($row['avis_stah']==='Ajourné'){
+                                                                        echo '<td><span class="badge badge-pill badge-primary">'.$row['avis_stah'].'</span></td>';
+                                                                    }elseif($row['avis_stah']==='Aucun Avis'){
+                                                                        echo '<td>'.$row['avis_stah'].'</td>';
+                                                                    }
+                                                                    echo '<td class="font-w600"></td>
+                                                                    <td class="d-none d-sm-table-cell">
                                                                     </td>
                                                                     <td class="d-none d-sm-table-cell">
-                                                                        <em class="text-muted">'.$row['date_avis_stah'].'</em>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td class="text-center"></td>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
                                                                     <td class="font-w600 ">Aménagement proposé</td>
                                                                     <td class="font-size-sm">'.$row['amenagement_propose'].'</td>
                                                                     <td class="d-none d-sm-table-cell">
-                                                                        <span class="font-size-sm text-muted">'.$row['date_avis_bet_stah'].'</span>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="text-center"></td>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
                                                                     <td class="font-w600 ">Avis stah</td>
                                                                     <td class="font-size-sm">'.$row['avis_stah'].'</td>
                                                                     <td class="d-none d-sm-table-cell">
-                                                                        <span class="font-size-sm text-muted">'.$row['date_avis_stah'].'</span>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="text-center"></td>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
                                                                     <td class="font-w600">Avis abht aménagement</td>
                                                                     <td class="font-size-sm">'.$row['avis_amg'].'</td>
                                                                     <td class="d-none d-sm-table-cell">
-                                                                        <span class="font-size-sm text-muted">'.$row['date_avis_stah'].'</span>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="text-center"></td>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">La date de la remarque du SEPRE</td>
+                                                                    <td class="font-size-sm">'.$row['date_avis_stah'].'</td>
+                                                                    <td class="d-none d-sm-table-cell">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">La date de la remarque du BET</td>
+                                                                    <td class="font-size-sm">'.$row['date_avis_bet_stah'].'</td>
+                                                                    <td class="d-none d-sm-table-cell">
+                                                                          
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Durée de la remarque du BET</td>';
+                                                                    if( $row['duree_avis'] < 11 ){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                                    }elseif($row['duree_avis'] > 10 && $row['duree_avis'] < 30 ){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                                    }elseif($row['duree_avis'] > 29){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                                    }
+                                                                    
+                                                                    echo '<td class="d-none d-sm-table-cell"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Durée de la remarque du SEPRE</td>';
+                                                                    if( $row['duree_avis_stah'] < 11 ){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_stah'].' jours</span></td>';
+                                                                    }elseif($row['duree_avis_stah'] > 10 && $row['duree_avis_stah'] < 30 ){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_stah'].' jours</span></td>';
+                                                                    }elseif($row['duree_avis_stah'] > 29){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_stah'].' jours</span></td>';
+                                                                    }
+                                                                    echo '<td class="d-none d-sm-table-cell">
+                                                                          
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
                                                                     <td class="font-w600 ">Valide par</td>
                                                                     <td class="font-size-sm">'.$row['validee'].'</td>
                                                                     <td class="d-none d-sm-table-cell">
-                                                                        <span class="font-size-sm text-muted">'.$row['date_avis_bet_stah'].'</span>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="text-center"></td>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
                                                                     <td class="font-w600 ">Approuvé par</td>
                                                                     <td class="font-size-sm">'.$row['approuvee'].'</td>
                                                                     <td class="d-none d-sm-table-cell">
-                                                                        <span class="font-size-sm text-muted">'.$row['date_avis_bet_stah'].'</span>
+                                                                            
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="text-center"></td>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
                                                                     <td class="font-w600 ">Utilisateur BET</td>
                                                                     <td class="font-size-sm">'.$row['user_name'].'</td>
                                                                     <td class="d-none d-sm-table-cell">
-                                                                        <span class="font-size-sm text-muted">'.$row['date_avis_stah'].'</span>
+                                                                            
                                                                     </td>
                                                                 </tr>';
                                                             }}
@@ -832,7 +1059,8 @@
                                                         </div>
                                                     </div>
                                                 </div>';}else{
-                                                    echo '<div class="col-lg-4 ml-auto">
+                                                    echo '
+                                                        <div class="col-lg-4 ml-auto">
                                                             <div class="block block-borderless ">
                                                                 <div class="block-header block-header-default">
                                                                     <h3 class="block-title">Information </h3>
@@ -864,13 +1092,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="block-content ">
-                                                    <table class="js-table-sections table table-borderless table-sm table-striped">
+                                                    <table class="js-table-sections table table-sm table-striped">
                                                         <thead>
                                                             <tr>
-                                                                <th style="width: 5%;"></th>
-                                                                <th style="width: 30%;">Remarque</th>
-                                                                <th style="width: 50%;"></th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 20%;">Delais</th>
+                                                                <th></th>
+                                                                <th>Avis</th>
+                                                                <th>Information</th>
+                                                                <th class="d-none d-sm-table-cell" ></th>
                                                             </tr>
                                                         </thead>';
                                                         $a= new ABHT_Service();
@@ -879,67 +1107,78 @@
                                                         $oum="kjsdfh";
                                                         if($aa){
                                                             foreach($aa as $row){ 
-                                                      echo '<tbody class="js-table-sections-header">
+                                                      echo '<tbody class="js-table-sections-header bg-gray-lighter">
                                                             <tr>
                                                                 <td class="text-center">
-                                                                    <i class="fa fa-angle-right"></i>
-                                                                </td>
-                                                                <td class="font-w600">'.$row['id_abht'].'</td>
-                                                                <td>
-                                                                    <span class="badge badge-warning">'.$row['avis_abht'].'</span>
-                                                                </td>
-                                                                <td class="d-none d-sm-table-cell">
-                                                                    <em class="text-muted">'.$row['date_avis_abht'].'</em>
-                                                                </td>
+                                                                    <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                </td>';
+                                                                if($row['avis_abht']==='Favorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-success">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Favorable avec réserve'){
+                                                                    echo '<td><span class="badge badge-pill badge-warning">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Défavorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-danger">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Archiver'){
+                                                                    echo '<td><span class="badge badge-pill badge-info">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Ajourné'){
+                                                                    echo '<td><span class="badge badge-pill badge-primary">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Aucun Avis'){
+                                                                    echo '<td>'.$row['avis_abht'].'</td>';
+                                                                }
+                                                                echo '<td class="font-w600"></td>
+                                                                <td class="d-none d-sm-table-cell"></td>
+                                                                <td class="d-none d-sm-table-cell"></td>
                                                             </tr>
                                                         </tbody>
                                                         <tbody>
                                                             <tr>
-                                                                <td class="text-center"></td>
-                                                                <td class="font-w600 ">'.$row['remarques_generales_bet'].'</td>
+                                                                <td class="text-center"> <i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-w600 ">Remarque Générale du BET</td>
+                                                                <td class="font-size-sm ">'.$row['remarques_generales_bet'].'</td>
                                                                 <td class="font-size-sm"></td>
-                                                                <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_bet_abht'].'</span>
-                                                                </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center"> <i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-w600 ">Date de remarque</td>
+                                                                <td class="font-w600 ">'.$row['date_avis_bet_abht'].'</td>
+                                                                <td class="font-size-sm"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
                                                                 <td class="font-w600 ">Avis ABHT</td>
                                                                 <td class="font-size-sm">'.$row['avis_abht'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_abht'].'</span>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center"> <i class="fa fa-caret-right"></i></td>
                                                                 <td class="font-w600">Etabli par</td>
                                                                 <td class="font-size-sm">'.$row['etabli'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_bet_abht'].'</span>
+                                                                    
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center"> <i class="fa fa-caret-right"></i></td>
                                                                 <td class="font-w600 ">Valide par</td>
                                                                 <td class="font-size-sm">'.$row['validee'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_bet_abht'].'</span>
+                                                                    
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                    <td class="text-center"><i class="fa fa-caret-right"></i></td>
                                                                     <td class="font-w600 ">Approuvé par</td>
                                                                     <td class="font-size-sm">'.$row['approuvee'].'</td>
                                                                     <td class="d-none d-sm-table-cell">
-                                                                        <span class="font-size-sm text-muted">'.$row['date_avis_bet_abht'].'</span>
+                                                                       
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="text-center"></td>
+                                                                    <td class="text-center"> <i class="fa fa-caret-right"></i></td>
                                                                     <td class="font-w600 ">Utilisateur BET</td>
                                                                     <td class="font-size-sm">'.$row['user_name'].'</td>
                                                                     <td class="d-none d-sm-table-cell">
-                                                                        <span class="font-size-sm text-muted">'.$row['date_avis_bet_abht'].'</span>
                                                                     </td>
                                                                 </tr>
                                                         </tbody>';
@@ -962,6 +1201,9 @@
                             <ul class="nav nav-tabs nav-tabs-block align-items-center" data-toggle="tabs" role="tablist" style="background-color:#e6eef7 !important">
                                 <li class="nav-item" style="background-color:#e6eef7 !important">
                                     <a class="nav-link active" href="#sepre">Service SEPRE</a>
+                                </li>
+                                <li class="nav-item" style="background-color:#e6eef7 !important">
+                                    <a class="nav-link" href="#abht">Service ABHT</a>
                                 </li>
                                 <li class="nav-item ml-auto">
                                     <div class="block-options mr-15">
@@ -988,14 +1230,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="block-content ">
-                                                    <table class="js-table-sections table table-borderless table-sm table-striped">
+                                                    <table class="js-table-sections table table-sm ">
                                                         <thead>
                                                             <tr>
                                                                 <th style="width: 10%;"></th>
-                                                                <th style="width: 50%;">Remarque</th>
-                                                                <th style="width: 20%;"></th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 30%;">Delais</th>
-                                                                <th style="width: 10%;">Action</th>
+                                                                <th style="width: 50%;">Avis</th>
+                                                                <th style="width: 20%;">Information</th>
+                                                                <th class="d-none d-sm-table-cell" style="width: 30%;"></th>
                                                             </tr>
                                                         </thead>';
                                                         $a= new SEPRE_S_INFO();
@@ -1003,57 +1244,117 @@
                                                         $oum="kjsdfh";
                                                         if($aa){
                                                             foreach($aa as $row){
-                                                            echo    '<tbody class="js-table-sections-header">
+                                                            echo    '<tbody class="js-table-sections-header bg-gray-lighter">
                                                                         <tr>
                                                                             <td class="text-center">
-                                                                                <i class="fa fa-angle-right"></i>
-                                                                            </td>
-                                                                            <td class="font-w600">'.$row['id_sepre'].'</td>
-                                                                            <td>
-                                                                                <span class="badge badge-warning">'.$row['avis'].'</span>
-                                                                            </td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <em class="text-muted">'.$row['date_avis_sepre'].'</em>
-                                                                            </td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info" id="oum1" data-remarque="'.$row['remarque_bet_besoin_eau'].'" onclick="avissepre('.$row['id_sepre'].')" >
-                                                                                    <i class="fa fa-plus mr-5"></i>Avis 
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
+                                                                                <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                            </td>';
+                                                                            if($row['avis']==='Favorable'){
+                                                                                echo '<td><span class="badge badge-pill badge-success">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Favorable avec réserve'){
+                                                                                echo '<td><span class="badge badge-pill badge-warning">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Défavorable'){
+                                                                                echo '<td><span class="badge badge-pill badge-danger">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Archiver'){
+                                                                                echo '<td><span class="badge badge-pill badge-info">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Ajourné'){
+                                                                                echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Aucun Avis'){
+                                                                                echo '<td>'.$row['avis'].'</td>';
+                                                                            }
+                                                                            echo '<td class="font-w600"></td>
+                                                                            ';
+                                                                            if (isset($row['date_avis_sepre'])){
+                                                                                echo '<td class="d-none d-sm-table-cell"></td>';
+                                                                            }else{
+                                                                                echo    '<td class="d-none d-sm-table-cell">
+                                                                                            <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info" id="oum1" data-remarque="'.$row['remarque_bet_besoin_eau'].'" onclick="avissepre('.$row['id_sepre'].')" >
+                                                                                                <i class="fa fa-plus mr-5"></i>Avis 
+                                                                                            </a>
+                                                                                        </td>';
+                                                                            }
+                                                                            echo'</tr>
                                                                     </tbody>
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600 ">Remarque Besoin de l\'eau</td>
                                                                         <td class="font-size-sm">'.$row['remarque_bet_besoin_eau'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_bet_sepre'].'</span>
-                                                                        </td>
-                                                                        <td class="font-size-sm">
                                                                             
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600">Avis du service</td>
                                                                         <td class="font-size-sm">'.$row['avis'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_sepre'].'</span>
-                                                                        </td>
-                                                                        <td class="font-size-sm">
                                                                             
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
                                                                         <td class="font-w600 ">Remarque Supplémentaire</td>
                                                                         <td class="font-size-sm" style="word-wrap: break-word;">'.$row['remarques_sup_sepre'].'</td>
                                                                         <td class="d-none d-sm-table-cell">
-                                                                            <span class="font-size-sm text-muted">'.$row['date_avis_sepre'].'</span>
-                                                                        </td>
-                                                                        <td class="font-size-sm">
                                                                             
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Durée de la remarque du BET</td>';
+
+                                                                        if( $row['duree_avis_sepre'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_sepre'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sepre'] > 10 && $row['duree_avis_sepre'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_sepre'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sepre'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_sepre'].' jours</span></td>';
+                                                                        }
+                                                                       
+                                                                        echo '<td class="d-none d-sm-table-cell">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Durée de la remarque du SEPRE</td>';
+                                                                        if( $row['duree_avis_sepre'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sepre'] > 10 && $row['duree_avis_sepre'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sepre'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }
+                                                                        
+                                                                        echo '<td class="d-none d-sm-table-cell">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Date d\'avis SEPRE</td>
+                                                                        <td class="font-size-sm">'.$row['date_avis_sepre'].'</td>
+                                                                        <td class="font-size-sm">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Date de remarque BET</td>
+                                                                        <td class="font-size-sm">'.$row['date_avis_bet_sepre'].'</td>
+                                                                        <td class="font-size-sm">
                                                                         </td>
                                                                     </tr>
                                                                 </tbody> ';
@@ -1124,6 +1425,181 @@
                                            
                                echo '</div>
                                 </div>
+                                <div class="tab-pane" id="abht" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <div class="block block-borderless">
+                                                <div class="block-header block-header-default">
+                                                    <h3 class="block-title">Liste des avis ABHT</h3>
+                                                    <div class="block-options-item">';
+                                                    $a= new ABHT_Service();
+                                                        $aa= $a->find_prj_abht($_GET['id']);
+                                                        // var_dump($aa);
+                                                        $oum="kjsdfh";
+                                                        if($aa){
+                                                            foreach($aa as $row){
+                                                                if (isset($row['date_avis_abht'])){
+                                                                    if(($_SESSION['id_profession']===3)){
+                                                                        echo'<a type="submit" href="projet_cloturer.php?id='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
+                                                                        <i class="fa fa-lock mr-5"></i>Cloturer le dossier
+                                                                        </a>';
+                                                                    }else{
+                                                                        echo '';
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        
+                                                    echo'</div>
+                                                </div>
+                                                <div class="block-content ">
+                                                    <table class="js-table-sections table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width: 10%;"></th>
+                                                                <th style="width: 50%;">Avis</th>
+                                                                <th style="width: 20%;">Information</th>
+                                                                <th class="d-none d-sm-table-cell" style="width: 30%;"></th>
+                                                            </tr>
+                                                        </thead>';
+                                                        $a= new ABHT_Service();
+                                                        $aa= $a->find_prj_abht($_GET['id']);
+                                                        // var_dump($aa);
+                                                        $oum="kjsdfh";
+                                                        if($aa){
+                                                            foreach($aa as $row){ 
+                                                      echo '<tbody class="js-table-sections-header bg-gray-lighter">
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                </td>';
+                                                                if($row['avis_abht']==='Favorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-success">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Favorable avec réserve'){
+                                                                    echo '<td><span class="badge badge-pill badge-warning">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Défavorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-danger">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Archiver'){
+                                                                    echo '<td><span class="badge badge-pill badge-info">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Ajourné'){
+                                                                    echo '<td><span class="badge badge-pill badge-primary">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Aucun Avis'){
+                                                                    echo '<td>'.$row['avis'].'</td>';
+                                                                }
+                                                                echo '<td class="font-w600"></td>';
+                                                                if (isset($row['date_avis_abht'])){
+                                                                    if(($_SESSION['id_profession']===3) && ($row['approuve_par']===19) ){
+                                                                        echo'<td>
+                                                                            <a type="submit" href="projet_approuve_abht.php?id='.$row['id_abht'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-success">
+                                                                                <i class="fa fa-check mr-5"></i>Approuver
+                                                                            </a> 
+                                                                        </td>';
+                                                                    }else{
+                                                                        echo '<td></td>';
+                                                                    }
+                                                                }else{
+                                                                    echo'<td class="d-none d-sm-table-cell"></td><td class="d-none d-sm-table-cell">
+                                                                                <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info" id="oum1" onclick="avisabht_sepre('.$row['id_abht'].')"  >
+                                                                                    <i class="fa fa-plus mr-5"></i>Avis 
+                                                                                </a>
+                                                                     </td>';
+                                                                }
+                                                                echo'
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-size-sm">Remarque Générale du BET</td>
+                                                                <td class="font-w600 ">'.$row['remarques_generales_bet'].'</td>
+                                                                <td class="font-size-sm"></td>
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-w600 ">Avis ABHT</td>
+                                                                <td class="font-size-sm">'.$row['avis_abht'].'</td>
+                                                                <td class="font-size-sm"></td>
+                                                               
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-w600">Etabli par</td>
+                                                                <td class="font-size-sm">'.$row['etabli'].'</td>
+                                                                <td class="font-size-sm"></td>
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-w600 ">Valide par</td>
+                                                                <td class="font-size-sm">'.$row['validee'].'</td>
+                                                                <td class="font-size-sm"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                    <td class="font-w600 ">Approuvé par</td>
+                                                                    <td class="font-size-sm">'.$row['approuvee'].'</td>
+                                                                    <td class="font-size-sm"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                    <td class="font-w600 ">Utilisateur BET</td>
+                                                                    <td class="font-size-sm">'.$row['user_name'].'</td>
+                                                                    <td class="font-size-sm"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Durée de la remarque du ABHT</td>';
+                                                                        if( $row['duree_avis_abht'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_abht'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_abht'] > 10 && $row['duree_avis_abht'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_abht'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_abht'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_abht'].' jours</span></td>';
+                                                                        }
+                                                                    echo '<td class="d-none d-sm-table-cell"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Durée de la remarque du BET</td>';
+                                                                    if( $row['duree_avis'] < 11 ){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                                    }elseif($row['duree_avis'] > 10 && $row['duree_avis'] < 30 ){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                                    }elseif($row['duree_avis'] > 29){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                                    }
+                                                                    echo '<td class="d-none d-sm-table-cell">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Date d\'avis ABHT</td>
+                                                                    <td class="font-size-sm">'.$row['date_avis_abht'].'</td>
+                                                                    <td class="font-size-sm"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Date de remarque BET</td>
+                                                                    <td class="font-size-sm">'.$row['date_avis_bet_abht'].'</td>
+                                                                    <td class="font-size-sm"></td> 
+                                                                </tr>
+                                                        </tbody>';
+                                                    }}                            
+                                                echo'</table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>';
@@ -1163,13 +1639,13 @@
                                             </div>
                                         </div>
                                         <div class="block-content ">
-                                            <table class="js-table-sections table table-borderless table-sm table-striped"> 
+                                            <table class="js-table-sections table table-sm"> 
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 10%;"></th>
-                                                        <th style="width: 30%;">Remarque</th>
-                                                        <th style="width: 50%;"></th>
-                                                        <th class="d-none d-sm-table-cell" style="width: 20%;">Delais</th>
+                                                        <th></th>
+                                                        <th>Avis</th>
+                                                        <th>Information</th>
+                                                        <th class="d-none d-sm-table-cell" ></th>
                                                     </tr>
                                                 </thead>';
                                                     $a= new STAH_S_INFO();
@@ -1178,72 +1654,149 @@
                                                     $oum="kjsdfh";
                                                     if($aa){
                                                         foreach($aa as $row){
-                                                echo '<tbody class="js-table-sections-header">
-                                                    <tr>
-                                                        <td class="text-center">
-                                                            <i class="fa fa-angle-right"></i>
-                                                        </td>
-                                                        <td class="font-w600">'.$row['id_stah'].'</td>
-                                                        <td>
-                                                            <span class="badge badge-warning">'.$row['avis_stah'].'</span>
-                                                        </td>
-                                                        <td class="d-none d-sm-table-cell">
-                                                            <em class="text-muted">'.$row['date_avis_stah'].'</em>
-                                                        </td>
-                                                        <td class="d-none d-sm-table-cell">
-                                                            <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info"  onclick="avisstah('.$row['id_stah'].')" >
-                                                                <i class="fa fa-plus mr-5"></i>Avis 
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-center"></td>
-                                                        <td class="font-w600 ">Aménagement proposé</td>
-                                                        <td class="font-size-sm">'.$row['amenagement_propose'].'</td>
-                                                        <td class="d-none d-sm-table-cell">
-                                                            <span class="font-size-sm text-muted">'.$row['date_avis_bet_stah'].'</span>
-                                                        </td>
-                                                    </tr>
+                                                echo '<tbody class="js-table-sections-header bg-gray-lighter">
                                                         <tr>
-                                                            <td class="text-center"></td>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-plus-circle" style="color:red"></i>
+                                                            </td>';
+                                                            if($row['avis_stah']==='Favorable'){
+                                                                echo '<td><span class="badge badge-pill badge-success">'.$row['avis_stah'].'</span></td>';
+                                                            }elseif($row['avis_stah']==='Favorable avec réserve'){
+                                                                echo '<td><span class="badge badge-pill badge-warning">'.$row['avis_stah'].'</span></td>';
+                                                            }elseif($row['avis_stah']==='Défavorable'){
+                                                                echo '<td><span class="badge badge-pill badge-danger">'.$row['avis_stah'].'</span></td>';
+                                                            }elseif($row['avis_stah']==='Archiver'){
+                                                                echo '<td><span class="badge badge-pill badge-info">'.$row['avis_stah'].'</span></td>';
+                                                            }elseif($row['avis_stah']==='Ajourné'){
+                                                                echo '<td><span class="badge badge-pill badge-primary">'.$row['avis_stah'].'</span></td>';
+                                                            }elseif($row['avis_stah']==='Aucun Avis'){
+                                                                echo '<td>'.$row['avis_stah'].'</td>';
+                                                            }
+                                                            echo '<td class="font-w600"></td>';
+                                                            if(isset($row['date_avis_stah'])){
+                                                                if(($_SESSION['id_profession']===3) && ($row['approuve_par_stah']===19) ){
+                                                                    echo'<td>
+                                                                        <a type="submit" href="projet_approuve_stah.php?id='.$row['id_stah'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-success">
+                                                                            <i class="fa fa-check mr-5"></i>Approuver
+                                                                        </a> 
+                                                                    </td>';
+                                                                }else{
+                                                                    echo '<td></td>';
+                                                                }
+                                                            }else{
+                                                                echo'<td class="d-none d-sm-table-cell">
+                                                                        <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info"  onclick="avisstah('.$row['id_stah'].')" >
+                                                                            <i class="fa fa-plus mr-5"></i>Avis 
+                                                                        </a>
+                                                                    </td>';
+                                                            }
+                                                                echo '</tr>
+                                                        </tbody>
+                                                <tbody>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
+                                                            <td class="font-w600 ">Aménagement proposé</td>
+                                                            <td class="font-size-sm">'.$row['amenagement_propose'].'</td>
+                                                            <td class="d-none d-sm-table-cell">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
                                                             <td class="font-w600 ">Avis stah</td>
                                                             <td class="font-size-sm">'.$row['avis_stah'].'</td>
                                                             <td class="d-none d-sm-table-cell">
-                                                                <span class="font-size-sm text-muted">'.$row['date_avis_stah'].'</span>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="text-center"></td>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
                                                             <td class="font-w600">Avis abht aménagement</td>
                                                             <td class="font-size-sm">'.$row['avis_amg'].'</td>
                                                             <td class="d-none d-sm-table-cell">
-                                                                <span class="font-size-sm text-muted">'.$row['date_avis_stah'].'</span>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="text-center"></td>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
+                                                            <td class="font-w600 ">La date de la remarque du SEPRE</td>
+                                                            <td class="font-size-sm">'.$row['date_avis_stah'].'</td>
+                                                            <td class="d-none d-sm-table-cell">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
+                                                            <td class="font-w600 ">La date de la remarque du BET</td>
+                                                            <td class="font-size-sm">'.$row['date_avis_bet_stah'].'</td>
+                                                            <td class="d-none d-sm-table-cell">
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
+                                                            <td class="font-w600 ">Durée de la remarque du BET</td>';
+                                                            if( $row['duree_avis'] < 11 ){
+                                                                echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                            }elseif($row['duree_avis'] > 10 && $row['duree_avis'] < 30 ){
+                                                                echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                            }elseif($row['duree_avis'] > 29){
+                                                                echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                            }
+                                                            
+                                                            echo '<td class="d-none d-sm-table-cell"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
+                                                            <td class="font-w600 ">Durée de la remarque du SEPRE</td>';
+                                                            if( $row['duree_avis_stah'] < 11 ){
+                                                                echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_stah'].' jours</span></td>';
+                                                            }elseif($row['duree_avis_stah'] > 10 && $row['duree_avis_stah'] < 30 ){
+                                                                echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_stah'].' jours</span></td>';
+                                                            }elseif($row['duree_avis_stah'] > 29){
+                                                                echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_stah'].' jours</span></td>';
+                                                            }
+                                                            echo '<td class="d-none d-sm-table-cell">
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
                                                             <td class="font-w600 ">Valide par</td>
                                                             <td class="font-size-sm">'.$row['validee'].'</td>
                                                             <td class="d-none d-sm-table-cell">
-                                                                <span class="font-size-sm text-muted">'.$row['date_avis_bet_stah'].'</span>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="text-center"></td>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
                                                             <td class="font-w600 ">Approuvé par</td>
                                                             <td class="font-size-sm">'.$row['approuvee'].'</td>
                                                             <td class="d-none d-sm-table-cell">
-                                                                <span class="font-size-sm text-muted">'.$row['date_avis_bet_stah'].'</span>
+                                                                    
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="text-center"></td>
+                                                            <td class="text-center">
+                                                                <i class="fa fa-caret-right"></i>
+                                                            </td>
                                                             <td class="font-w600 ">Utilisateur BET</td>
                                                             <td class="font-size-sm">'.$row['user_name'].'</td>
                                                             <td class="d-none d-sm-table-cell">
-                                                                <span class="font-size-sm text-muted">'.$row['date_avis_stah'].'</span>
+                                                                    
                                                             </td>
                                                         </tr>';
                                                     }}
@@ -1340,14 +1893,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="block-content ">
-                                                        <table class="js-table-sections table table-borderless table-sm table-striped">
+                                                        <table class="js-table-sections table table-sm">
                                                             <thead>
                                                                 <tr>
                                                                     <th style="width: 10%;"></th>
-                                                                    <th style="width: 30%;">Remarque</th>
-                                                                    <th style="width: 50%;"></th>
-                                                                    <th class="d-none d-sm-table-cell" style="width: 30%;">Delais</th>
-                                                                    <th class="d-none d-sm-table-cell" style="width: 30%;">Action</th>
+                                                                    <th style="width: 30%;">Avis</th>
+                                                                    <th style="width: 50%;">Information</th>
+                                                                    <th class="d-none d-sm-table-cell"></th>
                                                                 </tr>
                                                             </thead>';
                                                                 $a= new SQE_S_INFO();
@@ -1355,84 +1907,140 @@
                                                                 $oum="kjsdfh";
                                                                 if($aa){
                                                                     foreach($aa as $row){
-                                                            echo '<tbody class="js-table-sections-header">
+                                                            echo '<tbody class="js-table-sections-header bg-gray-lighter">
                                                                         <tr>
                                                                             <td class="text-center">
-                                                                                <i class="fa fa-angle-right"></i>
-                                                                            </td>
-                                                                            <td class="font-w600">'.$row['id_sqe'].'</td>
-                                                                            <td>
-                                                                                <span class="badge badge-warning">'.$row['avis'].'</span>
-                                                                            </td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <em class="text-muted">'.$row['date_avis_sqe'].'</em>
-                                                                            </td>
-                                                                            <td class="d-none d-sm-table-cell">
+                                                                                <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                            </td>';
+                                                                            if($row['avis']==='Favorable'){
+                                                                                echo '<td><span class="badge badge-pill badge-success">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Favorable avec réserve'){
+                                                                                echo '<td><span class="badge badge-pill badge-warning">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Défavorable'){
+                                                                                echo '<td><span class="badge badge-pill badge-danger">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Archiver'){
+                                                                                echo '<td><span class="badge badge-pill badge-info">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Ajourné'){
+                                                                                echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
+                                                                            }elseif($row['avis']==='Aucun Avis'){
+                                                                                echo '<td>'.$row['avis'].'</td>';
+                                                                            }
+                                                                            echo '<td class="font-w600"></td>';
+                                                                            if(isset($row['date_avis_sqe'])){
+                                                                                if(($_SESSION['id_profession']===3) && ($row['approuvee_sqe']===19) ){
+                                                                                    echo'<td>
+                                                                                        <a type="submit" href="Projet_approuve_sqe.php?id='.$row['id_sqe'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-success">
+                                                                                            <i class="fa fa-check mr-5"></i>Approuver
+                                                                                        </a> 
+                                                                                    </td>';
+                                                                                }else{
+                                                                                    echo '<td></td>';
+                                                                                }
+                                                                            }else{
+                                                                                echo'<td class="d-none d-sm-table-cell">
                                                                                 <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info" id="oum2" onclick="avissqe('.$row['id_sqe'].')" >
                                                                                     <i class="fa fa-plus mr-5"></i>Avis
                                                                                 </a>
-                                                                            </td>
-                                                                        </tr>
+                                                                                </td>';
+                                                                            }
+                                                                            
+                                                                        echo'</tr>
                                                                     </tbody>
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td class="text-center"></td>
+                                                                            <td class="text-center">
+                                                                                <i class="fa fa-caret-right"></i>
+                                                                            </td>
                                                                             <td class="font-w600 ">Remarque d\'assainissement</td>
                                                                             <td class="font-size-sm">'.$row['remarque_bet_assainissement'].'</td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <span class="font-size-sm text-muted">'.$row['date_avis_bet_sqe'].'</span>
-                                                                            </td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                
+                                                                            <td class="d-none d-sm-table-cell"> 
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td class="text-center"></td>
+                                                                            <td class="text-center">
+                                                                                <i class="fa fa-caret-right"></i>
+                                                                            </td>
                                                                             <td class="font-w600">Remarque Supplémentaire</td>
                                                                             <td class="font-size-sm">'.$row['remarque_sup_sqe'].'</td>
                                                                             <td class="d-none d-sm-table-cell">
-                                                                                <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
-                                                                            </td>
-                                                                            <td class="d-none d-sm-table-cell">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td class="text-center"></td>
+                                                                            <td class="text-center">
+                                                                                <i class="fa fa-caret-right"></i>
+                                                                            </td>
                                                                             <td class="font-w600 ">Avis</td>
-                                                                            <td class="font-size-sm"></td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
-                                                                            </td>
+                                                                            <td class="font-size-sm">'.$row['avis'].'</td>
                                                                             <td class="d-none d-sm-table-cell">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td class="text-center"></td>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">La date de la remarque du SQE</td>
+                                                                        <td class="font-size-sm">'.$row['date_avis_sqe'].'</td>
+                                                                        <td class="d-none d-sm-table-cell">
+                                                                          
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">La date de la remarque du BET</td>
+                                                                        <td class="font-size-sm">'.$row['date_avis_bet_sqe'].'</td>
+                                                                        <td class="d-none d-sm-table-cell">
+                                                                          
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Durée de la remarque du BET</td>';
+                                                                        if( $row['duree_avis'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis'] > 10 && $row['duree_avis'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                                        }
+                                                                        echo '<td class="d-none d-sm-table-cell"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <i class="fa fa-caret-right"></i>
+                                                                        </td>
+                                                                        <td class="font-w600 ">Durée de la remarque du SQE</td>';
+                                                                        if( $row['duree_avis_sqe'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_sqe'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sqe'] > 10 && $row['duree_avis_sqe'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_sqe'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_sqe'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_sqe'].' jours</span></td>';
+                                                                        }
+                                                                        echo '<td class="d-none d-sm-table-cell">
+                                                                          
+                                                                        </td>
+                                                                    </tr>
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                <i class="fa fa-caret-right"></i>
+                                                                            </td>
                                                                             <td class="font-w600 ">Valide par</td>
-                                                                            <td class="font-size-sm"></td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
+                                                                            <td class="">
+                                                                                <span class="font-size-sm text-muted">'.$row['validee'].'</span>
                                                                             </td>
                                                                             <td class="d-none d-sm-table-cell">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td class="text-center"></td>
+                                                                            <td class="text-center">
+                                                                                <i class="fa fa-caret-right"></i>
+                                                                            </td>
                                                                             <td class="font-w600 ">Approuvée par</td>
                                                                             <td class="font-size-sm">'.$row['approuvee'].'</td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
-                                                                            </td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="text-center"></td>
-                                                                            <td class="font-w600 ">Etabli par</td>
-                                                                            <td class="font-size-sm">'.$row['validee'].'</td>
-                                                                            <td class="d-none d-sm-table-cell">
-                                                                                <span class="font-size-sm text-muted">'.$row['date_avis_sqe'].'</span>
-                                                                            </td>
                                                                             <td class="d-none d-sm-table-cell">
                                                                             </td>
                                                                         </tr>
@@ -1532,7 +2140,7 @@
 
                 <?php
                 if ($_SESSION["service"]=== "SGDPH       " ){
-              echo '<div class="col-lg-12">
+                   echo '<div class="col-lg-12">
                         <div class="block" style="box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.1) !important">
                             <ul class="nav nav-tabs nav-tabs-block align-items-center" data-toggle="tabs" role="tablist" style="background-color:#e6eef7 !important">
                                 <li class="nav-item" style="background-color:#e6eef7 !important">
@@ -1564,14 +2172,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="block-content ">
-                                                    <table class="js-table-sections table table-borderless table-sm table-striped">
+                                                    <table class="js-table-sections table table-sm ">
                                                         <thead>
                                                             <tr>
-                                                                <th style="width: 10%;"></th>
-                                                                <th style="width: 30%;">Remarque</th>
-                                                                <th style="width: 50%;"></th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 20%;">Delais</th>
-                                                                <th>Action</th>
+                                                                <th></th>
+                                                                <th>Avis</th>
+                                                                <th>Information</th>
+                                                                <th class="d-none d-sm-table-cell"></th>
                                                             </tr>
                                                         </thead>';
                                                             $a= new SGDPH_S_INFO();
@@ -1579,82 +2186,158 @@
                                                             $oum="kjsdfh";
                                                             if($aa){
                                                             foreach($aa as $row){
-                                                         echo '<tbody class="js-table-sections-header">
+                                                         echo '<tbody class="js-table-sections-header bg-gray-lighter">
                                                             <tr>
                                                                 <td class="text-center">
-                                                                    <i class="fa fa-angle-right"></i>
-                                                                </td>
-                                                                <td class="font-w600">'.$row['id_sgdph'].'</td>
-                                                                <td>
-                                                                    <span class="badge badge-warning">'.$row['avis'].'</span>
-                                                                </td>
-                                                                <td class="d-none d-sm-table-cell">
-                                                                    <em class="text-muted">'.$row['date_avis_sgdph'].'</em>
-                                                                </td>
-                                                                <td>
-                                                                    <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info" id="oum4" onclick="avissgdph('.$row['id_sgdph'].')" >
-                                                                        <i class="fa fa-plus mr-5"></i>Avis
-                                                                    </a>
-                                                                </td>
+                                                                    <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                </td>';
 
-                                                            </tr>
+                                                                if($row['avis']==='Favorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-success">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Favorable avec réserve'){
+                                                                    echo '<td><span class="badge badge-pill badge-warning">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Défavorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-danger">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Archiver'){
+                                                                    echo '<td><span class="badge badge-pill badge-info">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Ajourné'){
+                                                                    echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
+                                                                }elseif($row['avis']==='Aucun Avis'){
+                                                                    echo '<td>'.$row['avis'].'</td>';
+                                                                }
+                                                                echo '<td class="font-w600"></td>';
+                                                                if(isset($row['date_avis_sgdph'])){
+                                                                    if(($_SESSION['id_profession']===3) && ($row['approuve_par_sgdph']===19) ){
+                                                                        echo'<td>
+                                                                            <a type="submit" href="projet_approuve_sgdph.php?id='.$row['id_sgdph'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-success">
+                                                                                <i class="fa fa-check mr-5"></i>Approuver
+                                                                            </a> 
+                                                                        </td>';
+                                                                    }else{
+                                                                        echo '<td></td>';
+                                                                    }
+                                                                    
+                                                                }else{
+                                                                    echo '<td>
+                                                                            <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info" id="oum4" onclick="avissgdph('.$row['id_sgdph'].')" >
+                                                                                <i class="fa fa-plus mr-5"></i>Avis
+                                                                            </a>
+                                                                        </td>';
+                                                                }
+                                                            echo '</tr>
                                                         </tbody>
                                                         <tbody>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Remarque BET protection d\'inondation</td>
                                                                 <td class="font-size-sm">'.$row['remarque_bet_protection_inondations'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_bet_sgdph'].'</span>
                                                                 </td>
-                                                                <td></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Remarque Supplémentaire</td>
                                                                 <td class="font-size-sm">'.$row['remarque_sup_sgdph'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_sgdph'].'</span>
                                                                 </td>
-                                                                <td></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600">Avis du service</td>
                                                                 <td class="font-size-sm">'.$row['avis'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_sgdph'].'</span>
                                                                 </td>
-                                                                <td></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
+                                                                <td class="font-w600 ">Durée de la remarque du BET</td>';
+                                                                if( $row['duree_avis_sgdph'] < 11 ){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_sgdph'].' jours</span></td>';
+                                                                }elseif($row['duree_avis_sgdph'] > 10 && $row['duree_avis_sgdph'] < 30 ){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_sgdph'].' jours</span></td>';
+                                                                }elseif($row['duree_avis_sgdph'] > 29){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_sgdph'].' jours</span></td>';
+                                                                }
+
+                                                                echo '<td class="d-none d-sm-table-cell">
+                                                                 
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
+                                                                <td class="font-w600 ">Durée de la remarque du SGDPH</td>';
+                                                                if( $row['duree_avis'] < 11 ){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                                }elseif($row['duree_avis'] > 10 && $row['duree_avis'] < 30 ){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                                }elseif($row['duree_avis'] > 29){
+                                                                    echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                                }
+                                                                echo '<td class="d-none d-sm-table-cell">
+                                                                 
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
+                                                                <td class="font-w600 ">Date de la remarque du BET</td>
+                                                                <td class="font-size-sm">'.$row['date_avis_bet_sgdph'].'</td>
+                                                                <td class="d-none d-sm-table-cell">
+                                                                 
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
+                                                                <td class="font-w600 ">La date de la remarque du SGDPH</td>
+                                                                <td class="font-size-sm">'.$row['date_avis_sgdph'].'</td>
+                                                                <td class="d-none d-sm-table-cell">
+                                                                 
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Valide par</td>
                                                                 <td class="font-size-sm">'.$row['validee'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_sgdph'].'</span>
+                                                                   
                                                                 </td>
-                                                                <td></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Approuvée par</td>
                                                                 <td class="font-size-sm">'.$row['approuvee'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_sgdph'].'</span>
                                                                 </td>
-                                                                <td></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center"></td>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-caret-right"></i>
+                                                                </td>
                                                                 <td class="font-w600 ">Utilisateur BET</td>
                                                                 <td class="font-size-sm">'.$row['user_name'].'</td>
                                                                 <td class="d-none d-sm-table-cell">
-                                                                    <span class="font-size-sm text-muted">'.$row['date_avis_bet_sgdph'].'</span>
+                                                                 
                                                                 </td>
-                                                                <td></td>
                                                             </tr>
-                                                        </tbody>   ';
+                                                            
+                                                        </tbody>';
                                                     }}    
                                               echo '</table>
                                                 </div>

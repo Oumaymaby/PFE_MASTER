@@ -120,9 +120,9 @@ class SEPRE_Service{
 	//selection des projet affecter à SEPRE
 	function find_prj_sepre()
  	{
-	 	$st =	$this->db->prepare(" select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph 
+	 	$st =	$this->db->prepare("select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph 
 		 from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
-		 where inv.etatdossier=v.id and inv.sepre=true ");
+		 where inv.etatdossier=v.id and inv.sepre=true");
 	 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -159,6 +159,40 @@ class SEPRE_Service{
 			return false;
 		}
 	
+	}
+
+	function sepre_maxdate($id){
+		$st =$this->db->prepare('SELECT  DISTINCT ON (id_prj)
+		id_sepre, id_prj, remarque_bet_besoin_eau, remarques_sup_sepre, avis_sepre,date_avis_sepre,
+		date_avis_bet_sepre, id_user, id_sepre_info 
+		from prj_inv.t_avis_sepre 
+		where date_avis_sepre is not null and id_prj=?
+		ORDER  BY id_prj,date_avis_sepre DESC');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function sepre_maxdate_date(){
+		$st =$this->db->prepare('SELECT  DISTINCT ON (sepre.id_prj)
+		sepre.id_sepre, sepre.id_prj, sepre.remarque_bet_besoin_eau, sepre.remarques_sup_sepre, sepre.avis_sepre,
+		sepre.date_avis_sepre,sepre.date_avis_bet_sepre, sepre.id_user, sepre.id_sepre_info,inv.*
+		from prj_inv.t_avis_sepre sepre ,prj_inv.prj_invest inv
+		where sepre.id_prj=inv.gid
+		ORDER  BY sepre.id_prj,sepre.date_avis_bet_sepre DESC');
+		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
 	}
 
 

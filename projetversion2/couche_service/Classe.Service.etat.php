@@ -147,6 +147,32 @@ class Etat_Service{
 	 	 	}
 	}
 
+	//selection des projet nouveau dossier
+	function projnew1(){
+
+		$st =	$this->db->prepare("SELECT gid, numero_dossier, numero_archive, date_arrivee_abht, date_arrivee_bet, commune, province, douar_localite, maitre_ouvrage, intitule_projet, architecte, titre_foncier, superficie, type_projet, payement, date_payement, montant_payer, fond_dossier,ST_AsGeoJSON(geom) as geojson, dates_commissions, categories, surface_batie, type_dossier, etatdossier, sepre, stah, sqe, sgdph
+		FROM prj_inv.prj_invest where etatdossier=1");
+	 	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection des projets cloturee 
+	function projcloture1(){
+
+		$st =	$this->db->prepare("SELECT gid, numero_dossier, numero_archive, date_arrivee_abht, date_arrivee_bet, commune, province, douar_localite, maitre_ouvrage, intitule_projet, architecte, titre_foncier, superficie, type_projet, payement, date_payement, montant_payer, fond_dossier,ST_AsGeoJSON(geom) as geojson, dates_commissions, categories, surface_batie, type_dossier, etatdossier, sepre, stah, sqe, sgdph
+		FROM prj_inv.prj_invest where etatdossier=3");
+	 	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
 	//selection des projets cloturee 
 	function projcloture(){
 
@@ -169,6 +195,64 @@ class Etat_Service{
 			return null;
 		}
 	}
+
+	//selection pour la charte les nombres de projets selon leur etat [sepre]
+	function chartsetatsepre(){
+		$st =	$this->db->prepare('select count(*),v.etatdossier 
+		from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
+		where v.id=inv.etatdossier and inv.sepre=true
+		group by v.etatdossier ORDER BY count(*) DESC');
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
+	//selection pour la charte les nombres de projets selon leur etat [sqe]
+	function chartsetatsqe(){
+		$st =	$this->db->prepare('select count(*),v.etatdossier 
+		from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
+		where v.id=inv.etatdossier and inv.sqe=true
+		group by v.etatdossier ORDER BY count(*) DESC');
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
+	//selection pour la charte les nombres de projets selon leur etat [sgdph]
+	function chartsetatsgdph(){
+		$st =	$this->db->prepare('select count(*),v.etatdossier 
+		from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
+		where v.id=inv.etatdossier and inv.sgdph=true
+		group by v.etatdossier ORDER BY count(*) DESC');
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
+	//selection pour la charte les nombres de projets selon leur etat [stah]
+	function chartsetatstah(){
+		$st =	$this->db->prepare('select count(*),v.etatdossier 
+		from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
+		where v.id=inv.etatdossier and inv.stah=true
+		group by v.etatdossier ORDER BY count(*) DESC');
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
+	
 
 
 }

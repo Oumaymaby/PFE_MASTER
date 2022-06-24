@@ -21,6 +21,10 @@ require_once '../couche_service/Classe.Service.user.php';
 require_once '../couche_service/Classe.Service.modeassin.php';
 require_once '../couche_service/Classe.Service.type_ceau.php';
 require_once '../couche_service/Classe.Service.natureceau.php';
+require_once '../couche_service/Classe.Service.info.sepre.php';
+require_once '../couche_service/Classe.Service.info.sqe.php';
+require_once '../couche_service/Classe.Service.info.stah.php';
+require_once '../couche_service/Classe.Service.info.sgdph.php';
 
 session_start();
 if (isset($_SESSION['user_name'])){

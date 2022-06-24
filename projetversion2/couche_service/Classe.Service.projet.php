@@ -85,6 +85,19 @@ class Projet_Service{
 			return null;
 		}
  	}
+
+	function findById1($id)
+ 	{
+		$st =$this->db->prepare('select gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,st_astext(geom) as geom,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph,payement,date_payement,montant_payer from prj_inv.prj_invest where gid=?');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+ 	}
     
 	 
  	
@@ -240,7 +253,7 @@ class Projet_Service{
 
 	//selection des projets avec une duree de jour de la date d'arrivée au BET avec leur etatdossier moin de 10j 
 	function dureedayetatprj10(){
-		$st =	$this->db->prepare("select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) <= 10");
+		$st =	$this->db->prepare("select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) <= 10");
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -251,7 +264,7 @@ class Projet_Service{
 
 	//selection des projets avec une duree de jour de la date d'arrivée au BET avec leur etatdossier entre 10 et 30 
 	function dureedayetatprj30(){
-		$st =	$this->db->prepare("select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) > 10 and DATE_PART('day', Now() - inv.date_arrivee_bet) <= 30");
+		$st =	$this->db->prepare("select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) > 10 and DATE_PART('day', Now() - inv.date_arrivee_bet) <= 30");
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -262,7 +275,7 @@ class Projet_Service{
 
 	//selection des projets avec une duree de jour de la date d'arrivée au BET avec leur etatdossier plus 30j 
 	function dureedayetatprjplus30(){
-		$st =	$this->db->prepare("select inv.gid,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) > 30");
+		$st =	$this->db->prepare("select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) > 30");
 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -303,6 +316,177 @@ class Projet_Service{
 	 	 		return null;
 	 	 	}
 	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivé au BET [moins 10jours][sepre]
+	function dureechartprj10_sepre(){
+		$st =	$this->db->prepare("select count(*) as number1 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) < 10 and etatdossier=1 and sepre=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [entre 10jours et 30 jours][sepre]
+	function dureechartprj10_30_sepre(){
+		$st =	$this->db->prepare("select count(*) as number2 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) >= 10 
+		and DATE_PART('day', Now() - date_arrivee_bet)<=30 
+		and etatdossier=1 and sepre=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [30 jours][sepre]
+	function dureechartprj30_sepre(){
+		$st =	$this->db->prepare("select count(*) as number3 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) > 30 
+		and etatdossier=1 and sepre=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivé au BET [moins 10jours][sqe]
+	function dureechartprj10_sqe(){
+		$st =	$this->db->prepare("select count(*) as number1 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) < 10 and etatdossier=1 and sqe=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [entre 10jours et 30 jours][sqe]
+	function dureechartprj10_30_sqe(){
+		$st =	$this->db->prepare("select count(*) as number2 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) >= 10 
+		and DATE_PART('day', Now() - date_arrivee_bet)<=30 
+		and etatdossier=1 and sqe=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [30 jours][sqe]
+	function dureechartprj30_sqe(){
+		$st =	$this->db->prepare("select count(*) as number3 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) > 30 
+		and etatdossier=1 and sqe=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivé au BET [moins 10jours][stah]
+	function dureechartprj10_stah(){
+		$st =	$this->db->prepare("select count(*) as number1 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) < 10 and etatdossier=1 and stah=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [entre 10jours et 30 jours][stah]
+	function dureechartprj10_30_stah(){
+		$st =	$this->db->prepare("select count(*) as number2 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) >= 10 
+		and DATE_PART('day', Now() - date_arrivee_bet)<=30 
+		and etatdossier=1 and stah=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [30 jours][stah]
+	function dureechartprj30_stah(){
+		$st =	$this->db->prepare("select count(*) as number3 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) > 30 
+		and etatdossier=1 and stah=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivé au BET [moins 10jours][sgdph]
+	function dureechartprj10_sgdph(){
+		$st =	$this->db->prepare("select count(*) as number1 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) < 10 and etatdossier=1 and sgdph=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [entre 10jours et 30 jours][sgdph]
+	function dureechartprj10_30_sgdph(){
+		$st =	$this->db->prepare("select count(*) as number2 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) >= 10 
+		and DATE_PART('day', Now() - date_arrivee_bet)<=30 
+		and etatdossier=1 and sgdph=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [30 jours][sgdph]
+	function dureechartprj30_sgdph(){
+		$st =	$this->db->prepare("select count(*) as number3 
+		from prj_inv.prj_invest 
+		where DATE_PART('day', Now() - date_arrivee_bet) > 30 
+		and etatdossier=1 and sgdph=true");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+
+
 
 	//selection des projets sur l'espace 
     function geoprojet(){
@@ -544,6 +728,60 @@ class Projet_Service{
 				return null;
 			}
 	}
+
+	function updatesepre($a)
+ 	{
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.prj_invest SET sepre=true WHERE gid=:gid');
+	 	if ($st->execute(array(':gid'=>$a)))
+		{
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+ 	 
+ 	}
+
+	function updatesqe($a)
+ 	{
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.prj_invest SET sqe=true WHERE gid=:gid');
+	 	if ($st->execute(array(':gid'=>$a)))
+		{
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+ 	 
+ 	}
+
+	function updatestah($a)
+ 	{
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.prj_invest SET stah=true WHERE gid=:gid');
+	 	if ($st->execute(array(':gid'=>$a)))
+		{
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+ 	 
+ 	}
+
+	function updatesgdph($a)
+ 	{
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.prj_invest SET sgdph=true WHERE gid=:gid');
+	 	if ($st->execute(array(':gid'=>$a)))
+		{
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+ 	 
+ 	}
+
+	
 
 
 	

@@ -157,5 +157,15 @@ class STAH_S_INFO{
 	 	}
  	}
 
+	function nombre_stah(){
+		$st =	$this->db->prepare('SELECT count(*) FROM prj_inv.prj_invest where stah=true');
+	 	if ($st->execute()) {
+	 	 	return $st->fetchAll();
+	 	}
+	 	else{
+	 	 	return null;
+	 	}
+	}
+
 
 }
