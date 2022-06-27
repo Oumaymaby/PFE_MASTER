@@ -113,7 +113,7 @@ class User_Service{
 				$_SESSION['user_id']=$userRow['user_id'];
 				$_SESSION['id_profession']=$userRow['id_profession'];
 
-				echo $userRow['service'];;
+				echo $userRow['service'];
 				
                 return true;
 				

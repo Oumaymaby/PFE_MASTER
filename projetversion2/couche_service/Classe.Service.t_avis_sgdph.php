@@ -71,10 +71,10 @@ class SGDPH_Service{
  	 
  	}
     
- 	function supprimer($cat)
+ 	function supprimer($a)
  	{
-	 	$st =	$this->db->prepare('delete from prj_inv.t_avis_sgdph where id_sgdph=?');
-	 	if ($st->execute(array($cat->getid_sgdph()))) {
+	 	$st =	$this->db->prepare('delete from prj_inv.t_avis_sgdph where id_sgdph=:id_sgdph');
+	 	if ($st->execute(array(':id_sgdph'=>$a))) {
 	 	 	return true;
 	 	}
 	 	else{

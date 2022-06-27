@@ -325,28 +325,27 @@ if (isset($_SESSION['user_name'])){
         <meta property="og:type" content="website">
         <meta property="og:url" content="">
         <meta property="og:image" content="">
+        <link rel="stylesheet" id="css-main" href="assets/css/map/styleoneproject.css">
         <link rel="shortcut icon" href="assets/img/favicons/favicon.png">
         <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicons/favicon-192x192.png">
         <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
-         <link rel="stylesheet" href="assets/js/plugins/datatables/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="assets/js/plugins/datatables/dataTables.bootstrap4.min.css">
         <link rel="stylesheet" id="css-main" href="assets/css/codebase.min.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
         <link rel="shortcut icon" href="assets/img/favicons/favicon.png">
         <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicons/favicon-192x192.png">
         <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
         <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
-        <link href='assets/css/map/leaflet.fullscreen.css' rel='stylesheet' />
+        <link href='assets/css/map/leaflet.fullscreen.css' rel='stylesheet'/>
         <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-        <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css" />
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <script type="text/javascript" src="assets/js/map/leaflet.ajax.js"></script>
         <script type="text/javascript" src="assets/js/map/measure.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src='assets/js/map/Leaflet.fullscreen.min.js'></script>
         <script src="https://unpkg.com/geojson-vt@3.2.0/geojson-vt.js"></script>
         <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
         <script type="text/javascript" src="assets/js/map/leaflet.browser.print.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
             fieldset {
             margin:14px ;
@@ -366,55 +365,6 @@ if (isset($_SESSION['user_name'])){
                 border-bottom: 1px dashed #ccc;
                 box-shadow: none;
             }
-
-            .leaflet-control-layers-toggle {
-                width: 20px;
-                height: 36px;
-                background-color: black;
-                border-radius: 15px;
-                color:white;
-            }
-            .description {
-                width: 250px;
-                font-size: 16px;
-                color: #333;
-                padding: 10px 14px;
-                background-color: hsla(0, 0%, 100%, 0.8);
-                box-shadow: 0 0 15px rgb(0 0 0 / 20%);
-                border-radius: 5px;
-                line-height: 120%;
-                border: 1px solid grey;
-                }
-
-                .info {
-                    padding: 16px 10px;
-                    font: 14px/16px Arial, Helvetica, sans-serif;
-                    background: white;
-                    background: rgba(255,255,255,0.8);
-                    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-                    border-radius: 5px;
-		        }
-		.info h4 {
-			margin: 0 0 5px;
-			color: 'white';
-		}
-
-		.legend {
-			text-align: left;
-			line-height: 18px;
-			color: #555;
-		}
-		.legend i {
-			width: 18px;
-			height: 18px;
-			float: left;
-			margin-right: 8px;
-			opacity: 0.7;
-		}
-		.button1 {
-            position:absolute;
-            top:410px;
-		}
         
         </style>
     </head>

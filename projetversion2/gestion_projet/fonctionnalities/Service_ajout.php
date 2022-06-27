@@ -260,19 +260,20 @@ if (isset($_SESSION['user_name'])){
         $avis_abht=1;
         $date_avis_bet_abht=date("Y-m-d");
         $user=$_SESSION['user_id'];
-        $avisabht= new ABHT(NULL,$date_avis_bet_abht,NULL,19,19,19,$rem_abht_bet,$id_prj,$user);
+        $avisabht= new ABHT(1,$date_avis_bet_abht,NULL,19,19,19,$rem_abht_bet,$id_prj,$user);
         $add= new ABHT_Service();
         $add->add($avisabht);
         header("Location:Projet_details1.php?id=".$id_prj);
     }
 
     if(isset($_POST['add_avis_abht_sepre'])){
+        $id_abht=htmlspecialchars($_POST["id_abht_sepre"]);
         $id_prj=htmlspecialchars($_POST["id_prj"]);
         $avis_abht=htmlspecialchars($_POST["avis_abht"]);
         $date_avis_abht=date("Y-m-d");
         $user=$_SESSION['user_id'];
         $add= new ABHT_Service();
-        $add->update_abht($avis_abht,$date_avis_abht,$user,$id_prj);
+        $add->update_abht($avis_abht,$date_avis_abht,$user,$id_abht);
         header("Location:Projet_details1.php?id=".$id_prj);
     }
 

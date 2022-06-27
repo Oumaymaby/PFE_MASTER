@@ -79,7 +79,7 @@
                                                                 <th style="width: 10%;"></th>
                                                                 <th style="width: 50%;">Avis</th>
                                                                 <th style="width: 20%;">Information</th>
-                                                                <th class="d-none d-sm-table-cell"></th>
+                                                                <th class="d-none d-sm-table-cell" style="width: 20%;">Action</th>
                                                             </tr>
                                                         </thead>';
                                                         $a= new SEPRE_S_INFO();
@@ -102,16 +102,20 @@
                                                                                 echo '<td><span class="badge badge-pill badge-info">'.$row['avis'].'</span></td>';
                                                                             }elseif($row['avis']==='Ajourné'){
                                                                                 echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
-                                                                            }elseif($row['avis']==='Aucun Avis'){
+                                                                            }elseif($row['avis']==='Aucun Avis '){
                                                                                 echo '<td>'.$row['avis'].'</td>';
                                                                             }
-                                                                            echo '<td class="font-w600"></td>
-                                                                           
-                                                                            <td class="font-w600">
-                                                                            </td>
-                                                                            <td class="font-w600">
-                                                                            </td>
-                                                                        </tr>
+                                                                            echo '<td class="font-w600"></td>';
+                                                                            if(isset($row['date_avis_sepre'])){
+                                                                            echo '<td class="font-w600">
+                                                                                
+                                                                            </td>';
+                                                                            }else{
+                                                                                echo '<td class="font-w600"><a type="button" href="projetsepresupprimer.php?id='.$row['id_sepre'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
+                                                                                Supprimer
+                                                                            </a></td>';
+                                                                            }
+                                                                        echo '</tr>
                                                                     </tbody>
                                                                     <tbody>
                                                                     <tr>
@@ -299,7 +303,7 @@
                                                                 <th></th>
                                                                 <th>Avis</th>
                                                                 <th>Information</th>
-                                                                <th class="d-none d-sm-table-cell" ></th>
+                                                                <th class="d-none d-sm-table-cell" style="width: 20%; ">Action</th>
                                                                 
                                                             </tr>
                                                         </thead>';
@@ -323,12 +327,18 @@
                                                                             echo '<td><span class="badge badge-pill badge-info">'.$row['avis'].'</span></td>';
                                                                         }elseif($row['avis']==='Ajourné'){
                                                                             echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
-                                                                        }elseif($row['avis']==='Aucun Avis'){
+                                                                        }elseif($row['avis']==='Aucun Avis '){
                                                                             echo '<td>'.$row['avis'].'</td>';
                                                                         }
-                                                                        echo '<td class="font-w600"></td>
-                                                                        <td class="d-none d-sm-table-cell"></td>
-                                                                    </tr>
+                                                                        if(isset($row['date_avis_sqe'])){
+                                                                            echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600">  
+                                                                            </td>';
+                                                                            }else{
+                                                                                echo '<td class=""></td><td class="font-w600"><a type="button" href="projetsqesupprimer.php?id='.$row['id_sqe'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
+                                                                                Supprimer
+                                                                            </a></td>';
+                                                                        }
+                                                                        echo '</tr>
                                                                 </tbody>
                                                                 <tbody>
                                                                     <tr>
@@ -545,7 +555,7 @@
                                                                 <th style="width: 10%;"></th>
                                                                 <th style="width: 30%;">Avis</th>
                                                                 <th style="width: 50%;">Information</th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 20%;">Delais</th>
+                                                                <th class="d-none d-sm-table-cell" style="width: 20%;">action</th>
                                                             </tr>
                                                         </thead>';
                                                             $a= new SGDPH_S_INFO();
@@ -569,12 +579,18 @@
                                                                     echo '<td><span class="badge badge-pill badge-info">'.$row['avis'].'</span></td>';
                                                                 }elseif($row['avis']==='Ajourné'){
                                                                     echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
-                                                                }elseif($row['avis']==='Aucun Avis'){
+                                                                }elseif($row['avis']==='Aucun Avis '){
                                                                     echo '<td>'.$row['avis'].'</td>';
                                                                 }
-                                                                echo '<td class="font-w600"></td>
-                                                                <td class="d-none d-sm-table-cell">
-                                                                </td>
+                                                                if(isset($row['date_avis_sgdph'])){
+                                                                    echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600">  
+                                                                    </td>';
+                                                                    }else{
+                                                                        echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600"><a type="button" href="projetsgdphsupprimer.php?id='.$row['id_sgdph'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
+                                                                        Supprimer
+                                                                    </a></td>';
+                                                                }
+                                                                echo '
                                                             </tr>
                                                         </tbody>
                                                         <tbody>
@@ -868,7 +884,7 @@
                                                                 <th></th>
                                                                 <th>Avis</th>
                                                                 <th>Information</th>
-                                                                <th class="d-none d-sm-table-cell" ></th>
+                                                                <th class="d-none d-sm-table-cell">Action</th>
                                                             </tr>
                                                         </thead>';
                                                         $a= new STAH_S_INFO();
@@ -892,15 +908,18 @@
                                                                         echo '<td><span class="badge badge-pill badge-info">'.$row['avis_stah'].'</span></td>';
                                                                     }elseif($row['avis_stah']==='Ajourné'){
                                                                         echo '<td><span class="badge badge-pill badge-primary">'.$row['avis_stah'].'</span></td>';
-                                                                    }elseif($row['avis_stah']==='Aucun Avis'){
+                                                                    }elseif($row['avis_stah']==='Aucun Avis '){
                                                                         echo '<td>'.$row['avis_stah'].'</td>';
                                                                     }
-                                                                    echo '<td class="font-w600"></td>
-                                                                    <td class="d-none d-sm-table-cell">
-                                                                    </td>
-                                                                    <td class="d-none d-sm-table-cell">
-                                                                    </td>
-                                                                </tr>
+                                                                    if(isset($row['date_avis_stah'])){
+                                                                        echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600">  
+                                                                        </td>';
+                                                                        }else{
+                                                                            echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600"><a type="button" href="projetstahsupprimer.php?id='.$row['id_stah'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
+                                                                            Supprimer
+                                                                        </a></td>';
+                                                                    }
+                                                                    echo '</tr>
                                                             </tbody>
                                                             <tbody>
                                                                 <tr>
@@ -934,7 +953,7 @@
                                                                     <td class="text-center">
                                                                         <i class="fa fa-caret-right"></i>
                                                                     </td>
-                                                                    <td class="font-w600 ">La date de la remarque du SEPRE</td>
+                                                                    <td class="font-w600 ">La date de la remarque du STAH</td>
                                                                     <td class="font-size-sm">'.$row['date_avis_stah'].'</td>
                                                                     <td class="d-none d-sm-table-cell">
                                                                     </td>
@@ -968,7 +987,7 @@
                                                                     <td class="text-center">
                                                                         <i class="fa fa-caret-right"></i>
                                                                     </td>
-                                                                    <td class="font-w600 ">Durée de la remarque du SEPRE</td>';
+                                                                    <td class="font-w600 ">Durée de la remarque du STAH</td>';
                                                                     if( $row['duree_avis_stah'] < 11 ){
                                                                         echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_stah'].' jours</span></td>';
                                                                     }elseif($row['duree_avis_stah'] > 10 && $row['duree_avis_stah'] < 30 ){
@@ -1098,7 +1117,7 @@
                                                                 <th></th>
                                                                 <th>Avis</th>
                                                                 <th>Information</th>
-                                                                <th class="d-none d-sm-table-cell" ></th>
+                                                                <th class="d-none d-sm-table-cell" >action</th>
                                                             </tr>
                                                         </thead>';
                                                         $a= new ABHT_Service();
@@ -1122,13 +1141,18 @@
                                                                     echo '<td><span class="badge badge-pill badge-info">'.$row['avis_abht'].'</span></td>';
                                                                 }elseif($row['avis_abht']==='Ajourné'){
                                                                     echo '<td><span class="badge badge-pill badge-primary">'.$row['avis_abht'].'</span></td>';
-                                                                }elseif($row['avis_abht']==='Aucun Avis'){
+                                                                }elseif($row['avis_abht']==='Aucun Avis '){
                                                                     echo '<td>'.$row['avis_abht'].'</td>';
                                                                 }
-                                                                echo '<td class="font-w600"></td>
-                                                                <td class="d-none d-sm-table-cell"></td>
-                                                                <td class="d-none d-sm-table-cell"></td>
-                                                            </tr>
+                                                                if(isset($row['date_avis_abht'])){
+                                                                    echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600">  
+                                                                    </td>';
+                                                                    }else{
+                                                                        echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600"><a type="button" href="projetabhtsupprimer.php?id='.$row['id_abht'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
+                                                                        Supprimer
+                                                                    </a></td>';
+                                                                }
+                                                            echo '</tr>
                                                         </tbody>
                                                         <tbody>
                                                             <tr>
@@ -1267,7 +1291,7 @@
                                                                             if (isset($row['date_avis_sepre'])){
                                                                                 echo '<td class="d-none d-sm-table-cell"></td>';
                                                                             }else{
-                                                                                echo    '<td class="d-none d-sm-table-cell">
+                                                                                echo    '<td></td><td class="">
                                                                                             <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info" id="oum1" data-remarque="'.$row['remarque_bet_besoin_eau'].'" onclick="avissepre('.$row['id_sepre'].')" >
                                                                                                 <i class="fa fa-plus mr-5"></i>Avis 
                                                                                             </a>
@@ -1437,8 +1461,6 @@
                                                         // var_dump($aa);
                                                         $oum="kjsdfh";
                                                         if($aa){
-                                                            foreach($aa as $row){
-                                                                if (isset($row['date_avis_abht'])){
                                                                     if(($_SESSION['id_profession']===3)){
                                                                         echo'<a type="submit" href="projet_cloturer.php?id='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
                                                                         <i class="fa fa-lock mr-5"></i>Cloturer le dossier
@@ -1446,9 +1468,8 @@
                                                                     }else{
                                                                         echo '';
                                                                     }
-                                                                }
                                                             }
-                                                        }
+                                                   
                                                         
                                                     echo'</div>
                                                 </div>
@@ -1492,7 +1513,8 @@
                                                                         echo'<td>
                                                                             <a type="submit" href="projet_approuve_abht.php?id='.$row['id_abht'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-success">
                                                                                 <i class="fa fa-check mr-5"></i>Approuver
-                                                                            </a> 
+                                                                            </a>
+                                                                             
                                                                         </td>';
                                                                     }else{
                                                                         echo '<td></td>';

@@ -66,11 +66,11 @@ class SEPRE_Service{
  	 
  	}
     
- 	function supprimer($cat)
+ 	function supprimer($a)
  	{
 
-	 	$st =	$this->db->prepare('DELETE FROM prj_inv.t_avis_sepre WHERE id_sepre=?');
-	 	if ($st->execute(array($cat->getid_sepre()))) {
+	 	$st =	$this->db->prepare('DELETE FROM prj_inv.t_avis_sepre WHERE id_sepre=:id_sepre ');
+	 	if ($st->execute(array(':id_sepre' => $a))) {
 	 	 	return true;
 	 	}
 	 	else{
@@ -160,6 +160,8 @@ class SEPRE_Service{
 		}
 	
 	}
+
+	
 
 	function sepre_maxdate($id){
 		$st =$this->db->prepare('SELECT  DISTINCT ON (id_prj)

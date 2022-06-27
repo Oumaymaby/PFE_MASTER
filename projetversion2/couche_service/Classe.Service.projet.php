@@ -781,6 +781,30 @@ class Projet_Service{
  	 
  	}
 
+	 function affectationnon(){
+		$st =	$this->db->prepare("SELECT count(*) FROM prj_inv.prj_invest where sepre=false and stah=false and sqe=false and stah=false and sgdph=false");
+	 	if ($st->execute()) {
+	 	 	return $st->fetchAll();
+	 	}
+	 	else{
+	 	 	return null;
+	 	}
+	}
+
+
+
+	function affectation(){
+		$st =	$this->db->prepare("SELECT count(*) FROM prj_inv.prj_invest where sepre=false or stah=false or sqe=false or stah=false or sgdph=false");
+	 	if ($st->execute()) {
+	 	 	return $st->fetchAll();
+	 	}
+	 	else{
+	 	 	return null;
+	 	}
+	}
+
+
+
 	
 
 

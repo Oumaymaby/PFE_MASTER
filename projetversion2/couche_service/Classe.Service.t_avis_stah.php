@@ -72,11 +72,11 @@ class STAH_Service{
  	 
  	}
     
- 	function supprimer($cat)
+ 	function supprimer($a)
  	{
 
-	 	$st =	$this->db->prepare('delete from prj_inv.t_avis_stah where id_stah=?');
-	 	if ($st->execute(array($cat->getid_pr()))) {
+	 	$st =	$this->db->prepare('delete from prj_inv.t_avis_stah where id_stah=:id_stah');
+	 	if ($st->execute(array(':id_stah'=>$a))) {
 	 	 	return true;
 	 	}
 	 	else{

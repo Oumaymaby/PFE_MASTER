@@ -571,7 +571,7 @@
             ?>
             
             
-            <div class="modal fade" id="modal-terms" tabindex="-1" role="dialog" aria-labelledby="modal-terms" aria-hidden="true">
+            <!-- <div class="modal" id="showmap1" tabindex="-1" role="dialog" aria-labelledby="modal-terms" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-slidedown" role="document">
                     <div class="modal-content">
                         <div class="block block-themed block-transparent mb-0">
@@ -583,19 +583,11 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="block-content">
-                               <div id="map"></div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-alt-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-alt-success" data-dismiss="modal">
-                                <i class="fa fa-check"></i> Perfect
-                            </button>
+                            <div id="map"></div>
                         </div>
                     </div>
                 </div>                
-            </div>
+            </div> -->
         </div>
 
 
@@ -616,8 +608,20 @@
                 Codebase.helpers('easy-pie-chart');
             });
         </script> -->
+        <script src="assets/js/map/scriptforoneproject.js"></script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
+
+                function showmap(){
+                        // $("#id_sgdph1").val(id);
+                        // var rem=$('#oum').data('remarque');
+                        // $("#rem_bet_sepre1").val(rem);
+                        $('#showmap1').modal('show');
+                        // here is the id of that element where do you want to display / have the passed value
+                        // in my case i am taking in a hidden input which id is = bookID , i am using a form in my modal that why  
+                }
+
+                
 
             function fun(id){
                 swal({
@@ -640,9 +644,8 @@
                 } );
                 var ajax1={url:"http://localhost/projectpfe/projetversion2/data_json/data.projet_dure_etat.php",type: 'POST',dataSrc: 'data'};
                 var column5=[
-                            {data:'id',
-                            render: function (data) {
-                                    return '<a id="edit" href="Projet_modifier.php?id='+data+'" type="button" class="btn btn-sm btn-circle btn-alt-warning mr-5 mb-5" ><i class="fa fa-pencil"></i></a><a href="" onclick = "fun('+data+')" type="button" class="btn btn-sm btn-circle btn-alt-danger mr-5 mb-5"><i class="fa fa-times"></i></a><a class="btn btn-sm btn-circle btn-alt-info mr-5 mb-5" id="info" href="Project.information.php?id='+data+'"><i class="fa fa-info"></i></a><a type="button" href="Projet_details1.php?id='+data+'" class="badge badge-pill badge-info">Service</a>';
+                            {data: function (data,type,row) {
+                                    return '<a type="button" class="btn btn-sm btn-circle btn-success mr-5 mb-5" id="popoupmap" href="http://localhost/projectpfe/projetversion2/gestion_projet/map.php?id='+data.id+'" ><i class="fa fa-map-o"></i></a><a id="edit" href="Projet_modifier.php?id='+data.id+'" type="button" class="btn btn-sm btn-circle btn-alt-warning mr-5 mb-5" ><i class="fa fa-pencil"></i></a><a href="" onclick = "fun('+data.id+')" type="button" class="btn btn-sm btn-circle btn-alt-danger mr-5 mb-5"><i class="fa fa-times"></i></a><a class="btn btn-sm btn-circle btn-alt-info mr-5 mb-5" id="info" href="Project.information.php?id='+data.id+'"><i class="fa fa-info"></i></a><a type="button" href="Projet_details1.php?id='+data.id+'" class="badge badge-pill badge-info">Service</a>';
                                 },
                             orderable: false},
                             {data: function (data,type,row) {

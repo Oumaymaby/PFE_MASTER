@@ -73,11 +73,11 @@ class ABHT_Service{
  	 
  	}
     
- 	function supprimer($cat)
+ 	function supprimer($a)
  	{
 
-	 	$st =	$this->db->prepare('DELETE FROM prj_inv.t_avis_abht WHERE id_abht=?');
-	 	if ($st->execute(array($cat->getid_sepre()))) {
+	 	$st =	$this->db->prepare('DELETE FROM prj_inv.t_avis_abht WHERE id_abht=:id_abht');
+	 	if ($st->execute(array(':id_abht'=>$a))) {
 	 	 	return true;
 	 	}
 	 	else{
