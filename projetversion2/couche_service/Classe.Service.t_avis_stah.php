@@ -57,6 +57,19 @@ class STAH_Service{
 		}
  	}
 
+	 function update_rem_bet($a,$b,$d)
+	{
+		  $st =$this->db->prepare('UPDATE prj_inv.t_avis_stah SET amenagement_propose=:amenagement_propose , date_avis_bet_stah=:date_avis_bet_stah WHERE id_stah=:id_stah');
+		// var_dump($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c)));
+		 if ($st->execute(array(':amenagement_propose' => $a,':id_stah' =>$b,':date_avis_bet_stah'=>$d)))
+		{
+			  return true;
+		}else{
+			  return false;
+		}
+	  
+	}
+
     
  	function update($cat)
  	{
@@ -164,6 +177,7 @@ class STAH_Service{
 		} 
 	}
 
+
 	function stah_maxdate($id){
 		$st =$this->db->prepare('SELECT DISTINCT ON (id_prj)
 		id_stah, amenagement_propose, avis_abht_amenagement, remarque_sup_stah, avis_stah, date_avis_stah,
@@ -198,6 +212,51 @@ class STAH_Service{
 			return null;
 		}
 	}
+
+	function stah_count_avisnull($id){
+		$st =$this->db->prepare('SELECT SELECT id_stah, amenagement_propose, avis_abht_amenagement, remarque_sup_stah,
+		 avis_stah, date_avis_stah, date_avis_bet_stah, valide_par_stah, approuve_par_stah, id_stah_info, id_prj, id_user
+		FROM prj_inv.t_avis_stah
+			where id_prj=? and date_avis_stah is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function number_stah_count_avisnull($id){
+		$st =$this->db->prepare('SELECT count(*)
+			FROM prj_inv.t_avis_stah
+			where id_prj=? and date_avis_stah is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function stah_count_avis($id){
+		$st =$this->db->prepare('SELECT count(*)
+			FROM prj_inv.t_avis_stah
+			where id_prj=?');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	
 
     
 

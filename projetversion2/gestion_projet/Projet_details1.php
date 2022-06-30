@@ -6,6 +6,8 @@
     require_once 'fonctionnalities/Session.php';
     require_once 'fonctionnalities/Service_ajout.php';
     require_once 'fonctionnalities/Home.php';
+    
+
 
 ?>
         <div class="content">
@@ -79,7 +81,7 @@
                                                                 <th style="width: 10%;"></th>
                                                                 <th style="width: 50%;">Avis</th>
                                                                 <th style="width: 20%;">Information</th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 20%;">Action</th>
+                                                                <th  style="width: 30%;">Action</th>
                                                             </tr>
                                                         </thead>';
                                                         $a= new SEPRE_S_INFO();
@@ -107,13 +109,16 @@
                                                                             }
                                                                             echo '<td class="font-w600"></td>';
                                                                             if(isset($row['date_avis_sepre'])){
-                                                                            echo '<td class="font-w600">
+                                                                            echo '<td>
                                                                                 
                                                                             </td>';
                                                                             }else{
-                                                                                echo '<td class="font-w600"><a type="button" href="projetsepresupprimer.php?id='.$row['id_sepre'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
-                                                                                Supprimer
-                                                                            </a></td>';
+                                                                                echo '<td >
+                                                                                <a type="button" href="projetsepresupprimer.php?id='.$row['id_sepre'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="badge badge-pill badge-danger">
+                                                                                delete
+                                                                                </a>
+                                                                                <a type="button" style="color:white !important" class="badge badge-pill badge-primary" id='.$row['id_sepre'].' data-rem='.$row['remarque_bet_besoin_eau'].' data-idsepre='.$row['id_sepre'].' onclick="remarquesepre('.$row['id_sepre'].')">edit</a>
+                                                                                </td>';
                                                                             }
                                                                         echo '</tr>
                                                                     </tbody>
@@ -334,9 +339,10 @@
                                                                             echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600">  
                                                                             </td>';
                                                                             }else{
-                                                                                echo '<td class=""></td><td class="font-w600"><a type="button" href="projetsqesupprimer.php?id='.$row['id_sqe'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
-                                                                                Supprimer
-                                                                            </a></td>';
+                                                                                echo '<td class=""></td><td class="font-w600"><a type="button" href="projetsqesupprimer.php?id='.$row['id_sqe'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="badge badge-pill badge-danger">
+                                                                                delete
+                                                                            </a>
+                                                                            <a type="button" style="color:white !important" class="badge badge-pill badge-primary"  id='.$row['id_sqe'].' data-remsqe='.$row['remarque_bet_assainissement'].' data-idsqe='.$row['id_sqe'].' onclick="remarquesqe('.$row['id_sqe'].')">edit</a></td>';
                                                                         }
                                                                         echo '</tr>
                                                                 </tbody>
@@ -550,12 +556,12 @@
                                                 </div>
                                                 <div class="block-content ">
                                                     <table class="js-table-sections table table-sm ">
-                                                        <thead>
+                                                        <thead style="background-color:#e9f0ed;border-color:#9a9c9b !important">
                                                             <tr>
-                                                                <th style="width: 10%;"></th>
-                                                                <th style="width: 30%;">Avis</th>
-                                                                <th style="width: 50%;">Information</th>
-                                                                <th class="d-none d-sm-table-cell" style="width: 20%;">action</th>
+                                                                <th></th>
+                                                                <th>Avis</th>
+                                                                <th>Information</th>
+                                                                <th class="d-none d-sm-table-cell" style="width: 20%; ">Action</th>
                                                             </tr>
                                                         </thead>';
                                                             $a= new SGDPH_S_INFO();
@@ -563,10 +569,10 @@
                                                             $oum="kjsdfh";
                                                             if($aa){
                                                             foreach($aa as $row){
-                                                         echo '<tbody class="js-table-sections-header bg-gray-lighter">
+                                                         echo '<tbody class="js-table-sections-header rounded-5" style="background-color:#9eada6;border-color:#9a9c9b !important">
                                                             <tr>
                                                                 <td class="text-center">
-                                                                    <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                    <i class="fa fa-plus" style="color:#021f0d"></i>
                                                                 </td>';
 
                                                                 if($row['avis']==='Favorable'){
@@ -580,15 +586,16 @@
                                                                 }elseif($row['avis']==='Ajourné'){
                                                                     echo '<td><span class="badge badge-pill badge-primary">'.$row['avis'].'</span></td>';
                                                                 }elseif($row['avis']==='Aucun Avis '){
-                                                                    echo '<td>'.$row['avis'].'</td>';
+                                                                    echo '<td style="color:white !important">'.$row['avis'].'</td>';
                                                                 }
                                                                 if(isset($row['date_avis_sgdph'])){
                                                                     echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600">  
                                                                     </td>';
                                                                     }else{
-                                                                        echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600"><a type="button" href="projetsgdphsupprimer.php?id='.$row['id_sgdph'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
-                                                                        Supprimer
-                                                                    </a></td>';
+                                                                        echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600"><a type="button" href="projetsgdphsupprimer.php?id='.$row['id_sgdph'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="badge badge-pill badge-danger">
+                                                                        delete</a>
+                                                                        <a type="button" style="color:white !important" class="badge badge-pill badge-primary" id='.$row['id_sgdph'].' data-remsgdph='.$row['remarque_bet_protection_inondations'].' data-idsgdph='.$row['id_sgdph'].' onclick="remarquesgdph('.$row['id_sgdph'].')">edit</a>
+                                                                    </td>';
                                                                 }
                                                                 echo '
                                                             </tr>
@@ -915,9 +922,10 @@
                                                                         echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600">  
                                                                         </td>';
                                                                         }else{
-                                                                            echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600"><a type="button" href="projetstahsupprimer.php?id='.$row['id_stah'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
-                                                                            Supprimer
-                                                                        </a></td>';
+                                                                            echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600"><a type="button" href="projetstahsupprimer.php?id='.$row['id_stah'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="badge badge-pill badge-danger">
+                                                                            delete
+                                                                        </a>
+                                                                        <a type="button" style="color:white !important" class="badge badge-pill badge-primary" id='.$row['id_stah'].' data-remstah='.$row['amenagement_propose'].' data-idstah='.$row['id_stah'].' onclick="remarquestah('.$row['id_stah'].')">edit</a></td>';
                                                                     }
                                                                     echo '</tr>
                                                             </tbody>
@@ -1148,9 +1156,13 @@
                                                                     echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600">  
                                                                     </td>';
                                                                     }else{
-                                                                        echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600"><a type="button" href="projetabhtsupprimer.php?id='.$row['id_abht'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
-                                                                        Supprimer
-                                                                    </a></td>';
+                                                                        echo '<td class="d-none d-sm-table-cell"></td><td class="font-w600"><a type="button" href="projetabhtsupprimer.php?id='.$row['id_abht'].'&idprj='.$row['id_prj'].'" style="color:white !important" class="badge badge-pill badge-danger">
+                                                                        delete
+                                                                    </a>
+                                                                    <a type="button" id='.$row['id_abht'].' data-remabht='.$row['remarques_generales_bet'].' data-idabht='.$row['id_abht'].' onclick="remarqueabht('.$row['id_abht'].')" style="color:white !important" class="badge badge-pill badge-primary" >
+                                                                        edit
+                                                                    </a>
+                                                                    </td>';
                                                                 }
                                                             echo '</tr>
                                                         </tbody>
@@ -2508,6 +2520,7 @@
             </div>
         </div>
         <?php require_once 'fonctionnalities/popup.php';
+              require_once 'Projet-popoupedit.php';
               require_once 'Projet_footer.php';
         ?>
     </body>

@@ -278,7 +278,88 @@ if (isset($_SESSION['user_name'])){
     }
 
     
+    if(isset($_POST['rem'])){  
+            $id_sepre = htmlspecialchars($_POST["avissepre"]);
+            $id_proj = htmlspecialchars($_POST["id_prj"]);
+            $rem_sepre_bet = htmlspecialchars($_POST["rembetsepre"]); 
+            $dat_bet=date("Y-m-d");
+            // echo 'hdfdfmlkgcfvddddddddddddddddddddddddd';
+            // var_dump($id_sepre);
+            // var_dump($rem_sepre_bet);
+            // var_dump($dat_bet);
+            // echo 'kjdffffffffffffffffffffffffff';
+            $update= new SEPRE_Service();
+            $update->update_rem_bet($rem_sepre_bet,$id_sepre,$dat_bet);
+            header("Location:Projet_details1.php?id=".$id_proj);
+    }
 
+    if(isset($_POST['sqemodify'])){
+            
+            
+        $id_sqe = htmlspecialchars($_POST["sqeid1"]);
+        $id_proj = htmlspecialchars($_POST["id_prj"]);
+        $rem_sqe_bet = htmlspecialchars($_POST["rembetsqe"]); 
+        $dat_bet=date("Y-m-d");
+        // echo 'hdfdfmlkgcfvddddddddddddddddddddddddd';
+        // var_dump($id_sepre);
+        // var_dump($rem_sepre_bet);
+        // var_dump($dat_bet);
+        // echo 'kjdffffffffffffffffffffffffff';
+        $update= new SQE_SERVICE();
+        $update->update_rem_bet($rem_sqe_bet,$id_sqe,$dat_bet);
+        header("Location:Projet_details1.php?id=".$id_proj);
+    }
+
+    if(isset($_POST['remstah'])){
+            
+            
+        $id_stah = htmlspecialchars($_POST["stahid1"]);
+        $id_proj = htmlspecialchars($_POST["id_prj"]);
+        $rem_stah_bet = htmlspecialchars($_POST["remstahrem"]); 
+        $dat_bet=date("Y-m-d");
+        // echo 'hdfdfmlkgcfvddddddddddddddddddddddddd';
+        // var_dump($id_sepre);
+        // var_dump($rem_sepre_bet);
+        // var_dump($dat_bet);
+        // echo 'kjdffffffffffffffffffffffffff';
+        $update= new STAH_Service();
+        $update->update_rem_bet($rem_stah_bet,$id_stah,$dat_bet);
+        header("Location:Projet_details1.php?id=".$id_proj);
+    }
+
+    if(isset($_POST['remsgdphmodify'])){
+
+        $id_sgdph = htmlspecialchars($_POST["sgdphid"]);
+        $id_proj = htmlspecialchars($_POST["id_prj"]);
+        $rem_sgdph_bet = htmlspecialchars($_POST["rembetsgdph"]); 
+        $dat_bet=date("Y-m-d");
+        // echo 'hdfdfmlkgcfvddddddddddddddddddddddddd';
+        // var_dump($id_sepre);
+        // var_dump($rem_sepre_bet);
+        // var_dump($dat_bet);
+        // echo 'kjdffffffffffffffffffffffffff';
+        $update= new SGDPH_Service();
+        $update->update_rem_bet($rem_sgdph_bet,$id_sgdph,$dat_bet);
+        header("Location:Projet_details1.php?id=".$id_proj);
+    }
+
+
+    if(isset($_POST['remabht'])){
+            
+            
+        $id_abht = htmlspecialchars($_POST["abhtid1"]);
+        $id_proj = htmlspecialchars($_POST["id_prj"]);
+        $rem_abht_bet = htmlspecialchars($_POST["remabhtrem"]); 
+        $dat_bet=date("Y-m-d");
+        // echo 'hdfdfmlkgcfvddddddddddddddddddddddddd';
+        // var_dump($id_sepre);
+        // var_dump($rem_sepre_bet);
+        // var_dump($dat_bet);
+        // echo 'kjdffffffffffffffffffffffffff';
+        $update= new ABHT_Service();
+        $update->update_rem_bet($rem_abht_bet,$id_abht,$dat_bet);
+        header("Location:Projet_details1.php?id=".$id_proj);
+    }
 }else{
     header('location:authen.php');
 }

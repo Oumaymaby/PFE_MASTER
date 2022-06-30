@@ -69,7 +69,7 @@ class Projet_Service{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('select gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,st_astext(geom) as geom,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph,payement,date_payement,montant_payer from prj_inv.prj_invest where gid=?');
+		$st =$this->db->prepare('select gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,ST_AsGeoJSON(geom) as geom,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph,payement,date_payement,montant_payer from prj_inv.prj_invest where gid=?');
 		if ($st->execute(array($id))) {
 			$row = $st->fetch(PDO::FETCH_OBJ);
 			if(!empty($row)){

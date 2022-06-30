@@ -124,6 +124,20 @@ class SQE_SERVICE{
 	 	}
 	}
 
+	function update_rem_bet($a,$b,$d)
+	{
+		 $st =$this->db->prepare('UPDATE prj_inv.t_avis_sqe SET remarque_bet_assainissement=:remarque_bet_assainissement , date_avis_bet_sqe=:date_avis_bet_sqe WHERE id_sqe=:id_sqe');
+	   // var_dump($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c)));
+		if ($st->execute(array(':remarque_bet_assainissement' => $a,':id_sqe' =>$b,':date_avis_bet_sqe'=>$d)))
+	   {
+			 return true;
+		}
+		else{
+			 return false;
+		}
+	 
+	}
+
 	//selection des projet affecter à SQE
 	function find_prj_sqe()
  	{
@@ -189,6 +203,50 @@ class SQE_SERVICE{
 		where sqe.id_prj=inv.gid
 		ORDER BY sqe.id_prj,sqe.date_avis_bet_sqe DESC');
 		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function sqe_count_avisnull($id){
+		$st =$this->db->prepare('SELECT id_sqe, remarque_bet_assainissement, remarque_sup_sqe, avis_sqe, date_avis_sqe,
+		 date_avis_bet_sqe, valide_sqe, approuvee_sqe, id_sqe_info, id_prj, id_user
+		FROM prj_inv.t_avis_sqe
+			FROM prj_inv.t_avis_sqe
+			where id_prj=? and date_avis_sqe is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function number_sqe_count_avisnull($id){
+		$st =$this->db->prepare('SELECT count(*)
+			FROM prj_inv.t_avis_sqe
+			where id_prj=? and date_avis_sqe is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function sqe_count_avis($id){
+		$st =$this->db->prepare('SELECT count(*)
+			FROM prj_inv.t_avis_sqe
+			where id_prj=?');
+		if ($st->execute(array($id))) {
 			$row = $st->fetchAll();
 			return $row;		
 		}

@@ -132,11 +132,11 @@ class SEPRE_Service{
  	} 
 
 
-	function update_rem_bet($a,$b,$c,$d)
+	function update_rem_bet($a,$b,$d)
  	{
- 	 	$st =$this->db->prepare('UPDATE prj_inv.t_avis_sepre SET remarque_bet_besoin_eau=:remarque_bet_besoin_eau , date_avis_bet_sepre=:date_avis_bet_sepre WHERE id_sepre=:id_sepre and id_prj=:id_prj ');
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.t_avis_sepre SET remarque_bet_besoin_eau=:remarque_bet_besoin_eau , date_avis_bet_sepre=:date_avis_bet_sepre WHERE id_sepre=:id_sepre');
         // var_dump($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c)));
-	 	if ($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c,':date_avis_bet_sepre'=>$d)))
+	 	if ($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' =>$b,':date_avis_bet_sepre'=>$d)))
 		{
 	 	 	return true;
 	 	}
@@ -188,6 +188,47 @@ class SEPRE_Service{
 		where sepre.id_prj=inv.gid
 		ORDER  BY sepre.id_prj,sepre.date_avis_bet_sepre DESC');
 		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function sepre_count_avisnull($id){
+		$st =$this->db->prepare('SELECT id_sepre, remarque_bet_besoin_eau, remarques_sup_sepre, avis_sepre, date_avis_sepre, date_avis_bet_sepre, 
+		id_user, id_sepre_info, id_prj
+			FROM prj_inv.t_avis_sepre
+			where id_prj=? and date_avis_sepre is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function number_sepre_count_avisnull($id){
+		$st =$this->db->prepare('SELECT count(*)
+			FROM prj_inv.t_avis_sepre
+			where id_prj=? and date_avis_sepre is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function sepre_count_avis($id){
+		$st =$this->db->prepare('SELECT count(*) FROM prj_inv.t_avis_sepre where id_prj=?');
+		if ($st->execute(array($id))) {
 			$row = $st->fetchAll();
 			return $row;		
 		}

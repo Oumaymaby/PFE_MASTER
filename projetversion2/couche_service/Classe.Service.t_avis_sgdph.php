@@ -134,9 +134,20 @@ class SGDPH_Service{
 	 	 	else{
 	 	 		return null;
 	 	 	}
- 	} 
-
-
+ 	}
+	
+	function update_rem_bet($a,$b,$d)
+ 	{
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.t_avis_sgdph SET remarque_bet_protection_inondations=:remarque_bet_protection_inondations , date_avis_bet_sgdph=:date_avis_bet_sgdph WHERE id_sgdph=:id_sgdph');
+        // var_dump($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c)));
+	 	if ($st->execute(array(':remarque_bet_protection_inondations' => $a,':id_sgdph' =>$b,':date_avis_bet_sgdph'=>$d)))
+		{
+	 	 	return true;
+	 	}
+	 	else{
+	 	 	return false;
+	 	}
+ 	}
 	  
 	function update_avis_sgdph($a,$b,$c,$e,$f,$g)
 	{
@@ -198,8 +209,48 @@ class SGDPH_Service{
 			return null;
 		}
 	}
-  
 
-    
 
+	function sgdph_count_avisnull($id){
+		$st =$this->db->prepare('SELECT id_sgdph, remarque_bet_protection_inondations, remarque_sup_sgdph, avis_sgdph,
+		date_avis_sgdph, date_avis_bet_sgdph, valide_par_sgdph, approuve_par_sgdph, id_sgdph_info, id_prj, id_user
+			FROM prj_inv.t_avis_sgdph
+			where id_prj=3 and date_avis_sgdph is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function number_sgdph_count_avisnull($id){
+		$st =$this->db->prepare('SELECT count(*)
+			FROM prj_inv.t_avis_sgdph
+			where id_prj=? and date_avis_sgdph is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function sgdph_count_avis($id){
+		$st =$this->db->prepare('SELECT count(*)
+			FROM prj_inv.t_avis_sgdph
+			where id_prj=?');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
 }

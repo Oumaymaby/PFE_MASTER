@@ -161,11 +161,11 @@ class ABHT_Service{
  	} 
 
 
-	function update_rem_bet($a,$b,$c,$d)
+	function update_rem_bet($a,$b,$d)
  	{
- 	 	$st =$this->db->prepare('UPDATE prj_inv.t_avis_sepre SET remarque_bet_besoin_eau=:remarque_bet_besoin_eau , date_avis_bet_sepre=:date_avis_bet_sepre WHERE id_sepre=:id_sepre and id_prj=:id_prj ');
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.t_avis_abht SET remarques_generales_bet=:remarques_generales_bet , date_avis_bet_abht=:date_avis_bet_abht WHERE id_abht=:id_abht');
         // var_dump($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c)));
-	 	if ($st->execute(array(':remarque_bet_besoin_eau' => $a,':id_sepre' => $b,':id_prj' => $c,':date_avis_bet_sepre'=>$d)))
+	 	if ($st->execute(array(':remarques_generales_bet' => $a,':id_abht' => $b,':date_avis_bet_abht'=>$d)))
 		{
 	 	 	return true;
 	 	}
@@ -239,6 +239,50 @@ class ABHT_Service{
 		where abht.id_prj=inv.gid
 		ORDER BY abht.id_prj,abht.date_avis_bet_abht DESC');
 		if ($st->execute()) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function abht_count_avisnull($id){
+		$st =$this->db->prepare('SELECT id_abht, remarques_generales_bet, avis_abht, date_avis_abht, date_avis_bet_abht, 
+		etabli_par, valide_par, approuve_par, id_prj, id_user
+		FROM prj_inv.t_avis_abht
+			where id_prj=? and date_avis_abht is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+	function number_abht_count_avisnull($id){
+		$st =$this->db->prepare('SELECT count(*)
+			FROM prj_inv.t_avis_abht
+			where id_prj=? and date_avis_abht is null');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+	}
+
+
+	function abht_count_avis($id){
+		$st =$this->db->prepare('SELECT count(*)
+			FROM prj_inv.t_avis_abht
+			where id_prj=?');
+		if ($st->execute(array($id))) {
 			$row = $st->fetchAll();
 			return $row;		
 		}

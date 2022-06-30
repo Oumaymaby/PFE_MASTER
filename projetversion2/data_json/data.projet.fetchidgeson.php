@@ -14,15 +14,35 @@ $bb = $b->findById($id);
 
 // echo $bb->getid_pr();
 $features =[];
+
 $feature1=[ 
-    "id"=>$bb->getid_pr(),  
-    "dat"=>$bb->getdate_arr_bet() , 
-    "com"=>$bb->getcom(), 
-    "province"=>$bb->getprovince(),
-    "maitre"=>$bb->getmaitre_ouv() ,
-    "intitule"=>$bb->getintitule_pr(), 
-    "architecte"=>$bb->getarchitecte() ,
-    "superficie"=>$bb->getsupf(),
+    "gid"=>$bb->getid_pr(),
+	"numero_dossier"=>$bb->getnum_oss(),
+	"numero_archive"=>$bb->getnum_archv(),
+	"date_arr_abht"=>$bb->getdate_arr_abht(),
+	"date_arr_bet"=>$bb->getdate_arr_bet(),
+	"commune"=>$bb->getcom(),
+	"province"=>$bb->getprovince(),
+	"douar_loc"=>$bb->getdouar_loc(),
+	"maitre_ouv"=>$bb->getmaitre_ouv(),
+	"intitule_pr"=>$bb->getintitule_pr(),
+	"architecte"=>$bb->getarchitecte(),
+	"titre_foncier"=>$bb->gettitre_foncier(),
+	"superficie"=>$bb->getsupf(),
+	"type_projet"=>$bb->gettype_projet(),
+	"fond_doss"=>$bb->getfond_doss(),
+	"date_com"=>$bb->getdate_comm(),
+	"catg"=>$bb->getcatg(),
+	"surf_bat"=>$bb->getsurf_bat(),
+	"type_doss"=>$bb->gettype_doss(),
+	"etat_dossier"=>$bb->getetat_dossier(),
+	"sepre"=>$bb->getsepre(),
+	"sqe"=>$bb->getsqe(),
+	"stah"=>$bb->getstah(),
+	"sgdph"=>$bb->getsgdph(),
+	"payement"=>$bb->getpayement(),
+	"date_payement"=>$bb->getdate_payement(),
+	"montant_payer"=>$bb->getmontant_payer()
 
 
 ];
