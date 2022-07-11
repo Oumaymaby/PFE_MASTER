@@ -504,8 +504,6 @@
                                             <th width="15%">Durée </th>
                                             <th width="15%">numéro de dossier</th>
                                             <th width="15%">intitule_projet</th>
-                                            
-                                            
                                         </tr>
                                     </thead>
                                     <tbody>

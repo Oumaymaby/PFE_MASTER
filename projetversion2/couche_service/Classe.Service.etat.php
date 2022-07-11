@@ -252,6 +252,26 @@ class Etat_Service{
 		}
 	}
 
+	function encours(){
+		$st =	$this->db->prepare('select count(*) from prj_inv.prj_invest inv where etatdossier=1');
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
+	function cloture(){
+		$st =	$this->db->prepare('select count(*) from prj_inv.prj_invest inv where etatdossier=3');
+		if ($st->execute()) {
+			return $st->fetchAll();
+	   }
+		else{
+			return null;
+		}
+	}
+
 	
 
 

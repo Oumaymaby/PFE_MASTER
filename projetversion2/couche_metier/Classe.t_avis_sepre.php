@@ -5,8 +5,8 @@
 */
 class SEPRE_AVIS
 {
-	private $remarques_sup_sepre,$avis_sepre,$date_avis_sepre,$remarque_bet_besoin_eau,$date_avis_bet_sepre,$id_prj,$id_sepre_info;
-	function __construct($b,$c,$d,$e,$ac,$ee,$a,$ab)
+	private $remarques_sup_sepre,$avis_sepre,$date_avis_sepre,$remarque_bet_besoin_eau,$date_avis_bet_sepre,$id_prj,$id_sepre_info,$valide,$approuve;
+	function __construct($b,$c,$d,$e,$ac,$ee,$a,$ab,$y,$x)
 	{
         // $this->id_pr = $a;
 		$this->avis_sepre=$b;
@@ -17,6 +17,8 @@ class SEPRE_AVIS
 		$this->id_user=$ee;
         $this->id_sepre_info=$a;
         $this->id_prj=$ab; 
+		$this->valide=$y; 
+		$this->approuve=$x; 
 	}
     // function getid_sepre(){
 	// 	return $this->id_sepre;
@@ -71,6 +73,18 @@ class SEPRE_AVIS
 	}
 	function setid_prj($a){
 		$this->id_prj=$a;
+	}
+	function getvalide(){
+		return $this->valide;
+	}
+	function setvalide($a){
+		$this->valide=$a;
+	}
+	function getapprouve(){
+		return $this->approuve;
+	}
+	function setapprouve($a){
+		$this->approuve=$a;
 	}
 }
 ?>

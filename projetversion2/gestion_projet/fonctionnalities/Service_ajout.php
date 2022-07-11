@@ -46,9 +46,9 @@ if (isset($_SESSION['user_name'])){
         $rem_sepre_bet = htmlspecialchars($_POST["rem_bet_sepre1"]);
         $avis=1;
         $date_avis_bet_sepre=date("Y-m-d");
-        $id_prj=$_GET['id'];
+        // $id_prj=$_GET['id'];
         $user=$_SESSION['user_id'];
-        $avis= new SEPRE_AVIS($avis,$rem_sepre_bet,NULL,NULL,$date_avis_bet_sepre,$user,$id_avis_sepre_info,$id_proj);
+        $avis= new SEPRE_AVIS($avis,$rem_sepre_bet,NULL,NULL,$date_avis_bet_sepre,$user,$id_avis_sepre_info,$id_proj,19,19);
         $add= new SEPRE_Service();
         $add->add($avis);
         header("Location:Projet_details1.php?id=".$id_proj);

@@ -17,8 +17,8 @@ class SEPRE_Service{
     // pas besoin d'une fonction ajouter car on peux ajouter avec une modification 
  	function add($avis)
  	{
- 	 	$st =$this->db->prepare('INSERT INTO prj_inv.t_avis_sepre(avis_sepre, remarque_bet_besoin_eau, remarques_sup_sepre, date_avis_sepre, date_avis_bet_sepre, id_user, id_sepre_info, id_prj) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
- 	 	if ($st->execute(array($avis->getavis_sepre(),$avis->getremarque_bet_besoin_eau(),$avis->getremarques_sup_sepre(),$avis->getdate_avis_sepre(),$avis->getdate_avis_bet_sepre(),$avis->getid_user(),$avis->getid_sepre_info(),$avis->getid_prj()))) 
+ 	 	$st =$this->db->prepare('INSERT INTO prj_inv.t_avis_sepre(avis_sepre, remarque_bet_besoin_eau, remarques_sup_sepre, date_avis_sepre, date_avis_bet_sepre, id_user, id_sepre_info, id_prj, valide_par, approuvee_par) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+ 	 	if ($st->execute(array($avis->getavis_sepre(),$avis->getremarque_bet_besoin_eau(),$avis->getremarques_sup_sepre(),$avis->getdate_avis_sepre(),$avis->getdate_avis_bet_sepre(),$avis->getid_user(),$avis->getid_sepre_info(),$avis->getid_prj(),$avis->getvalide(),$avis->getapprouve()))) 
 		{
  	 	 return true;
  		}
@@ -30,7 +30,7 @@ class SEPRE_Service{
  	function findAll()
  	{
 
-	 	$st =	$this->db->prepare('SELECT id_sepre, remarque_bet_besoin_eau, remarques_sup_sepre, avis_sepre, date_avis_sepre, date_avis_bet_sepre, id_user, id_sepre_info, id_prj FROM prj_inv.t_avis_sepre');
+	 	$st =	$this->db->prepare('SELECT id_sepre, remarque_bet_besoin_eau, remarques_sup_sepre, avis_sepre, date_avis_sepre, date_avis_bet_sepre, id_user, id_sepre_info, id_prj ,valide_par, approuvee_par FROM prj_inv.t_avis_sepre');
 	 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -41,7 +41,7 @@ class SEPRE_Service{
 	
  	function findById($id)
  	{
-		$st =$this->db->prepare('SELECT id_sepre, remarque_bet_besoin_eau, remarques_sup_sepre, avis_sepre, date_avis_sepre, date_avis_bet_sepre, id_user, id_sepre_info, id_prj FROM prj_inv.t_avis_sepre where id_sepre=? ');
+		$st =$this->db->prepare('SELECT id_sepre, remarque_bet_besoin_eau, remarques_sup_sepre, avis_sepre, date_avis_sepre, date_avis_bet_sepre, id_user, id_sepre_info, id_prj, valide_par, approuvee_par FROM prj_inv.t_avis_sepre where id_sepre=? ');
 		if ($st->execute(array($id))) {
 			return $st->fetchAll();	
 		}
@@ -54,9 +54,9 @@ class SEPRE_Service{
     
  	function update($avis)
  	{
- 	 	$st =$this->db->prepare('UPDATE prj_inv.t_avis_sepre SET id_sepre=?, remarque_bet_besoin_eau=?, remarques_sup_sepre=?, avis_sepre=?, date_avis_sepre=?, date_avis_bet_sepre=?, id_user=?, id_sepre_info=?, id_prj=? WHERE id_sepre=?');
+ 	 	$st =$this->db->prepare('UPDATE prj_inv.t_avis_sepre SET id_sepre=?, remarque_bet_besoin_eau=?, remarques_sup_sepre=?, avis_sepre=?, date_avis_sepre=?, date_avis_bet_sepre=?, id_user=?, id_sepre_info=?, id_prj=?,valide_par=?, approuvee_par=? WHERE id_sepre=?');
 
-	 	if ($st->execute(array($avis->getavis_sepre(),$avis->getremarque_bet_besoin_eau(),$avis->getremarques_sup_sepre(),$avis->getdate_avis_sepre(),$avis->date_avis_bet_sepre(),$avis->getid_user(),$avis->getid_sepre_info(),$avis->getid_pr(),$avis->getid_sepre())))
+	 	if ($st->execute(array($avis->getavis_sepre(),$avis->getremarque_bet_besoin_eau(),$avis->getremarques_sup_sepre(),$avis->getdate_avis_sepre(),$avis->date_avis_bet_sepre(),$avis->getid_user(),$avis->getid_sepre_info(),$avis->getid_pr(),$avis->getid_sepre(),$avis->getvalide(),$avis->getapprouve())))
 		{
 	 	 	return true;
 	 	}
@@ -90,7 +90,7 @@ class SEPRE_Service{
 
 	function findByIdprj($id)
  	{
-		$st =$this->db->prepare("select id_sepre,remarque_bet_besoin_eau,remarques_sup_sepre,avis_sepre,date_avis_sepre,date_avis_bet_sepre,DATE_PART('day', Now() - date_avis_sepre) AS duree_avis , DATE_PART('day', Now() - date_avis_bet_sepre)AS duree_avis_sepre from prj_inv.t_avis_sepre where id_prj=?");
+		$st =$this->db->prepare("select id_sepre,remarque_bet_besoin_eau,remarques_sup_sepre,avis_sepre,date_avis_sepre,date_avis_bet_sepre,DATE_PART('day', Now() - date_avis_sepre) AS duree_avis , DATE_PART('day', Now() - date_avis_bet_sepre)AS duree_avis_sepre, valide_par, approuvee_par from prj_inv.t_avis_sepre where id_prj=?");
 		if ($st->execute(array($id))) {
 			$row = $st->fetchAll();
 			return $row;
@@ -122,7 +122,7 @@ class SEPRE_Service{
  	{
 	 	$st =	$this->db->prepare("select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph 
 		 from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
-		 where inv.etatdossier=v.id and inv.sepre=true");
+		 where inv.etatdossier=v.id");
 	 	 	if ($st->execute()) {
 	 	 		return $st->fetchAll();
 	 		}
@@ -130,6 +130,21 @@ class SEPRE_Service{
 	 	 		return null;
 	 	 	}
  	} 
+
+
+    //selection des projet affecter à SEPRE all
+	function find_prj_sepre_all()
+	{
+		$st =	$this->db->prepare("select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph ,
+		from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v 
+		where inv.etatdossier=v.id");
+			 if ($st->execute()) {
+				 return $st->fetchAll();
+			}
+			 else{
+				 return null;
+			 }
+	}
 
 
 	function update_rem_bet($a,$b,$d)
@@ -237,6 +252,8 @@ class SEPRE_Service{
 			return null;
 		}
 	}
+
+	
 
 
 }

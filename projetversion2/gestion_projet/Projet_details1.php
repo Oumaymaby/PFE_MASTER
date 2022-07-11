@@ -1234,14 +1234,25 @@
                 if ($_SESSION["service"] === "SEPRE       "){
                 echo'<div class="col-lg-12">
                         <div class="block" style="box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.1) !important">
-                            <ul class="nav nav-tabs nav-tabs-block align-items-center" data-toggle="tabs" role="tablist" style="background-color:#e6eef7 !important">
-                                <li class="nav-item" style="background-color:#e6eef7 !important">
+                            <ul class="nav nav-tabs nav-tabs-block align-items-center" data-toggle="tabs" role="tablist" style="background-color:#e6eef7 !important">';
+                            $prj=new Projet_Service();
+                            $prj1= $prj->findById($_GET['id']);
+                            // var_dump($prj1->getsepre());
+                            if($prj1->getsepre()==true){
+                                echo '<li class="nav-item" style="background-color:#e6eef7 !important">
                                     <a class="nav-link active" href="#sepre">Service SEPRE</a>
-                                </li>
-                                <li class="nav-item" style="background-color:#e6eef7 !important">
-                                    <a class="nav-link" href="#abht">Service ABHT</a>
-                                </li>
-                                <li class="nav-item ml-auto">
+                                </li>';
+                                echo '<li class="nav-item" style="background-color:#e6eef7 !important">
+                                        <a class="nav-link" href="#abht">Service ABHT</a>
+                                    </li>'; 
+                            }else{
+                                echo '<li class="nav-item" style="background-color:#e6eef7 !important">
+                                        <a class="nav-link active" href="#abht">Service ABHT</a>
+                                    </li>'; 
+                            }
+                                 
+                            
+                                echo '<li class="nav-item ml-auto">
                                     <div class="block-options mr-15">
                                         <button type="button" class="btn-block-option" data-toggle="block-option" data-action="fullscreen_toggle"></button>
                                         <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
@@ -1254,8 +1265,11 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div class="block-content tab-content" style="background-color:#f9f9f9 !important">
-                                <div class="tab-pane active" id="sepre" role="tabpanel">
+                            <div class="block-content tab-content" style="background-color:#f9f9f9 !important">';
+                                $prj=new Projet_Service();
+                                $prj1= $prj->findById($_GET['id']);
+                                if($prj1->getsepre()==true){
+                                echo '<div class="tab-pane active" id="sepre" role="tabpanel">
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <div class="block block-borderless" >
@@ -1298,18 +1312,25 @@
                                                                             }elseif($row['avis']==='Aucun Avis'){
                                                                                 echo '<td>'.$row['avis'].'</td>';
                                                                             }
-                                                                            echo '<td class="font-w600"></td>
+                                                                            echo '<td class="font-w600"></td><td class="d-none d-sm-table-cell">
                                                                             ';
-                                                                            if (isset($row['date_avis_sepre'])){
-                                                                                echo '<td class="d-none d-sm-table-cell"></td>';
+                                                                            if(($_SESSION['id_profession']===3)){
+                                                                                echo'<a type="submit" href="projet_cloturer.php?id='.$row['id_prj'].'" style="color:white !important" class="badge badge-pill badge-primary">approuver</a>';
                                                                             }else{
-                                                                                echo    '<td></td><td class="">
-                                                                                            <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info" id="oum1" data-remarque="'.$row['remarque_bet_besoin_eau'].'" onclick="avissepre('.$row['id_sepre'].')" >
-                                                                                                <i class="fa fa-plus mr-5"></i>Avis 
-                                                                                            </a>
-                                                                                        </td>';
+                                                                                echo '';
                                                                             }
-                                                                            echo'</tr>
+                                                                            if (isset($row['date_avis_sepre'])){
+                                                                                echo '
+                                                                                <a type="button" style="color:white !important" class="badge badge-pill badge-primary" id="oum1" data-remarque="'.$row['remarque_bet_besoin_eau'].'" onclick="avissepre('.$row['id_sepre'].')" >
+                                                                                modifier 
+                                                                                </a>
+                                                                                ';
+                                                                            }else{
+                                                                                echo'<a type="button" style="color:white !important" class="badge badge-pill badge-info" id="oum1" data-remarque="'.$row['remarque_bet_besoin_eau'].'" onclick="avissepre('.$row['id_sepre'].')" >
+                                                                                                <i class="fa fa-plus mr-5"></i>ajouter
+                                                                                    </a>';
+                                                                            }
+                                                                            echo'</td></tr>
                                                                     </tbody>
                                                                     <tbody>
                                                                     <tr>
@@ -1459,9 +1480,10 @@
                                         </div>';
                                         }}
                                            
-                               echo '</div>
-                                </div>
-                                <div class="tab-pane" id="abht" role="tabpanel">
+                                    echo '</div>
+                                </div>';
+
+                                echo '<div class="tab-pane" id="abht" role="tabpanel">
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <div class="block block-borderless">
@@ -1633,8 +1655,186 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div>';
+                                }else{
+                                    echo '<div class="tab-pane active" id="abht" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <div class="block block-borderless">
+                                                <div class="block-header block-header-default">
+                                                    <h3 class="block-title">Liste des avis ABHT</h3>
+                                                    <div class="block-options-item">';
+                                                    $a= new ABHT_Service();
+                                                        $aa= $a->find_prj_abht($_GET['id']);
+                                                        // var_dump($aa);
+                                                        $oum="kjsdfh";
+                                                        if($aa){
+                                                                    if(($_SESSION['id_profession']===3)){
+                                                                        echo'<a type="submit" href="projet_cloturer.php?id='.$row['id_prj'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-danger">
+                                                                        <i class="fa fa-lock mr-5"></i>Cloturer le dossier
+                                                                        </a>';
+                                                                    }else{
+                                                                        echo '';
+                                                                    }
+                                                            }
+                                                   
+                                                        
+                                                    echo'</div>
+                                                </div>
+                                                <div class="block-content ">
+                                                    <table class="js-table-sections table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width: 10%;"></th>
+                                                                <th style="width: 50%;">Avis</th>
+                                                                <th style="width: 20%;">Information</th>
+                                                                <th class="d-none d-sm-table-cell" style="width: 30%;"></th>
+                                                            </tr>
+                                                        </thead>';
+                                                        $a= new ABHT_Service();
+                                                        $aa= $a->find_prj_abht($_GET['id']);
+                                                        // var_dump($aa);
+                                                        $oum="kjsdfh";
+                                                        if($aa){
+                                                            foreach($aa as $row){ 
+                                                      echo '<tbody class="js-table-sections-header bg-gray-lighter">
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <i class="fa fa-plus-circle" style="color:red"></i>
+                                                                </td>';
+                                                                if($row['avis_abht']==='Favorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-success">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Favorable avec réserve'){
+                                                                    echo '<td><span class="badge badge-pill badge-warning">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Défavorable'){
+                                                                    echo '<td><span class="badge badge-pill badge-danger">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Archiver'){
+                                                                    echo '<td><span class="badge badge-pill badge-info">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Ajourné'){
+                                                                    echo '<td><span class="badge badge-pill badge-primary">'.$row['avis_abht'].'</span></td>';
+                                                                }elseif($row['avis_abht']==='Aucun Avis'){
+                                                                    echo '<td>'.$row['avis'].'</td>';
+                                                                }
+                                                                echo '<td class="font-w600"></td>';
+                                                                if (isset($row['date_avis_abht'])){
+                                                                    if(($_SESSION['id_profession']===3) && ($row['approuve_par']===19) ){
+                                                                        echo'<td>
+                                                                            <a type="submit" href="projet_approuve_abht.php?id='.$row['id_abht'].'" style="color:white !important" class="btn btn-sm btn-rounded btn-success">
+                                                                                <i class="fa fa-check mr-5"></i>Approuver
+                                                                            </a>
+                                                                             
+                                                                        </td>';
+                                                                    }else{
+                                                                        echo '<td></td>';
+                                                                    }
+                                                                }else{
+                                                                    echo'<td class="d-none d-sm-table-cell"></td><td class="d-none d-sm-table-cell">
+                                                                                <a type="button" style="color:white !important" class="btn btn-sm btn-rounded btn-info" id="oum1" onclick="avisabht_sepre('.$row['id_abht'].')"  >
+                                                                                    <i class="fa fa-plus mr-5"></i>Avis 
+                                                                                </a>
+                                                                     </td>';
+                                                                }
+                                                                echo'
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-size-sm">Remarque Générale du BET</td>
+                                                                <td class="font-w600 ">'.$row['remarques_generales_bet'].'</td>
+                                                                <td class="font-size-sm"></td>
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-w600 ">Avis ABHT</td>
+                                                                <td class="font-size-sm">'.$row['avis_abht'].'</td>
+                                                                <td class="font-size-sm"></td>
+                                                               
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-w600">Etabli par</td>
+                                                                <td class="font-size-sm">'.$row['etabli'].'</td>
+                                                                <td class="font-size-sm"></td>
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                <td class="font-w600 ">Valide par</td>
+                                                                <td class="font-size-sm">'.$row['validee'].'</td>
+                                                                <td class="font-size-sm"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                    <td class="font-w600 ">Approuvé par</td>
+                                                                    <td class="font-size-sm">'.$row['approuvee'].'</td>
+                                                                    <td class="font-size-sm"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center"><i class="fa fa-caret-right"></i></td>
+                                                                    <td class="font-w600 ">Utilisateur BET</td>
+                                                                    <td class="font-size-sm">'.$row['user_name'].'</td>
+                                                                    <td class="font-size-sm"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Durée de la remarque du ABHT</td>';
+                                                                        if( $row['duree_avis_abht'] < 11 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis_abht'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_abht'] > 10 && $row['duree_avis_abht'] < 30 ){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis_abht'].' jours</span></td>';
+                                                                        }elseif($row['duree_avis_abht'] > 29){
+                                                                            echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis_abht'].' jours</span></td>';
+                                                                        }
+                                                                    echo '<td class="d-none d-sm-table-cell"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Durée de la remarque du BET</td>';
+                                                                    if( $row['duree_avis'] < 11 ){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-success">'.$row['duree_avis'].' jours</span></td>';
+                                                                    }elseif($row['duree_avis'] > 10 && $row['duree_avis'] < 30 ){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-warning">'.$row['duree_avis'].' jours</span></td>';
+                                                                    }elseif($row['duree_avis'] > 29){
+                                                                        echo ' <td class="font-size-sm"><span class="badge badge-pill badge-danger">'.$row['duree_avis'].' jours</span></td>';
+                                                                    }
+                                                                    echo '<td class="d-none d-sm-table-cell">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Date d\'avis ABHT</td>
+                                                                    <td class="font-size-sm">'.$row['date_avis_abht'].'</td>
+                                                                    <td class="font-size-sm"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <i class="fa fa-caret-right"></i>
+                                                                    </td>
+                                                                    <td class="font-w600 ">Date de remarque BET</td>
+                                                                    <td class="font-size-sm">'.$row['date_avis_bet_abht'].'</td>
+                                                                    <td class="font-size-sm"></td> 
+                                                                </tr>
+                                                        </tbody>';
+                                                    }}                            
+                                                echo'</table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>';
+                                }
+
+                               
+                               
+                            echo '</div>
                         </div>
                     </div>';
                 }

@@ -5,8 +5,8 @@
 */
 class SEPRE
 {
-	private $remarques_sup_sepre,$avis_sepre,$date_avis_sepre,$remarque_bet_besoin_eau,$origine_eau_pot,$origine_autre,$bes_eau_dom,$bes_eau_irrg,$date_avis_bet_sepre,$id_prj;
-	function __construct($b,$c,$d,$e,$f,$g,$i,$j,$ac,$ab)
+	private $remarques_sup_sepre,$avis_sepre,$date_avis_sepre,$remarque_bet_besoin_eau,$origine_eau_pot,$origine_autre,$bes_eau_dom,$bes_eau_irrg,$date_avis_bet_sepre,$id_prj,$valide,$approuve;
+	function __construct($b,$c,$d,$e,$f,$g,$i,$j,$ac,$ab,$z,$y)
 	{
         // $this->id_sepre = $a;
 		$this->avis_sepre=$b;
@@ -19,6 +19,8 @@ class SEPRE
 		$this->bes_eau_irrg=$j;
         $this->date_avis_bet_sepre=$ac;
         $this->id_prj=$ab; 
+		$this->valide=$z; 
+		$this->approuve=$y; 
 	}
     
     function getdate_avis_sepre(){
@@ -80,6 +82,18 @@ class SEPRE
 	}
 	function setid_prj($a){
 		$this->id_prj=$a;
+	}
+	function getvalide(){
+		return $this->valide;
+	}
+	function setvalide($a){
+		$this->valide=$a;
+	}
+	function getapprouve(){
+		return $this->approuve;
+	}
+	function setapprouve($a){
+		$this->approuve=$a;
 	}
 }
 ?>

@@ -52,7 +52,8 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
         <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
         <link rel="stylesheet" type="text/css" href="assets/css/map/measure.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.css"/>
+        
         
 		
 
@@ -69,6 +70,7 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
         <script type="text/javascript" src="assets/js/map/leaflet.browser.print.min.js"></script>
 		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.js"></script>
+        <script src="https://unpkg.com/leaflet.minichart/dist/leaflet.minichart.min.js"></script>
 
 	<style>
         body{
@@ -79,6 +81,8 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
 			height: 100vh;
 			align: center;
 		}
+
+        
 
         
 
@@ -189,13 +193,19 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
         #info-pane {
         position: absolute;
         bottom: 10px;
-        left: 150px;
+        top:10px;
+        left: 950px;
         z-index: 400;
-        width: 900px;
+        width: 400px;
+        height: 590px;
         border-radius: 0px;
         background-color: white;
         
         }
+
+
+
+
         
         .load{
             background-image:url("assets/img/load.png") ;
@@ -274,6 +284,19 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
             display:inline-flex;
         }
 
+        .leaflet-control-layers .leaflet-control-layers-list{
+            overflow-y: scroll;
+            height: 250px;
+        }
+         
+        #panel {
+            position: absolute;
+            bottom: 10px;
+            right: 700px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+        }
 
     
             
@@ -283,7 +306,9 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
 </head>
 <body>
             
-<div id="page-container" class="sidebar-mini sidebar-o side-scroll page-header-modern main-content-boxed">
+<div id="page-container" class="sidebar-mini sidebar-o side-overlay-o  side-scroll page-header-modern main-content-boxed">
+            
+
             <nav id="sidebar">
                 <div id="sidebar-scroll">
                     <div class="sidebar-content">
@@ -369,11 +394,12 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
                     </div>
                 </div>
             </nav>
+            <!-- END Side Overlay -->
+            
         	<main id="main-container">
+           
 				
 				<div id="map"></div>
-				
-                
                 
                     <div class="block block-bordered leaflet-bar" id="info-pane">
                         <div class="block-header" style="background-color:#36464e">
@@ -386,9 +412,7 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
                                     </button>
                                 </div>
                         </div>
-                        <div class="block-content ">
-                            <div class="row">
-                                <div class="col-4 border-r">
+                        <div class="block-content " data-toggle="slimscroll" data-height="500px" data-color="#9ccc65" data-opacity="1" data-always-visible="true">
                                         <div class="table-responsive">
                                             <table class="table table-borderless text-left ">
                                                 <?php
@@ -405,12 +429,21 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
                                                             <td>'.$bb->getnum_oss().'</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="font-w600 text-left">Etat du projet</td>
-                                                            <td><span class="badge badge-pill badge-danger">En Cours</span>'.$bb->getetat_dossier().'</td>
-                                                        </tr>
+                                                            <td class="font-w600 text-left">Etat du projet</td>';
+                                                            if ($bb->getetat_dossier()===1){
+                                                                echo '<td><span class="badge badge-pill badge-danger">En Cours</span></td>';
+                                                            }else{
+                                                                echo '<td><span class="badge badge-pill badge-danger">Dossier Cloturé</span></td>'; 
+                                                            }
+                                                            
+                                                        echo '</tr>
                                                         <tr>
                                                             <td class="font-w600 text-left">Durée du projet</td>
                                                             <td>'.$bb->getdate_arr_bet().'</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="font-w600 text-left">Intitulé du projet</td>
+                                                            <td>'.$bb->getintitule_pr().'</td>
                                                         </tr>
                                                     
                                                         <tr>
@@ -443,38 +476,11 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
                                                 ?>  
                                                 
                                             </table>
-                                        </div>
-                                </div>
-                                <div class="col-2 text-right border-r">
-                                    <div class="" data-toggle="appear" data-class="">
-                                        <div class="table-responsive">
-                                            <table class="table table-borderless text-left ">
-                                                <?php
-                                                        $b = new Projet_Service();
-                                                        $id=$_GET['id'];
-                                                        $bb = $b->findById($id);
-                                                        echo '<tbody>
-                                                            <tr>
-                                                                <td class="font-w600 text-left" style="width:150px">Titre du Projet</td>
-                                                                
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                '.$bb->getintitule_pr().'
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>';
-                                                ?>
-
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="" data-toggle="appear" data-class="">
-                                        <div class="table-responsive">
-                                            <table class="table table-borderless">
-                                                <tbody>
+                                        
+                                
+                                
+                                    <div class="row items-push-2x text-center invisible" data-toggle="appear">
+                                    <h4> Statistique d'état d'avancement des avis des services</h4>
                                                     
                                                     <?php
                                                         $b = new Projet_Service();
@@ -484,160 +490,123 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
                                                         $bb1=$b1->number_sepre_count_avisnull($id);
                                                         $cc=$b1->sepre_count_avis($id);
                                                         foreach($cc as $r){
-                                                            if($r[0]>0){
-                                                                if($bb->getsepre()===true){
+                                                            if($bb->getsepre()===true){
+                                                                if($r[0]>0){
                                                                     foreach($bb1 as $row){
                                                                         if($row[0]<1){
-                                                                        echo '<tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service Sepre</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité Par SEPRE" class="progress-bar bg-warning" role="progressbar" style="width: 70%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        echo   '<div class="col-6 col-md-4">
+                                                                                    <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité" class="js-pie-chart pie-chart" data-percent="70%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                        <span>70%<br><small class="text-muted">SEPRE</small></span>
                                                                                     </div>
-                                                                                </td>
-                                                                            </tr>';
+                                                                                </div>';
                                                                         }else{
-                                                                            echo '<tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service Sepre</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité Par SEPRE" class="progress-bar bg-danger" role="progressbar" style="width: 30%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                            echo '<div class="col-6 col-md-4">
+                                                                                    <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité" class="js-pie-chart pie-chart" data-percent="30%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                        <span>30%<br><small class="text-muted">SEPRE</small></span>
                                                                                     </div>
-                                                                                </td>
-                                                                            </tr>';
+                                                                                </div>';
                                                                         }
                                                                     }
+                                                                }else{
+                                                                    echo            '<div class="col-6 col-md-4">
+                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="js-pie-chart pie-chart" data-percent="10" data-line-width="10" data-size="100" data-bar-color="red" data-track-color="#e9e9e9">
+                                                                                            <span>10%<br><small class="text-muted">SEPRE</small></span>
+                                                                                        </div>
+                                                                                    </div>';
                                                                 }
-                                                            }else{
-                                                                echo '<tr>
-                                                                            <td class="font-w600 text-left" style="width:150px">Service Sepre</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="progress-bar bg-danger" role="progressbar" style="width: 10%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>';
                                                             }
                                                         }
                                                         $b3=new SQE_Service();
                                                         $bb3=$b3->number_sqe_count_avisnull($id);
                                                         $cc1=$b3->sqe_count_avis($id);
                                                         foreach($cc1 as $r){
-                                                            if($r[0]>0){
-                                                                if($bb->getsqe()===true){
+                                                            if($bb->getsqe()===true){
+                                                                if($r[0]>0){
                                                                     foreach($bb3 as $row){
                                                                         if($row[0]<1){
-                                                                            echo '<tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service SQE</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité Par SQE" class="progress-bar bg-warning" role="progressbar" style="width: 70%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                            echo '<div class="col-6 col-md-4">
+                                                                                    <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité" class="js-pie-chart pie-chart" data-percent="70%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                        <span>70%<br><small class="text-muted">SQE</small></span>
                                                                                     </div>
-                                                                                </td>
-                                                                            </tr>';
+                                                                                </div>';
                                                                         }else{
-                                                                            echo '<tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service SQE</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité Par SQE" class="progress-bar bg-danger" role="progressbar" style="width: 30%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                            echo '<div class="col-6 col-md-4">
+                                                                                    <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité" class="js-pie-chart pie-chart" data-percent="30%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                        <span>30%<br><small class="text-muted">SQE</small></span>
                                                                                     </div>
-                                                                                </td>
-                                                                            </tr>';
+                                                                                </div>';
                                                                         }
                                                                     }
+                                                                }else{
+                                                                    echo   '<div class="col-6 col-md-4">
+                                                                                <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="js-pie-chart pie-chart" data-percent="10" data-line-width="10" data-size="100" data-bar-color="red" data-track-color="#e9e9e9">
+                                                                                    <span>10%<br><small class="text-muted">SQE</small></span>
+                                                                                </div>
+                                                                            </div>';
                                                                 }
-                                                            }else{
-                                                                echo '      <tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service Sqe</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="progress-bar bg-danger" role="progressbar" style="width: 10%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>';
                                                             }
                                                         }
 
                                                         $b4=new STAH_Service();
                                                         $bb4=$b4->number_stah_count_avisnull($id);
                                                         $cc2=$b4->stah_count_avis($id);
-                                                        foreach($cc2 as $r){
-                                                            if($r[0]>0){
+                                                            foreach($cc2 as $r){
                                                                 if($bb->getstah()===true){
-                                                                    foreach($bb4 as $row){
-                                                                        if($row[0]<1){
-                                                                            echo '<tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service STAH</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité Par STAH" class="progress-bar bg-warning" role="progressbar" style="width: 70%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>';
-                                                                        }else{
-                                                                            echo '<tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service STAH</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité Par STAH" class="progress-bar bg-danger" role="progressbar" style="width: 30%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>';
+                                                                    if($r[0]>0){
+                                                                        foreach($bb4 as $row){
+                                                                            if($row[0]<1){
+                                                                                echo '<div class="col-6 col-md-4">
+                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité" class="js-pie-chart pie-chart" data-percent="70%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                            <span>70%<br><small class="text-muted">STAH</small></span>
+                                                                                        </div>
+                                                                                    </div>';
+                                                                            }else{
+                                                                                echo '<div class="col-6 col-md-4">
+                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité" class="js-pie-chart pie-chart" data-percent="30%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                            <span>30%<br><small class="text-muted">STAH</small></span>
+                                                                                        </div>
+                                                                                    </div>';
+                                                                            }
                                                                         }
+                                                                    }else{
+                                                                        echo '<div class="col-6 col-md-4">
+                                                                                <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="js-pie-chart pie-chart" data-percent="10" data-line-width="10" data-size="100" data-bar-color="red" data-track-color="#e9e9e9">
+                                                                                    <span>10%<br><small class="text-muted">STAH</small></span>
+                                                                                </div>
+                                                                              </div>';
                                                                     }
                                                                 }
-                                                            }else{
-                                                                echo '      <tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service Stah</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="progress-bar bg-danger" role="progressbar" style="width: 10%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>';
                                                             }
-                                                        }
 
                                                         $b2=new SGDPH_Service();
                                                         $bb2=$b2->number_sgdph_count_avisnull($id);
                                                         $cc3=$b2->sgdph_count_avis($id);
                                                         foreach($cc3 as $r){
-                                                            if($r[0]>0){
                                                                 if($bb->getsgdph()===true){
-                                                                    foreach($bb2 as $row){
-                                                                        if($row[0]<1){
-                                                                            echo '<tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service Sgdph</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité Par SGDPH" class="progress-bar bg-warning" role="progressbar" style="width: 70%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>';
-                                                                        }else{
-                                                                            echo '<tr>
-                                                                                <td class="font-w600 text-left" style="width:150px">Service Sgdph</td>
-                                                                                <td>
-                                                                                    <div class="progress push">
-                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité Par SGDPH" class="progress-bar bg-danger" role="progressbar" style="width: 30%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>';
+                                                                    if($r[0]>0){
+                                                                        foreach($bb2 as $row){
+                                                                            if($row[0]<1){
+                                                                                echo '<div class="col-6 col-md-4">
+                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité" class="js-pie-chart pie-chart" data-percent="70%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                            <span>70%<br><small class="text-muted">SGDPH</small></span>
+                                                                                        </div>
+                                                                                    </div>';
+                                                                            }else{
+                                                                                echo '<div class="col-6 col-md-4">
+                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité" class="js-pie-chart pie-chart" data-percent="30%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                            <span>30%<br><small class="text-muted">SGDPH</small></span>
+                                                                                        </div>
+                                                                                    </div>';
+                                                                            }
                                                                         }
+                                                                    }else{
+                                                                        echo ' <div class="col-6 col-md-4">
+                                                                                        <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="js-pie-chart pie-chart" data-percent="10" data-line-width="10" data-size="100" data-bar-color="red" data-track-color="#e9e9e9">
+                                                                                            <span>10%<br><small class="text-muted">SGDPH</small></span>
+                                                                                        </div>
+                                                                               </div>';
                                                                     }
-                                                                    
                                                                 }
-                                                            }else{
-                                                                echo '  <tr>
-                                                                            <td class="font-w600 text-left" style="width:150px">Service SGDPH</td>
-                                                                            <td>
-                                                                                <div class="progress push">
-                                                                                    <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="progress-bar bg-danger" role="progressbar" style="width: 10%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>';
-                                                            }
                                                         }
 
 
@@ -648,46 +617,76 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
                                                             if($r[0]>0){
                                                                 foreach($bb2 as $row){
                                                                     if($row[0]<1){
-                                                                        echo '<tr>
-                                                                            <td class="font-w600 text-left" style="width:150px">Avis ABHT</td>
-                                                                            <td>
-                                                                                <div class="progress push">
-                                                                                    <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité" class="progress-bar bg-warning" role="progressbar" style="width: 70%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        echo '<div class="col-6 col-md-4">
+                                                                                <div data-toggle="tooltip" data-placement="bottom" title="Dernier avis traité" class="js-pie-chart pie-chart" data-percent="70%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                    <span>70%<br><small class="text-muted">Avis générale</small></span>
                                                                                 </div>
-                                                                            </td>
-                                                                        </tr>';
+                                                                            </div>';
                                                                     }else{
-                                                                        echo '<tr>
-                                                                            <td class="font-w600 text-left" style="width:150px">Avis ABHT</td>
-                                                                            <td>
-                                                                                <div class="progress push">
-                                                                                    <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité" class="progress-bar bg-danger" role="progressbar" style="width: 30%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        echo '<div class="col-6 col-md-4">
+                                                                                <div data-toggle="tooltip" data-placement="bottom" title="Nouveau avis non traité" class="js-pie-chart pie-chart" data-percent="30%" data-line-width="10" data-size="100" data-bar-color="yellow" data-track-color="#e9e9e9">
+                                                                                    <span>30%<br><small class="text-muted">Avis générale</small></span>
                                                                                 </div>
-                                                                            </td>
-                                                                        </tr>';
+                                                                            </div>';
                                                                     }
                                                                 }
                                                             }else{
-                                                                echo '  <tr>
-                                                                            <td class="font-w600 text-left" style="width:150px">Avis ABHT</td>
-                                                                            <td>
-                                                                                <div class="progress push">
-                                                                                    <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="progress-bar bg-danger" role="progressbar" style="width: 10%; height: 10px;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                echo '<div class="col-6 col-md-4">
+                                                                                <div data-toggle="tooltip" data-placement="bottom" title="Attente d\'ajout d\'avis" class="js-pie-chart pie-chart" data-percent="10" data-line-width="10" data-size="100" data-bar-color="red" data-track-color="#e9e9e9">
+                                                                                    <span>10%<br><small class="text-muted">Avis générale</small></span>
                                                                                 </div>
-                                                                            </td>
-                                                                        </tr>';
+                                                                        </div>';
                                                             }
                                                         }
                                                         
                                                     ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                
                                     </div>
-                                </div>
+
+                                    <!-- <div class="row items-push-2x text-center invisible" data-toggle="appear">
+                                        <h4> Statisttique d'état d'avancement des avis des services</h4>
+                                        <div class="col-6 col-md-4">
+                                            
+                                            <div class="js-pie-chart pie-chart" data-percent="25" data-line-width="10" data-size="100" data-bar-color="#ef5350" data-track-color="#e9e9e9" data-scale-color="#d9d9d9">
+                                                <span>25mb<br><small class="text-muted">/100mb</small></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-4">
+                                            
+                                            <div class="js-pie-chart pie-chart" data-percent="50" data-line-width="2" data-size="100" data-bar-color="#ffca28" data-track-color="#e9e9e9" data-scale-color="#d9d9d9">
+                                                <span>50%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-4">
+                                            
+                                            <div class="js-pie-chart pie-chart" data-percent="90" data-line-width="2" data-size="100" data-bar-color="#9ccc65" data-track-color="#e9e9e9" data-scale-color="#d9d9d9">
+                                                <span>90<br><small class="text-muted">/100</small></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-4">
+                                           
+                                            <div class="js-pie-chart pie-chart" data-percent="25" data-line-width="4" data-size="100" data-bar-color="#ef5350" data-track-color="#e9e9e9">
+                                                <span>25mb<br><small class="text-muted">/100mb</small></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-4">
+                                            
+                                            <div class="js-pie-chart pie-chart" data-percent="50" data-line-width="2" data-size="100" data-bar-color="#ffca28" data-track-color="#e9e9e9">
+                                                <span>50%</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-4">
+                                            
+                                            <div data-toggle="tooltip" data-placement="bottom" title="Attente d'ajout d'avis" class="js-pie-chart pie-chart" data-percent="10" data-line-width="4" data-size="100" data-bar-color="red" data-track-color="#e9e9e9">
+                                                <span>10%<br><small class="text-muted">SEPRE</small></span>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                
                             </div>
                         </div>
                     </div>
+                    
 				<!-- <button id="refreshButton">Refresh Button</button> -->
          	</main>
 	</div>
@@ -708,6 +707,22 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
         <script src="assets/js/core/jquery.countTo.min.js"></script>
         <script src="assets/js/core/js.cookie.min.js"></script>
         <script src="assets/js/codebase.js"></script>
+
+        <script src="assets/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+        <script src="assets/js/plugins/easy-pie-chart/jquery.easypiechart.min.js"></script>
+        <script src="assets/js/plugins/chartjs/Chart.bundle.min.js"></script>
+        <script src="assets/js/plugins/flot/jquery.flot.min.js"></script>
+        <script src="assets/js/plugins/flot/jquery.flot.pie.min.js"></script>
+        <script src="assets/js/plugins/flot/jquery.flot.stack.min.js"></script>
+        <script src="assets/js/plugins/flot/jquery.flot.resize.min.js"></script>
+        <!-- Page JS Code -->
+        <script src="assets/js/pages/be_comp_charts.js"></script>
+        <script>
+            jQuery(function () {
+                // Init page helpers (Easy Pie Chart plugin)
+                Codebase.helpers('easy-pie-chart');
+            });
+        </script>
 		
 	<script type="text/javascript">
 
@@ -774,16 +789,28 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
             subdomains:['mt0','mt1','mt2','mt3']
         });
         
-
+    
+    
 	// // Geosearch
 	// L.Control.geocoder().addTo(map);
 
 	//Print
-	L.control.browserPrint().addTo(map);
+	
 	
 
 	//Echelle
-	L.control.scale().addTo(map);
+	L.control.scale({position: 'bottomleft'}).addTo(map);
+    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    const osmURL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    const orm = L.tileLayer(osmURL, { attribution }).addTo(map);
+
+    //Plugin magic goes here! Note that you cannot use the same layer object again, as that will confuse the two map controls
+
+    const osm2 = new L.TileLayer(osmURL, { minZoom: 0, maxZoom: 13, attribution });
+    const miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true,position:'bottomleft' }).addTo(map);
+
+    L.control.browserPrint({position: 'bottomleft'}).addTo(map);
+    map.zoomControl.setPosition('bottomleft');
 
 	//base layers
 	var baseLayers = {
@@ -830,7 +857,35 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
 
 	var $zones_protection=new L.GeoJSON.AJAX("http://localhost/projectpfe/projetversion2/data_json/data.zonepro.fetchallgeoson.php",{style: {color: "green"}});
 
-    var $prj = new L.GeoJSON.AJAX("http://localhost/projectpfe/projetversion2/data_json/data.projet.fetchallgeojson.php",{style: {color: "#0b5394",opacity: 0.65, weight:1}})
+    // var $prj = new L.GeoJSON.AJAX("",{style: {color: "#0b5394",opacity: 0.65, weight:1}});
+
+    var center = [31.630000,-8.008889];
+    // Let us generate fake data
+    function fakeData() {
+    return [Math.random(), Math.random(), Math.random()];
+    }
+
+    
+    
+
+    var Location1 = "http://localhost/projectpfe/projetversion2/data_json/data.projet.fetchallgeojson.php";
+
+    // var polygonsWithCenters1 = L.layerGroup();
+    var polygonsWithCenters = L.layerGroup();
+
+    var $prj =new L.GeoJSON.AJAX(Location1,{style: {color: "#0b5394",opacity: 0.65, weight:1}}, {
+        onEachFeature: function (feature, layer) {
+        
+        if (feature.geometry.type === "MultiPolygon") {
+        var center = layer.getBounds().getCenter();
+        var myBarChart = L.minichart(center,{data: fakeData()});
+        var polygonAndItsCenter = L.layerGroup([layer, myBarChart]);
+        polygonAndItsCenter.addTo(polygonsWithCenters);
+        }
+       },
+    });
+
+
 
 	var overlays = {
 		"Sources":$sources,
@@ -852,7 +907,7 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
 		
 	};
 
-    L.control.layers(baseLayers,overlays,{position: 'bottomright'}).addTo(map);
+    L.control.layers(baseLayers,overlays,{position: 'topleft'}).addTo(map);
 
     id1=<?php echo $_GET['id'] ?>;
 
@@ -883,15 +938,7 @@ require_once '../couche_service/Classe.Service.t_avis_abht.php';
     
     
 
-    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-    const osmURL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-    const orm = L.tileLayer(osmURL, { attribution }).addTo(map);
-
-    //Plugin magic goes here! Note that you cannot use the same layer object again, as that will confuse the two map controls
-
-    const osm2 = new L.TileLayer(osmURL, { minZoom: 0, maxZoom: 13, attribution });
-    const miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true }).addTo(map);
-
+    
 
 
 

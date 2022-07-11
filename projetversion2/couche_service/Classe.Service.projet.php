@@ -803,7 +803,53 @@ class Projet_Service{
 	 	}
 	}
 
+	function dureechartprj1030geom(){
+		$st =$this->db->prepare("select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph,ST_AsGeoJSON(geom) as geojson 
+		from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v
+		where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) > 10 
+		and DATE_PART('day', Now() - inv.date_arrivee_bet) <= 30 and inv.etatdossier=1");
+		 if ($st->execute()) {
+				  return $st->fetchAll();
+			 }
+			  else{
+				  return null;
+			  }
+	}
 
+	function dureedayetatprjplus30geom(){
+		$st =	$this->db->prepare("select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph,ST_AsGeoJSON(geom) as geojson  from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) > 30 and inv.etatdossier=1");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	//selection de nombre de projets avec une durée de jour de la date d'arrivée au BET [30 jours]
+	function dureedayetatprj10geom(){
+		$st =	$this->db->prepare("select inv.gid,inv.date_arrivee_bet,inv.numero_dossier,inv.numero_archive,inv.date_arrivee_bet,inv.commune,inv.province,inv.maitre_ouvrage,inv.intitule_projet,v.etatdossier, DATE_PART('day', Now() - inv.date_arrivee_bet) AS duree ,inv.sepre,inv.stah,inv.sqe,inv.sgdph,ST_AsGeoJSON(geom) as geojson from prj_inv.prj_invest inv,prj_inv.ls_etat_dossier v where inv.etatdossier=v.id and DATE_PART('day', Now() - inv.date_arrivee_bet) <= 10 and inv.etatdossier=1");
+	 	if ($st->execute()) {
+	 	 		return $st->fetchAll();
+	 		}
+	 	 	else{
+	 	 		return null;
+	 	 	}
+	}
+
+	function findBynum($id)
+ 	{
+		$st =$this->db->prepare('select gid,numero_dossier,numero_archive,date_arrivee_abht,date_arrivee_bet,commune,province,douar_localite,maitre_ouvrage,intitule_projet,architecte,titre_foncier,superficie,type_projet,fond_dossier,ST_AsGeoJSON(geom) as geojson,dates_commissions,categories,surface_batie,type_dossier,etatdossier,sepre,sqe,stah,sgdph,payement,date_payement,montant_payer 
+		from prj_inv.prj_invest where numero_dossier=?');
+		if ($st->execute(array($id))) {
+			$row = $st->fetchAll();
+			return $row;		
+		}
+		else{
+			echo "Problème";
+			return null;
+		}
+ 	}
 
 	
 
